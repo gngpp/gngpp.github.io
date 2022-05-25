@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+    <link rel="stylesheet" href="https://blog.innas.cn/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -32,7 +32,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
 虚拟网卡、物理网卡，创建macvlan网络 物理网卡篇 docker network create -d macvlan --subnet=192.168.1.1/24 --gateway=192.168.1.1 -o parent=ensxxx macvlan_net  -d macvlan 指定网络驱动程序为macvlan &ndash;subnet 指定一个子网段 &ndash;gateway 路由网关 -o parent=ensxxx 绑定物理网卡 macvlan_net 自定义网络名称   物理网卡id怎么看？
  # 查看网卡设备 ifconfig -a # 查看的是已启用的网卡设备 ifcofnig # 启用网卡，开机启用就不多说了，自行百度 ifconfig wlp4s0 up  下面可以看到我的无线Wi-Fi网卡识别为wlp4s0，这个就是物理网卡标识符  虚拟网卡篇  使用的PVE下的OVS Bride桥接虚拟网卡(依赖openvswitch-switch)，需要安装openvswitch-switch。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.org/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://blog.innas.cn/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-02-02T17:54:00+00:00" />
 <meta property="article:modified_time" content="2022-02-02T17:54:00+00:00" />
 
@@ -41,7 +41,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
   </head>
   <body>
     <header class="app-header">
-      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <a href="https://blog.innas.cn/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
       <h1>gngpp</h1>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">Home</a>
@@ -92,8 +92,8 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://example.org/tags/docker/">Docker</a>
-              <a class="tag" href="https://example.org/tags/macvlan/">Macvlan</a>
+              <a class="tag" href="https://blog.innas.cn/tags/docker/">Docker</a>
+              <a class="tag" href="https://blog.innas.cn/tags/macvlan/">Macvlan</a>
         </div>
       </div>
     </header>

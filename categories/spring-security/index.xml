@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Spring Security on gngpp</title>
-    <link>https://example.org/categories/spring-security/</link>
+    <link>https://blog.innas.cn/categories/spring-security/</link>
     <description>Recent content in Spring Security on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/categories/spring-security/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/categories/spring-security/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Spring Security 组件解析</title>
-      <link>https://example.org/posts/spring-security-%E7%BB%84%E4%BB%B6%E8%A7%A3%E6%9E%90/</link>
+      <link>https://blog.innas.cn/posts/spring-security-%E7%BB%84%E4%BB%B6%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring-security-%E7%BB%84%E4%BB%B6%E8%A7%A3%E6%9E%90/</guid>
+      <guid>https://blog.innas.cn/posts/spring-security-%E7%BB%84%E4%BB%B6%E8%A7%A3%E6%9E%90/</guid>
       <description>Spring Security 组件解析   Authentication （用户身份）
  在 spring security 里，用户身份在不同阶段有着不同的含义
  在校验开始时，用户身份代表用户输入的用户信息，比如账号、密码、验证码 在校验成功后，用户身份代表用户的真实信息，比如账号、密码、权限   Authentication 接口则是 security 提供的用户身份接口，实现类有常用的 UsernamePasswordAuthenticationToken, 这个接口其包含的最基本的信息如下

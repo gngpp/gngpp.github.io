@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+    <link rel="stylesheet" href="https://blog.innas.cn/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -24,7 +24,7 @@
 @Configuration @EnableSwagger2 public class SwaggerConfig{    //创建bean交给spring管理  @Bean  public Docket createRestApi(){  return new Docket(DocumentationType.SWAGGER_2)  .apiInfo(apiInfo()) //构建api文档的详细信息  .select()  .apis(RequestHandlerSelectors.basePackage(Api.class)) //这里选择被Api注解的类  .paths(PathSelectors.any())  }   //构建api文档详细信息  private ApiInfo apiInfo(){  return new ApiInfoBuilder  .title(&#34;设置文档标题&#34;)  .description(&#34;设置接口描述&#34;)  .contact(&#34;设置联系方式&#34;)  .version(&#34;设置版本&#34;)  .build(); //构建  }  } 2.Swagger2注解的使用 实体类注解：@ApiModel (用于类上注解，用于参数用实体类接收) 方法注解：@ApiModelProperty (用于类方法的注解，对model属性进行说明或者对数据对修改)
 控制器类注解：@Api (注解用于类上，表示标识这个类是 swagger 的资源) 方法注解：@ApiOperation ( 注解用于方法，表示一个 http 请求的操作) 参数注解：@Param (注解用于参数上，用来标明参数信息)" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.org/posts/springboot/%E4%BD%BF%E7%94%A8swagger2/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://blog.innas.cn/posts/springboot/%E4%BD%BF%E7%94%A8swagger2/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:34:30+00:00" />
 <meta property="article:modified_time" content="2021-08-02T11:34:30+00:00" />
 
@@ -33,7 +33,7 @@
   </head>
   <body>
     <header class="app-header">
-      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <a href="https://blog.innas.cn/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
       <h1>gngpp</h1>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">Home</a>

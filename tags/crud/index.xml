@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CRUD on gngpp</title>
-    <link>https://example.org/tags/crud/</link>
+    <link>https://blog.innas.cn/tags/crud/</link>
     <description>Recent content in CRUD on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 11:38:18 +0000</lastBuildDate><atom:link href="https://example.org/tags/crud/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 11:38:18 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/crud/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CRUD一些常用工具</title>
-      <link>https://example.org/posts/crud%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</link>
+      <link>https://blog.innas.cn/posts/crud%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/posts/crud%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
+      <guid>https://blog.innas.cn/posts/crud%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
       <description>Objects常用场景
  重写hashCode 时，使用 Objects.hash(Object ...) 计算所有对象 HashCode 使用 Objects.requireNonNull(Object) 代替if(Object == null) throw new NullPointerException()    集合和字符串判空常用方法
  CollectionUtils.isEmpty 这是spring提供的工具类 StringUtils.isEmpty 这是 spring提供的工具类    Optional常用场景

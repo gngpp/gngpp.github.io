@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+    <link rel="stylesheet" href="https://blog.innas.cn/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -22,7 +22,7 @@ http {  # 反向代理服务器 	server{ 	# 配置代理服务器 	listen	80; 	s
 我们也可以配置多台真实服务器，也就是所谓的集群
 http {  # 反向代理服务器 	server{ 	# 配置代理服务器 	listen	80; 	server_name http://127.0.0.1; 	access_log	logs/server1.log main; 		# 目标真实服务器 	localtion / { 	# 这里采用集群方式 	proxy_pass	http://tomcats; 	} 	} 	# tomcats 集群 	upstream tomcats { 	server 127." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.org/posts/nginx/nginx%E9%85%8D%E7%BD%AE/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://blog.innas.cn/posts/nginx/nginx%E9%85%8D%E7%BD%AE/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
 <meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
 
@@ -31,7 +31,7 @@ http {  # 反向代理服务器 	server{ 	# 配置代理服务器 	listen	80; 	s
   </head>
   <body>
     <header class="app-header">
-      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <a href="https://blog.innas.cn/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
       <h1>gngpp</h1>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">Home</a>
@@ -82,7 +82,7 @@ http {  # 反向代理服务器 	server{ 	# 配置代理服务器 	listen	80; 	s
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://example.org/tags/nginx/">Nginx</a>
+              <a class="tag" href="https://blog.innas.cn/tags/nginx/">Nginx</a>
         </div>
       </div>
     </header>

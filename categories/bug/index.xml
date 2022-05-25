@@ -2,36 +2,36 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>BUG on gngpp</title>
-    <link>https://example.org/categories/bug/</link>
+    <link>https://blog.innas.cn/categories/bug/</link>
     <description>Recent content in BUG on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 Oct 2021 18:32:47 +0000</lastBuildDate><atom:link href="https://example.org/categories/bug/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 27 Oct 2021 18:32:47 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/categories/bug/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>踩坑</title>
-      <link>https://example.org/posts/bug/%E9%97%AE%E9%A2%98/</link>
+      <link>https://blog.innas.cn/posts/bug/%E9%97%AE%E9%A2%98/</link>
       <pubDate>Wed, 27 Oct 2021 18:32:47 +0000</pubDate>
       
-      <guid>https://example.org/posts/bug/%E9%97%AE%E9%A2%98/</guid>
+      <guid>https://blog.innas.cn/posts/bug/%E9%97%AE%E9%A2%98/</guid>
       <description> 2021-10-27   从Spring项目源码构建到成品Docker镜像过程中，遇到jdeps &amp;ndash;multi-release的坑。总结：这基本上使得多版本jar无法与模块一起使用。
  </description>
     </item>
     
     <item>
       <title>项目打包Docker镜像遇到默认ANSI-X3-4-1968编码的坑</title>
-      <link>https://example.org/posts/bug/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%E9%81%87%E5%88%B0%E9%BB%98%E8%AE%A4ansi-x3-4-1968%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</link>
+      <link>https://blog.innas.cn/posts/bug/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%E9%81%87%E5%88%B0%E9%BB%98%E8%AE%A4ansi-x3-4-1968%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</link>
       <pubDate>Mon, 16 Aug 2021 19:44:06 +0000</pubDate>
       
-      <guid>https://example.org/posts/bug/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%E9%81%87%E5%88%B0%E9%BB%98%E8%AE%A4ansi-x3-4-1968%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</guid>
+      <guid>https://blog.innas.cn/posts/bug/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%E9%81%87%E5%88%B0%E9%BB%98%E8%AE%A4ansi-x3-4-1968%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</guid>
       <description>笔者在一次做项目的Runtime环境，自制精简Jre Docker image过程中替换base镜像遇到到编码问题   Dockerfile文件  FROM eclipse-temurin:16.0.2_7-jdk as jre-build # Create a custom Java runtime RUN $JAVA_HOME/bin/jlink \ --add-modules java.base,java.compiler,java.logging,java.desktop,java.management,java.naming,java.net.http,java.rmi,java.scripting,java.security.jgss,java.sql,java.xml,jdk.jdi,jdk.unsupported \ --strip-debug \ --no-man-pages \ --no-header-files \ --compress=2 \ --output /javaruntime # Define your base image FROM debian:buster-slim USER root LABEL name=vertx-ddns LABEL url=https://github.com/zf1976/vertx-ddns ENV JAVA_HOME=/opt/java/openjdk ENV PATH &amp;#34;${JAVA_HOME}/bin:${PATH}&amp;#34; COPY --from=jre-build /javaruntime $JAVA_HOME #COPY --from=jre-build /usr/share/fonts /usr/share/fonts # Continue with your application deployment RUN mkdir /opt/app ARG JAR_FILE=build/libs/vertx-ddns-latest-all.</description>
     </item>
     
     <item>
       <title>Spring Gateway与服务间跨域的坑</title>
-      <link>https://example.org/posts/bug/spring-gateway%E4%B8%8E%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%B7%A8%E5%9F%9F%E7%9A%84%E5%9D%91/</link>
+      <link>https://blog.innas.cn/posts/bug/spring-gateway%E4%B8%8E%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%B7%A8%E5%9F%9F%E7%9A%84%E5%9D%91/</link>
       <pubDate>Thu, 25 Mar 2021 20:34:08 +0000</pubDate>
       
-      <guid>https://example.org/posts/bug/spring-gateway%E4%B8%8E%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%B7%A8%E5%9F%9F%E7%9A%84%E5%9D%91/</guid>
+      <guid>https://blog.innas.cn/posts/bug/spring-gateway%E4%B8%8E%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%B7%A8%E5%9F%9F%E7%9A%84%E5%9D%91/</guid>
       <description> gateway设置一次cors即可，微服务不需要再进行设置跨域，否则前端XMLHttpRequest上传文件显示报错，实际上后端已经接收到文件并且正常写入。  </description>
     </item>
     

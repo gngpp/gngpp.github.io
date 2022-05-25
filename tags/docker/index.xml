@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docker on gngpp</title>
-    <link>https://example.org/tags/docker/</link>
+    <link>https://blog.innas.cn/tags/docker/</link>
     <description>Recent content in Docker on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Feb 2022 21:04:22 +0000</lastBuildDate><atom:link href="https://example.org/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Feb 2022 21:04:22 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker创建网络错误提示</title>
-      <link>https://example.org/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</link>
+      <link>https://blog.innas.cn/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</link>
       <pubDate>Tue, 08 Feb 2022 21:04:22 +0000</pubDate>
       
-      <guid>https://example.org/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</guid>
+      <guid>https://blog.innas.cn/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</guid>
       <description> 笔者插的USB网口给Docker网心云用，由于网络测试原因多次删除和创建macvlan网络，遇到了以下坑，重启docker并不能解决。
 $ docker network create -d macvlan --subnet=192.168.3.0/24 --gateway=192.168.3.1 -o parent=enx00e04c680011 macvlan_net  ... Error response from daemon: network dm-04589cecfc96 is already using parent interface enx00e04c680011  解决参考，删除以下文件并重启docker
  $ rm /var/lib/docker/network/files/local-kv.db  # restart docker systemctl restart docker  这里还有个issue参考：https://github.com/moby/libnetwork/issues/1743
@@ -21,10 +21,10 @@ $ docker network create -d macvlan --subnet=192.168.3.0/24 --gateway=192.168.3.1
     
     <item>
       <title>PVE、Docker-Macvlan网心云多开方案</title>
-      <link>https://example.org/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</link>
+      <link>https://blog.innas.cn/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</link>
       <pubDate>Wed, 02 Feb 2022 17:54:00 +0000</pubDate>
       
-      <guid>https://example.org/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</guid>
+      <guid>https://blog.innas.cn/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</guid>
       <description>前言  最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。
 Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持host跟macvlan两种网络模式
  使用host网络模式（Windows、macOS不支持）   缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。
@@ -37,10 +37,10 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
     
     <item>
       <title>Docker快速入门</title>
-      <link>https://example.org/posts/docker/docker%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
+      <link>https://blog.innas.cn/posts/docker/docker%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</link>
       <pubDate>Sun, 01 Aug 2021 13:09:10 +0000</pubDate>
       
-      <guid>https://example.org/posts/docker/docker%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
+      <guid>https://blog.innas.cn/posts/docker/docker%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</guid>
       <description>docker笔记 docker的用处简单来说，就是将软件（mysql，redis）配置好后，将其打包成镜像，然后可以快速的部署的各个服务器，只需要配置一次即可。
 1. docker 安装配置docker brew cask install docker 安装完后，配置镜像源
 nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hub-mirror.c.163.com]
@@ -50,10 +50,10 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
     
     <item>
       <title>Docker搭建Gitlab</title>
-      <link>https://example.org/posts/ci-cd/docker%E6%90%AD%E5%BB%BAgitlab/</link>
+      <link>https://blog.innas.cn/posts/ci-cd/docker%E6%90%AD%E5%BB%BAgitlab/</link>
       <pubDate>Sat, 31 Jul 2021 11:47:39 +0000</pubDate>
       
-      <guid>https://example.org/posts/ci-cd/docker%E6%90%AD%E5%BB%BAgitlab/</guid>
+      <guid>https://blog.innas.cn/posts/ci-cd/docker%E6%90%AD%E5%BB%BAgitlab/</guid>
       <description>拉取镜像  $ docker pull gitlab/gitlab-ce:latest  运行Gitlab容器   使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
   写一个Shell文件启动配置  vim gitlab-start.sh sudo docker run --detach \  --hostname gitlab.example.com \  --publish 8844:443 --publish 7766:80 --publish 2222:22 \  --name gitlab \  --restart always \  --volume $HOME/gitlab/config:/etc/gitlab \  --volume $HOME/gitlab/logs:/var/log/gitlab \  --volume $HOME/gitlab/data:/var/opt/gitlab \  gitlab/gitlab-ce:latest  其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
  $ sh gitlab-start.</description>
@@ -61,29 +61,29 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
     
     <item>
       <title>Docker 安装配置Spring Cloud 微服务开箱即用</title>
-      <link>https://example.org/posts/docker/docker%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEspringcloud%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8/</link>
+      <link>https://blog.innas.cn/posts/docker/docker%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEspringcloud%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8/</link>
       <pubDate>Thu, 03 Jun 2021 21:32:31 +0000</pubDate>
       
-      <guid>https://example.org/posts/docker/docker%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEspringcloud%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8/</guid>
+      <guid>https://blog.innas.cn/posts/docker/docker%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEspringcloud%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8/</guid>
       <description>Nacos  拉下镜像  docker pull nacos/nacos-server  启动  docker run -d -p 8848:8848 --env MODE=standalone --name nacos --restart=always nacos/nacos-server Sentinel  拉下镜像  docker pull bladex/sentinel-dashboard  启动  docker run --name sentinel --restart=always -d -p 8858:8858 -d bladex/sentinel-dashboard </description>
     </item>
     
     <item>
       <title>Docker 国内镜像源</title>
-      <link>https://example.org/posts/docker/docker-%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90-docker%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</link>
+      <link>https://blog.innas.cn/posts/docker/docker-%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90-docker%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</link>
       <pubDate>Mon, 05 Apr 2021 23:14:11 +0000</pubDate>
       
-      <guid>https://example.org/posts/docker/docker-%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90-docker%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</guid>
+      <guid>https://blog.innas.cn/posts/docker/docker-%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90-docker%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</guid>
       <description> 网易 http://hub-mirror.c.163.com Docker中国区官方镜像 https://registry.docker-cn.com 中国科技大学 https://docker.mirrors.ustc.edu.cn 阿里云容器 服务 https://cr.console.aliyun.com/ 首页点击“创建我的容器镜像” 得到一个专属的镜像加速地址，类似于“https://1234abcd.mirror.aliyuncs.com”
  </description>
     </item>
     
     <item>
       <title>Docker配置Postgres MySQL Redis(随容器重启)</title>
-      <link>https://example.org/posts/docker/docker%E9%85%8D%E7%BD%AEpostgres-mysql-redis%E9%9A%8F%E5%AE%B9%E5%99%A8%E9%87%8D%E5%90%AF/</link>
+      <link>https://blog.innas.cn/posts/docker/docker%E9%85%8D%E7%BD%AEpostgres-mysql-redis%E9%9A%8F%E5%AE%B9%E5%99%A8%E9%87%8D%E5%90%AF/</link>
       <pubDate>Fri, 26 Mar 2021 15:01:15 +0000</pubDate>
       
-      <guid>https://example.org/posts/docker/docker%E9%85%8D%E7%BD%AEpostgres-mysql-redis%E9%9A%8F%E5%AE%B9%E5%99%A8%E9%87%8D%E5%90%AF/</guid>
+      <guid>https://blog.innas.cn/posts/docker/docker%E9%85%8D%E7%BD%AEpostgres-mysql-redis%E9%9A%8F%E5%AE%B9%E5%99%A8%E9%87%8D%E5%90%AF/</guid>
       <description>MySQL docker run -itd --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=itcast mysql Redis docker run -itd --name redis --restart=always -p 6379:6379 redis Postgres docker run --name postgres --restart=always -e POSTGRES_PASSWORD=itcast -p 5432:5432 -d postgres:latest </description>
     </item>
     

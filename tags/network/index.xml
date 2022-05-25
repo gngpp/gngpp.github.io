@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>network on gngpp</title>
-    <link>https://example.org/tags/network/</link>
+    <link>https://blog.innas.cn/tags/network/</link>
     <description>Recent content in network on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Feb 2022 21:04:22 +0000</lastBuildDate><atom:link href="https://example.org/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Feb 2022 21:04:22 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/network/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker创建网络错误提示</title>
-      <link>https://example.org/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</link>
+      <link>https://blog.innas.cn/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</link>
       <pubDate>Tue, 08 Feb 2022 21:04:22 +0000</pubDate>
       
-      <guid>https://example.org/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</guid>
+      <guid>https://blog.innas.cn/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</guid>
       <description> 笔者插的USB网口给Docker网心云用，由于网络测试原因多次删除和创建macvlan网络，遇到了以下坑，重启docker并不能解决。
 $ docker network create -d macvlan --subnet=192.168.3.0/24 --gateway=192.168.3.1 -o parent=enx00e04c680011 macvlan_net  ... Error response from daemon: network dm-04589cecfc96 is already using parent interface enx00e04c680011  解决参考，删除以下文件并重启docker
  $ rm /var/lib/docker/network/files/local-kv.db  # restart docker systemctl restart docker  这里还有个issue参考：https://github.com/moby/libnetwork/issues/1743

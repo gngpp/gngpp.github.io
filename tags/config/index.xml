@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Config on gngpp</title>
-    <link>https://example.org/tags/config/</link>
+    <link>https://blog.innas.cn/tags/config/</link>
     <description>Recent content in Config on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 26 Mar 2021 20:48:20 +0000</lastBuildDate><atom:link href="https://example.org/tags/config/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 26 Mar 2021 20:48:20 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/config/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>OpenJ9 优化参数以及IDEA 使用OpenJ9作为Runtime</title>
-      <link>https://example.org/posts/config/openj9-%E4%BC%98%E5%8C%96%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8Aidea-%E4%BD%BF%E7%94%A8openj9%E4%BD%9C%E4%B8%BAruntime/</link>
+      <link>https://blog.innas.cn/posts/config/openj9-%E4%BC%98%E5%8C%96%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8Aidea-%E4%BD%BF%E7%94%A8openj9%E4%BD%9C%E4%B8%BAruntime/</link>
       <pubDate>Fri, 26 Mar 2021 20:48:20 +0000</pubDate>
       
-      <guid>https://example.org/posts/config/openj9-%E4%BC%98%E5%8C%96%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8Aidea-%E4%BD%BF%E7%94%A8openj9%E4%BD%9C%E4%B8%BAruntime/</guid>
+      <guid>https://blog.innas.cn/posts/config/openj9-%E4%BC%98%E5%8C%96%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8Aidea-%E4%BD%BF%E7%94%A8openj9%E4%BD%9C%E4%B8%BAruntime/</guid>
       <description>优化后叠buff  优化参数  -XX:+UseShenandoahGC -Xshareclasses:name=(随便整个) -Xquickstart -Xscmx512M  IDEA使用OpenJ9作为Runtime   下载Choose Runtime插件
  切换OpenJ9作为Runtime
  注：openj9下载地址：JDK Download  </description>

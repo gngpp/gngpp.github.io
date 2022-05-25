@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+    <link rel="stylesheet" href="https://blog.innas.cn/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -20,7 +20,7 @@ protected Object doCreateBean(final String beanName, final RootBeanDefinition mb
 <meta property="og:description" content="前言 我们已经完成了创建 Instance 的分析，接下来就应该是自动装配，只有装配完 Bean 才能被使用，在这里可能会看到 spring是如何解决 循环依赖的
 protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) 	throws BeanCreationException {  	/**------------------------------------------------------------------------------------------------------------ * [DESC] 负责创建Bean * [1] 如果是singleton对象，现在缓存中移除 * [2] 如果之前没有创建过singleton，则调用 {@link #createBeanInstance} 创建 * [3] 将单例添加到factory中，预先暴露bean，这可以支持spring去解决 singleton循环依赖问题 * [4] 调用 {@link #populateBean} 填充依赖属性 * [5] 调用 {@link #initializeBean} 初始化bean * [6] 如果Bean定义了Dependent-on 那就修复 依赖 *------------------------------------------------------------------------------------------------------------*/  	// 创建出来的实例是需要包装起来，然后才能修复依赖 	BeanWrapper instanceWrapper = null;  	// Note [1] 单例对象需要从缓存中移除 	// 如果之前没有创建过，那接下来就创建实例 	if (mbd." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.org/posts/spring_analysis/beans/9.%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8Dinstance/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://blog.innas.cn/posts/spring_analysis/beans/9.%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8Dinstance/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
 <meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
 
@@ -29,7 +29,7 @@ protected Object doCreateBean(final String beanName, final RootBeanDefinition mb
   </head>
   <body>
     <header class="app-header">
-      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <a href="https://blog.innas.cn/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
       <h1>gngpp</h1>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">Home</a>
@@ -80,7 +80,7 @@ protected Object doCreateBean(final String beanName, final RootBeanDefinition mb
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://example.org/tags/spring-bean/">Spring-Bean</a>
+              <a class="tag" href="https://blog.innas.cn/tags/spring-bean/">Spring-Bean</a>
         </div>
       </div>
     </header>

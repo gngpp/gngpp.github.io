@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Spring-functionality on gngpp</title>
-    <link>https://example.org/categories/spring-functionality/</link>
+    <link>https://blog.innas.cn/categories/spring-functionality/</link>
     <description>Recent content in Spring-functionality on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/categories/spring-functionality/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/categories/spring-functionality/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>1.factory-method 和 factory-bean的实现原理</title>
-      <link>https://example.org/posts/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</link>
+      <link>https://blog.innas.cn/posts/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</guid>
+      <guid>https://blog.innas.cn/posts/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</guid>
       <description>##factory-method 和 factory-bean的实现
 在讨论实现原理之前，得先清楚怎么用，这两个东西.
 假设目前有两个类 ServiceFactory 和 Service 我们就可以指定 factory-method 和 factory-bean 给 Service
@@ -26,10 +26,10 @@ protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd
     
     <item>
       <title>2.注解@Qualifier和@Value的实现</title>
-      <link>https://example.org/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
+      <link>https://blog.innas.cn/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+      <guid>https://blog.innas.cn/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
       <description>前言 @Qualifier用于注解在属性、方法、参数，指定用于修复依赖的 bean
 QualifierAnnotationAutowireCandidateResolver用于支持 @Qualifier和 @Value注解
 这得分两种情形，否则会出意外的BUG出现 :
@@ -43,10 +43,10 @@ protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, Bea
     
     <item>
       <title>3.@Autowired注解实现的原理</title>
-      <link>https://example.org/posts/spring_analysis/beans/functionality/3.autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/</link>
+      <link>https://blog.innas.cn/posts/spring_analysis/beans/functionality/3.autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring_analysis/beans/functionality/3.autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/</guid>
+      <guid>https://blog.innas.cn/posts/spring_analysis/beans/functionality/3.autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/</guid>
       <description>前言 @Autowired 注解的实现原理
 第二小节说了，byType是根据 method 和methodParm 来装配的
 在这里 @Autowried 是根据 field来进行装配的

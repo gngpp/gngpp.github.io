@@ -2,62 +2,62 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Template on gngpp</title>
-    <link>https://example.org/categories/template/</link>
+    <link>https://blog.innas.cn/categories/template/</link>
     <description>Recent content in Template on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 11:38:18 +0000</lastBuildDate><atom:link href="https://example.org/categories/template/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 11:38:18 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/categories/template/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MyBatis-Plus Controller模版</title>
-      <link>https://example.org/posts/template/mybatis/controller/</link>
+      <link>https://blog.innas.cn/posts/template/mybatis/controller/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/posts/template/mybatis/controller/</guid>
+      <guid>https://blog.innas.cn/posts/template/mybatis/controller/</guid>
       <description>##导入宏定义 $!define  ##设置表后缀（宏定义） #setTableSuffix(&amp;#34;Controller&amp;#34;)  ##保存文件（宏定义） #save(&amp;#34;/controller&amp;#34;, &amp;#34;Controller.java&amp;#34;)  ##包路径（宏定义） #setPackageSuffix(&amp;#34;controller&amp;#34;)  ##定义服务名 #set($serviceName = $!tool.append($!tool.firstLowerCase($!tableInfo.name), &amp;#34;Service&amp;#34;))  ##定义实体对象名 #set($entityName = $!tool.firstLowerCase($!tableInfo.name))  import $!{tableInfo.savePackageName}.pojo.$!tableInfo.name; import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service; import org.springframework.web.bind.annotation.*;  import javax.annotation.Resource; import io.swagger.annotations.Api; import java.util.List;  ##表注释（宏定义） #tableComment(&amp;#34;表控制层&amp;#34;) @RestController @RequestMapping(&amp;#34;$!tool.firstLowerCase($!tableInfo.name)&amp;#34;) @Api(&amp;#34;视图$!{tableName}&amp;#34;) public class $!{tableName} {  /** * 服务对象 */  @Resource  private $!{tableInfo.name}Service $!{serviceName};   /** * 分页查询所有数据 * * @param page 分页对象 * @param $!</description>
     </item>
     
     <item>
       <title>MyBatis-Plus DAO模版</title>
-      <link>https://example.org/posts/template/mybatis/dao/</link>
+      <link>https://blog.innas.cn/posts/template/mybatis/dao/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/posts/template/mybatis/dao/</guid>
+      <guid>https://blog.innas.cn/posts/template/mybatis/dao/</guid>
       <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;Mapper&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/mapper&amp;#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.mapper#{end};  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import org.apache.ibatis.annotations.Param; import java.util.List;  /** * $!{tableInfo.comment}($!{tableInfo.name})表数据库访问层 * * @author $!author * @since $!time.currTime() */ public interface $!{tableName} {   /** * 通过ID查询单条数据 * * @param $!pk.name 主键 * @return 实例对象 */  $!{tableInfo.name} queryById($!pk.shortType $!pk.name);   /** * 查询所有实体数据 * @return 对象列表 */  List&amp;lt;$!</description>
     </item>
     
     <item>
       <title>MyBatis-Plus Entity模版</title>
-      <link>https://example.org/posts/template/mybatis/entity/</link>
+      <link>https://blog.innas.cn/posts/template/mybatis/entity/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/posts/template/mybatis/entity/</guid>
+      <guid>https://blog.innas.cn/posts/template/mybatis/entity/</guid>
       <description>###Entity  ##导入宏定义 $!define  ##保存文件（宏定义） #save(&amp;#34;/pojo&amp;#34;, &amp;#34;.java&amp;#34;)  ##包路径（宏定义） #setPackageSuffix(&amp;#34;pojo&amp;#34;)  ##自动导入包（全局变量） $!autoImport import java.io.Serializable;  ##表注释（宏定义） /** * ($!{tableInfo.name})表实体类 * * @author $!author * @since $!time.currTime() */ public class $!{tableInfo.name} implements Serializable{ #foreach($column in $tableInfo.fullColumn)  #if(${column.comment}) #end  private $!{tool.getClsNameByFullName($column.type)} $!{column.name}; #end #foreach($column in $tableInfo.fullColumn)  #getSetMethod($column) #end } </description>
     </item>
     
     <item>
       <title>MyBatis-Plus Mapper模版</title>
-      <link>https://example.org/posts/template/mybatis/mapper/</link>
+      <link>https://blog.innas.cn/posts/template/mybatis/mapper/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/posts/template/mybatis/mapper/</guid>
+      <guid>https://blog.innas.cn/posts/template/mybatis/mapper/</guid>
       <description>##引入mybatis支持 $!mybatisSupport  ##设置保存名称与保存位置 $!callback.setFileName($tool.append($!{tableInfo.name}, &amp;#34;Mapper.xml&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/mapper&amp;#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  &amp;lt;!DOCTYPE mapper PUBLIC &amp;#34;-//mybatis.org//DTD Mapper 3.0//EN&amp;#34; &amp;#34;http://mybatis.org/dtd/mybatis-3-mapper.dtd&amp;#34;&amp;gt; &amp;lt;mapper namespace=&amp;#34;$!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper&amp;#34;&amp;gt;    &amp;lt;resultMap type=&amp;#34;$!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}&amp;#34; id=&amp;#34;$!{tableInfo.name}Map&amp;#34;&amp;gt;  #foreach($column in $tableInfo.fullColumn)  &amp;lt;result property=&amp;#34;$!column.name&amp;#34; column=&amp;#34;$!column.obj.name&amp;#34; jdbcType=&amp;#34;$!column.ext.jdbcType&amp;#34;/&amp;gt; #end  &amp;lt;/resultMap&amp;gt;   &amp;lt;!--查询单个--&amp;gt;  &amp;lt;select id=&amp;#34;queryById&amp;#34; resultMap=&amp;#34;$!{tableInfo.name}Map&amp;#34;&amp;gt;  SELECT  #allSqlColumn()   FROM $!tableInfo.obj.name  WHERE $!pk.obj.name = #{$!pk.name}  &amp;lt;/select&amp;gt;   &amp;lt;!</description>
     </item>
     
     <item>
       <title>MyBatis-Plus ServiceImpl模版</title>
-      <link>https://example.org/posts/template/mybatis/serviceimpl/</link>
+      <link>https://blog.innas.cn/posts/template/mybatis/serviceimpl/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/posts/template/mybatis/serviceimpl/</guid>
+      <guid>https://blog.innas.cn/posts/template/mybatis/serviceimpl/</guid>
       <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;ServiceImpl&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/service/impl&amp;#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.#{end}service.impl;  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import $!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper; import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service; import org.springframework.stereotype.Service; import org.springframework.util.CollectionUtils; import javax.annotation.Resource; import java.util.List; import com.github.pagehelper.PageHelper; import com.github.pagehelper.PageInfo; import java.util.Collections;   /** * $!{tableInfo.comment}($!{tableInfo.name})表服务实现类 * * @author $!author * @since $!time.currTime() */ @Service(&amp;#34;$!tool.firstLowerCase($!{tableInfo.name})Service&amp;#34;) public class $!{tableName} implements $!{tableInfo.name}Service {  @Resource  private $!{tableInfo.name}Mapper $!tool.firstLowerCase($!{tableInfo.name})Mapper;   /** * 通过ID查询单条数据 * * @param $!</description>
     </item>
     
     <item>
       <title>MyBatis-Plus Service模版</title>
-      <link>https://example.org/posts/template/mybatis/service/</link>
+      <link>https://blog.innas.cn/posts/template/mybatis/service/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/posts/template/mybatis/service/</guid>
+      <guid>https://blog.innas.cn/posts/template/mybatis/service/</guid>
       <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;Service&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/service&amp;#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}#{end}.service;  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import java.util.List; import com.github.pagehelper.PageHelper; import com.github.pagehelper.PageInfo;  /** * $!{tableInfo.comment}($!{tableInfo.name})表服务接口 * * @author $!author * @since $!time.currTime() */ public interface $!{tableName} {   /** * 通过ID查询单条数据 * * @param $!pk.name 主键 * @return 实例对象 */  $!{tableInfo.name} queryById($!pk.shortType $!pk.name);   /** * 新增数据 * * @param $!</description>
     </item>
     

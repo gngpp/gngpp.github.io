@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gradle on gngpp</title>
-    <link>https://example.org/tags/gradle/</link>
+    <link>https://blog.innas.cn/tags/gradle/</link>
     <description>Recent content in Gradle on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 05 Nov 2021 18:56:17 +0000</lastBuildDate><atom:link href="https://example.org/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 05 Nov 2021 18:56:17 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Gradle Dependencies Cache CI/CD场景</title>
-      <link>https://example.org/posts/ci-cd/gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</link>
+      <link>https://blog.innas.cn/posts/ci-cd/gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</link>
       <pubDate>Fri, 05 Nov 2021 18:56:17 +0000</pubDate>
       
-      <guid>https://example.org/posts/ci-cd/gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid>
+      <guid>https://blog.innas.cn/posts/ci-cd/gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid>
       <description>Gradle是当下最流行的构建工具，下面讲CI/CD场景  Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
   但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &amp;gt; 本地maven仓库 &amp;gt; 远程仓库（优先级从左到右）   每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
  CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层）  // build.gradle task cacheDependencies {  setDescription &amp;#34;Resolves all projects dependencies from the repository.&amp;#34;  setGroup &amp;#34;Build Server&amp;#34;   doLast {  rootProject.allprojects { project -&amp;gt;  println &amp;#34;&amp;gt;&amp;gt; &amp;#34; + project  Set&amp;lt;Configuration&amp;gt; configurations =  project.buildscript.configurations +  project.configurations  configurations  .findAll { it.canBeResolved }  .</description>
@@ -20,10 +20,10 @@
     
     <item>
       <title>Gradle阿里云镜像</title>
-      <link>https://example.org/posts/config/gradle%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F/</link>
+      <link>https://blog.innas.cn/posts/config/gradle%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F/</link>
       <pubDate>Thu, 26 Mar 2020 10:41:32 +0000</pubDate>
       
-      <guid>https://example.org/posts/config/gradle%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F/</guid>
+      <guid>https://blog.innas.cn/posts/config/gradle%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F/</guid>
       <description>build.gradle repositories { maven{ url&amp;#39;http://maven.aliyun.com/nexus/content/groups/public/&amp;#39;} } </description>
     </item>
     

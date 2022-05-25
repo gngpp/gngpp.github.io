@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+    <link rel="stylesheet" href="https://blog.innas.cn/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -18,7 +18,7 @@
     <meta property="og:title" content="MyBatis-Plus DAO模版" />
 <meta property="og:description" content="##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &#34;Mapper&#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &#34;.java&#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &#34;/mapper&#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.mapper#{end};  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import org.apache.ibatis.annotations.Param; import java.util.List;  /** * $!{tableInfo.comment}($!{tableInfo.name})表数据库访问层 * * @author $!author * @since $!time.currTime() */ public interface $!{tableName} {   /** * 通过ID查询单条数据 * * @param $!pk.name 主键 * @return 实例对象 */  $!{tableInfo.name} queryById($!pk.shortType $!pk.name);   /** * 查询所有实体数据 * @return 对象列表 */  List&lt;$!" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.org/posts/template/mybatis/dao/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://blog.innas.cn/posts/template/mybatis/dao/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:38:18+00:00" />
 <meta property="article:modified_time" content="2021-08-02T11:38:18+00:00" />
 
@@ -27,7 +27,7 @@
   </head>
   <body>
     <header class="app-header">
-      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <a href="https://blog.innas.cn/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
       <h1>gngpp</h1>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">Home</a>
@@ -78,7 +78,7 @@
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://example.org/tags/easycode/">EasyCode</a>
+              <a class="tag" href="https://blog.innas.cn/tags/easycode/">EasyCode</a>
         </div>
       </div>
     </header>

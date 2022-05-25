@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nginx on gngpp</title>
-    <link>https://example.org/tags/nginx/</link>
+    <link>https://blog.innas.cn/tags/nginx/</link>
     <description>Recent content in Nginx on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx在Docker中自动反向代理</title>
-      <link>https://example.org/posts/nginx/nginx%E5%9C%A8docker%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</link>
+      <link>https://blog.innas.cn/posts/nginx/nginx%E5%9C%A8docker%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/nginx/nginx%E5%9C%A8docker%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</guid>
+      <guid>https://blog.innas.cn/posts/nginx/nginx%E5%9C%A8docker%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</guid>
       <description>nginx在docker中自动反向代理  http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/
  一个反向代理服务器通常在其它服务器的前面，用以提供额外web服务器自身不能提供的功能。比如说，一个反向代理服务器可以提供SSL终端、负载均衡、路由请求、缓存、压缩或A/B测试。当我们运行web服务在docker容器中时，nginx可以运行在容器的前面，这对于简单部署来说很有用。
 为什么对docker使用反向代理 docker容器随机分配IP和ports，其生成很多来自于客户端的复杂地址。默认的，ips和ports是本地私有的且不能被外部访问，除非它们绑定了host。
@@ -21,29 +21,29 @@
     
     <item>
       <title>Nginx的使用</title>
-      <link>https://example.org/posts/nginx/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <link>https://blog.innas.cn/posts/nginx/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/nginx/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://blog.innas.cn/posts/nginx/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
       <description>nginx 的使用 1. 停止运行 &amp;#39;方法1: 使用 -s 发送指令 -s means signal 记得带上你的配置，否则它就会从默认配置中读取pid&amp;#39; sudo nginx -s stop -c /etc/nginx/nginx.conf  &amp;#39;方法2: 使用系统命令，nginx会在运行的时候创建一个pid文件，文件里面有nginx的pid&amp;#39; &amp;#39;后面这个路径可以修改的，讲配置文件的时候会讲&amp;#39; sudo kill -QUIT $( cat /usr/local/nginx/logs/nginx.pid ) &amp;#39;下面这个是我常用的&amp;#39; sudo kill -QUIT $( cat /etc/nginx/logs/nginx.pid) 对于方法2 还可以使用一些别的参数（好像没什么用）:joy:
    TERM, INT 快速关闭     QUIT Graceful shutdown   KILL Halts a stubborn process   HUP 优雅的关闭并使用新的配置文件去重新启动nginx   USR1 Reopen the log files   USR2 立马升级可执行文件   WINCH 完美的结束进程    2.</description>
     </item>
     
     <item>
       <title>Nginx的安装</title>
-      <link>https://example.org/posts/nginx/nginx%E5%AE%89%E8%A3%85/</link>
+      <link>https://blog.innas.cn/posts/nginx/nginx%E5%AE%89%E8%A3%85/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/nginx/nginx%E5%AE%89%E8%A3%85/</guid>
+      <guid>https://blog.innas.cn/posts/nginx/nginx%E5%AE%89%E8%A3%85/</guid>
       <description>nginx的安装 1. 使用brew 安装 brew install nginx 2. 命令参数    -?, -h Print help.     -v Print version.   -V 打印NGINX版本、编译版本和配置参数   -t 不会运行NGINX,只会测试配置文件. NGINX检查配置文件的指令正确性，并且尝试去尝试打开在配置中被关联的文件.   -q 在测试配置的时候抑制非错误信息   -s signal Send signal to a master process: stop, quit, reopen, reload. (version &amp;gt;= 0.7.53)   -p prefix 设置路径前缀 (default:/usr/local/nginx/)   -c filename Specify which configuration file NGINX should use instead of the default.</description>
     </item>
     
     <item>
       <title>配置Nginx反向代理服务器</title>
-      <link>https://example.org/posts/nginx/nginx%E9%85%8D%E7%BD%AE/</link>
+      <link>https://blog.innas.cn/posts/nginx/nginx%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/nginx/nginx%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://blog.innas.cn/posts/nginx/nginx%E9%85%8D%E7%BD%AE/</guid>
       <description>配置nginx反向代理服务器 直接在 /etc/nxing/nginx.conf 中配置 http { # 反向代理服务器 server{ # 配置代理服务器 listen	80; server_name http://127.0.0.1; access_log	logs/server1.log main; # 目标真实服务器 localtion / { proxy_pass	http://127.0.0.1:8080; } } } 从上面的配置，我们就可以完成将访问 http://127.0.0.1：80的请求转发给 http://127.0.0.1:8080
 我们也可以配置多台真实服务器，也就是所谓的集群
 http {  # 反向代理服务器 	server{ 	# 配置代理服务器 	listen	80; 	server_name http://127.0.0.1; 	access_log	logs/server1.log main; 		# 目标真实服务器 	localtion / { 	# 这里采用集群方式 	proxy_pass	http://tomcats; 	} 	} 	# tomcats 集群 	upstream tomcats { 	server 127.</description>

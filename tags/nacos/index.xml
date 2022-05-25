@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nacos on gngpp</title>
-    <link>https://example.org/tags/nacos/</link>
+    <link>https://blog.innas.cn/tags/nacos/</link>
     <description>Recent content in Nacos on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 Mar 2021 22:39:32 +0000</lastBuildDate><atom:link href="https://example.org/tags/nacos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 12 Mar 2021 22:39:32 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/nacos/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nacos安装</title>
-      <link>https://example.org/posts/docker/nacos%E5%AE%89%E8%A3%85-nacos%E5%AE%89%E8%A3%85/</link>
+      <link>https://blog.innas.cn/posts/docker/nacos%E5%AE%89%E8%A3%85-nacos%E5%AE%89%E8%A3%85/</link>
       <pubDate>Fri, 12 Mar 2021 22:39:32 +0000</pubDate>
       
-      <guid>https://example.org/posts/docker/nacos%E5%AE%89%E8%A3%85-nacos%E5%AE%89%E8%A3%85/</guid>
+      <guid>https://blog.innas.cn/posts/docker/nacos%E5%AE%89%E8%A3%85-nacos%E5%AE%89%E8%A3%85/</guid>
       <description>Nacos安装 服务（Service）是Nacos 世界的一等公民。Nacos支持几乎所有主流类型的“服务”的发现、配置和管理。
 1.Docker安装Nacos 拉取镜像
 docker pull nacos/nacos-server 启动容器并且添加映射

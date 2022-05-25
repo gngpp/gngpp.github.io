@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Macvlan on gngpp</title>
-    <link>https://example.org/tags/macvlan/</link>
+    <link>https://blog.innas.cn/tags/macvlan/</link>
     <description>Recent content in Macvlan on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Feb 2022 17:54:00 +0000</lastBuildDate><atom:link href="https://example.org/tags/macvlan/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Feb 2022 17:54:00 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/macvlan/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PVE、Docker-Macvlan网心云多开方案</title>
-      <link>https://example.org/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</link>
+      <link>https://blog.innas.cn/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</link>
       <pubDate>Wed, 02 Feb 2022 17:54:00 +0000</pubDate>
       
-      <guid>https://example.org/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</guid>
+      <guid>https://blog.innas.cn/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</guid>
       <description>前言  最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。
 Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持host跟macvlan两种网络模式
  使用host网络模式（Windows、macOS不支持）   缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。

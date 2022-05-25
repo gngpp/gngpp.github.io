@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>macOS on gngpp</title>
-    <link>https://example.org/tags/macos/</link>
+    <link>https://blog.innas.cn/tags/macos/</link>
     <description>Recent content in macOS on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 Apr 2022 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Apr 2022 11:39:34 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/macos/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>macOS关闭mds_stores进程</title>
-      <link>https://example.org/posts/mds_stores/</link>
+      <link>https://blog.innas.cn/posts/mds_stores/</link>
       <pubDate>Mon, 25 Apr 2022 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/mds_stores/</guid>
+      <guid>https://blog.innas.cn/posts/mds_stores/</guid>
       <description>终端运行 sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist </description>
     </item>
     

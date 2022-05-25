@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+    <link rel="stylesheet" href="https://blog.innas.cn/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -34,7 +34,7 @@ QualifierAnnotationAutowireCandidateResolver用于支持 @Qualifier和 @Value注
 下面看源码一目了然
 protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) { 	// Note 根据类型来自动装配 	// Note 那就必然涉及到类型的转换  	// [1] 先new 一个类型转转换器 	TypeConverter converter = getCustomTypeConverter(); 	if (converter == null) { 	// 如果没有就用Wrapper内置的类型转换，支持基础类型 	converter = bw; 	}  	// [2] 遍历属性和装配了 	Set&lt;String&gt; autowiredBeanNames = new LinkedHashSet&lt;&gt;(4);  	// NOTE 在这里排除一些不满足装配条件的属性 	// NOTE 使用 &lt;property name=&#34;impl1&#34; ref=&#34;BEAN1&#34;/&gt; ref属性引用的bean，这个是不会被装配的 	// NOTE CGLIB 定义的属性也不会被装配 	// NOTE 简单类型是不会被装配 	// TODO 之所以使用 ref是因为接触循环依赖？目前还不清楚 	String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw); 	for (String propertyName : propertyNames) { 	try {  	// Note 第一步肯定是获取属性的描述符 	PropertyDescriptor pd = bw." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.org/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://blog.innas.cn/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
 <meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
 
@@ -43,7 +43,7 @@ protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, Bea
   </head>
   <body>
     <header class="app-header">
-      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <a href="https://blog.innas.cn/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
       <h1>gngpp</h1>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">Home</a>
@@ -94,7 +94,7 @@ protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, Bea
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://example.org/tags/spring-bean/">Spring-Bean</a>
+              <a class="tag" href="https://blog.innas.cn/tags/spring-bean/">Spring-Bean</a>
         </div>
       </div>
     </header>

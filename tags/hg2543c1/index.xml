@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>HG2543C1 on gngpp</title>
-    <link>https://example.org/tags/hg2543c1/</link>
+    <link>https://blog.innas.cn/tags/hg2543c1/</link>
     <description>Recent content in HG2543C1 on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Jan 2022 11:55:42 +0000</lastBuildDate><atom:link href="https://example.org/tags/hg2543c1/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jan 2022 11:55:42 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/hg2543c1/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>破解烽火HG2543C1光猫</title>
-      <link>https://example.org/posts/pve/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABhg2543c1%E5%85%89%E7%8C%AB/</link>
+      <link>https://blog.innas.cn/posts/pve/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABhg2543c1%E5%85%89%E7%8C%AB/</link>
       <pubDate>Wed, 26 Jan 2022 11:55:42 +0000</pubDate>
       
-      <guid>https://example.org/posts/pve/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABhg2543c1%E5%85%89%E7%8C%AB/</guid>
+      <guid>https://blog.innas.cn/posts/pve/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABhg2543c1%E5%85%89%E7%8C%AB/</guid>
       <description>前言  笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。 为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
  破解烽火HG2543C1光猫  打开光猫telnet功能   别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
   打开后会有telnet开启提示字样

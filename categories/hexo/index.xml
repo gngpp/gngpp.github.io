@@ -2,35 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hexo on gngpp</title>
-    <link>https://example.org/categories/hexo/</link>
+    <link>https://blog.innas.cn/categories/hexo/</link>
     <description>Recent content in Hexo on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 21:07:01 +0000</lastBuildDate><atom:link href="https://example.org/categories/hexo/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 21:07:01 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/categories/hexo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>解决Hexo博客新版本Next主题不支持auto_excerpt配置问题</title>
-      <link>https://example.org/posts/hexo/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E6%96%B0%E7%89%88%E6%9C%ACnext%E4%B8%BB%E9%A2%98%E4%B8%8D%E6%94%AF%E6%8C%81auto-excerpt%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</link>
+      <link>https://blog.innas.cn/posts/hexo/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E6%96%B0%E7%89%88%E6%9C%ACnext%E4%B8%BB%E9%A2%98%E4%B8%8D%E6%94%AF%E6%8C%81auto-excerpt%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</link>
       <pubDate>Mon, 02 Aug 2021 21:07:01 +0000</pubDate>
       
-      <guid>https://example.org/posts/hexo/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E6%96%B0%E7%89%88%E6%9C%ACnext%E4%B8%BB%E9%A2%98%E4%B8%8D%E6%94%AF%E6%8C%81auto-excerpt%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</guid>
+      <guid>https://blog.innas.cn/posts/hexo/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E6%96%B0%E7%89%88%E6%9C%ACnext%E4%B8%BB%E9%A2%98%E4%B8%8D%E6%94%AF%E6%8C%81auto-excerpt%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</guid>
       <description> 使用npm安装hexo-excerpt  npm install hexo-excerpt --save  在站点配置文件中添加  excerpt: depth: 5 excerpt_excludes: [] more_excludes: [] hideWholePostExcerpts: true </description>
     </item>
     
     <item>
       <title>Hexo主题nexT显示错误解决</title>
-      <link>https://example.org/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</link>
+      <link>https://blog.innas.cn/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</link>
       <pubDate>Mon, 02 Aug 2021 14:53:56 +0000</pubDate>
       
-      <guid>https://example.org/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</guid>
+      <guid>https://blog.innas.cn/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</guid>
       <description> 原因是hexo在5.0之后把swig给删除了需要自己手动安装  npm i hexo-renderer-swig </description>
     </item>
     
     <item>
       <title>Linux后台运行hexo</title>
-      <link>https://example.org/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</link>
+      <link>https://blog.innas.cn/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</link>
       <pubDate>Mon, 02 Aug 2021 12:44:38 +0000</pubDate>
       
-      <guid>https://example.org/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</guid>
+      <guid>https://blog.innas.cn/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</guid>
       <description> hexo是一个非常高效的博客，但由于其设计特点，目的是为了转换为静态页面， 因此不必要一直在后台运行，但是我想随时随地写博客同步到github， 使用hexo admin编辑器，这就需要hexo一直在后台运行，于是在网上找到了pm2托管的方式。
   安装pm2  npm install -g pm2  在博客根目录创建一个js脚本  $ vim hexo_run.js // js脚本文件 const { exec } = require(&amp;#39;child_process&amp;#39;) exec(&amp;#39;hexo server -p &amp;lt;IP端口，不使用则使用默认4000端口&amp;gt;&amp;#39;,(error, stdout, stderr) =&amp;gt; { if(error){ console.log(&amp;#39;exec error: ${error}&amp;#39;) return } console.log(&amp;#39;stdout: ${stdout}&amp;#39;); console.log(&amp;#39;stderr: ${stderr}&amp;#39;); })  在博客根目录运行脚本  $ pm2 hexo_run.js </description>
     </item>

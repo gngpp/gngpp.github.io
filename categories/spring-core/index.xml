@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Spring-Core on gngpp</title>
-    <link>https://example.org/categories/spring-core/</link>
+    <link>https://blog.innas.cn/categories/spring-core/</link>
     <description>Recent content in Spring-Core on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/categories/spring-core/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/categories/spring-core/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>1.Spring类型转换器服务</title>
-      <link>https://example.org/posts/spring_analysis/core/1.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1/</link>
+      <link>https://blog.innas.cn/posts/spring_analysis/core/1.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring_analysis/core/1.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1/</guid>
+      <guid>https://blog.innas.cn/posts/spring_analysis/core/1.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1/</guid>
       <description>前言 sping对整个类型转换组件抽象成为service , 毕竟类型转换这些没什么神秘之处，我们只需要了解它的设计模式。老规矩，从test开始 package org.springframework.core.convert.converter#DefaultConversionServiceTests.java
 class DefaultConversionServiceTests {  	private final DefaultConversionService conversionService = new DefaultConversionService();  	@Test 	void stringToCharacter() { 	assertThat(conversionService.convert(&amp;#34;1&amp;#34;, Character.class)).isEqualTo(Character.valueOf(&amp;#39;1&amp;#39;)); 	} }   GenericConversionService
 因为DefaultConversionService是继承自GenericConversionService，并且后者才是真正的核心，所以只需要看后者即可。
@@ -21,10 +21,10 @@ public Object convert(@Nullable Object source, @Nullable TypeDescriptor sourceTy
     
     <item>
       <title>2.Spring转换器的管理</title>
-      <link>https://example.org/posts/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/</link>
+      <link>https://blog.innas.cn/posts/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/</guid>
+      <guid>https://blog.innas.cn/posts/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/</guid>
       <description>前言 因为分开每一个类理解是很难理解其设计，所以需要总结，分析各个类的义务，组合起来就是整个类型转换服务的功能. 先看一张结构图。
   ConvertiblePair 用于描述类型转换信息
 final class ConvertiblePair { 	private final Class&amp;lt;?&amp;gt; sourceType; 	private final Class&amp;lt;?&amp;gt; targetType; 	}   Converter 用于转换数据
@@ -34,20 +34,20 @@ private static class ConvertersForPair { 	// 存放同一类型的转换器 	pri
     
     <item>
       <title>3.Spring提供的转换器</title>
-      <link>https://example.org/posts/spring_analysis/core/3.sprint%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</link>
+      <link>https://blog.innas.cn/posts/spring_analysis/core/3.sprint%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring_analysis/core/3.sprint%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</guid>
+      <guid>https://blog.innas.cn/posts/spring_analysis/core/3.sprint%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</guid>
       <description>前言 GenericConversionService 的功能提供转换数据的服务, DefaultConversionService 是继承自前者的，它的责任就是注册一些基本的Converter, let me see～
 public static void addDefaultConverters(ConverterRegistry converterRegistry) {  addScalarConverters(converterRegistry);  addCollectionConverters(converterRegistry);  // ByteBuff -&amp;gt; byte[]  // byte[] -&amp;gt; ByteBuff  converterRegistry.addConverter(new ByteBufferConverter((ConversionService) converterRegistry));   // String -&amp;gt; TimeZone  converterRegistry.addConverter(new StringToTimeZoneConverter());   // ZoneId -&amp;gt; TimeZone  converterRegistry.addConverter(new ZoneIdToTimeZoneConverter());   // DateTime -&amp;gt; Calendar  converterRegistry.addConverter(new ZonedDateTimeToCalendarConverter());   // Object -&amp;gt; Object  converterRegistry.addConverter(new ObjectToObjectConverter());   // Id -&amp;gt; Entity  converterRegistry.</description>
     </item>
     
     <item>
       <title>4.进一步分析&#39;添加转换器</title>
-      <link>https://example.org/posts/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/</link>
+      <link>https://blog.innas.cn/posts/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/</guid>
+      <guid>https://blog.innas.cn/posts/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/</guid>
       <description>前言 本节将单个功能添加转换器拿出来再讨论
 public void addConverter(Converter&amp;lt;?, ?&amp;gt; converter) { 	// [1] 首先获取范形的类型 [NOTE] 这个工具方法其实也蛮常用的，有兴趣可以了解下 	ResolvableType[] typeInfo = getRequiredTypeInfo(converter.getClass(), Converter.class); 	if (typeInfo == null &amp;amp;&amp;amp; converter instanceof DecoratingProxy) { 	typeInfo = getRequiredTypeInfo(((DecoratingProxy) converter).getDecoratedClass(), Converter.class); 	} 	// 然后构造成 Adapter，继续跟 	addConverter(new ConverterAdapter(converter, typeInfo[0], typeInfo[1])); 	} 这里出现了一个 ConverterAdapter, 转换器适配器，来看下其功能是什么.
 /** * [DESC] Converter只负责对指定数据类型的转换，类型匹配的职责就用适配器来扩充 */ 	@SuppressWarnings(&amp;#34;unchecked&amp;#34;) 	private final class ConverterAdapter implements ConditionalGenericConverter { 	private final Converter&amp;lt;Object, Object&amp;gt; converter;  	private final ConvertiblePair typeInfo;  	private final ResolvableType targetType; 	@Override 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) { 	// [1] 先检查目标类型是否一致 	if (this.</description>
@@ -55,10 +55,10 @@ public void addConverter(Converter&amp;lt;?, ?&amp;gt; converter) { 	// [1] 首�
     
     <item>
       <title>5.Spring自定义转换器</title>
-      <link>https://example.org/posts/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</link>
+      <link>https://blog.innas.cn/posts/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</guid>
+      <guid>https://blog.innas.cn/posts/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</guid>
       <description>前言 若要实现自己的类型转换器，则需要注意一下几点.
  推荐继承 ConditionalGenericConverter 也可以继承 GenericConverter 如果转换发生异常，最好抛出 ConversionFailedException 异常 最好提供ConvertiblePair 类型信息，这样就会被缓存，而不会被加入到全局转换器，到时候再一一遍历.   首先弄两个 测试类型，一个source 一个 target
 class MySourceType { 	private String name; 	private int age;  	public String getName() { 	return name; 	}  	public void setName(String name) { 	this.name = name; 	}  	public int getAge() { 	return age; 	}  	public void setAge(int age) { 	this.</description>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>nexT on gngpp</title>
-    <link>https://example.org/tags/next/</link>
+    <link>https://blog.innas.cn/tags/next/</link>
     <description>Recent content in nexT on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 14:53:56 +0000</lastBuildDate><atom:link href="https://example.org/tags/next/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 14:53:56 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/next/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hexo主题nexT显示错误解决</title>
-      <link>https://example.org/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</link>
+      <link>https://blog.innas.cn/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</link>
       <pubDate>Mon, 02 Aug 2021 14:53:56 +0000</pubDate>
       
-      <guid>https://example.org/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</guid>
+      <guid>https://blog.innas.cn/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</guid>
       <description> 原因是hexo在5.0之后把swig给删除了需要自己手动安装  npm i hexo-renderer-swig </description>
     </item>
     

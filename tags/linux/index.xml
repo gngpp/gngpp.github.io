@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on gngpp</title>
-    <link>https://example.org/tags/linux/</link>
+    <link>https://blog.innas.cn/tags/linux/</link>
     <description>Recent content in Linux on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Mar 2022 00:38:29 +0000</lastBuildDate><atom:link href="https://example.org/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Mar 2022 00:38:29 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux发行版设置OpenWrt网易云音乐解锁参数</title>
-      <link>https://example.org/posts/config/linux%E8%AE%BE%E7%BD%AEopenwrt-%E7%BD%91%E6%98%93%E4%BA%91%E8%A7%A3%E9%94%81/</link>
+      <link>https://blog.innas.cn/posts/config/linux%E8%AE%BE%E7%BD%AEopenwrt-%E7%BD%91%E6%98%93%E4%BA%91%E8%A7%A3%E9%94%81/</link>
       <pubDate>Wed, 30 Mar 2022 00:38:29 +0000</pubDate>
       
-      <guid>https://example.org/posts/config/linux%E8%AE%BE%E7%BD%AEopenwrt-%E7%BD%91%E6%98%93%E4%BA%91%E8%A7%A3%E9%94%81/</guid>
+      <guid>https://blog.innas.cn/posts/config/linux%E8%AE%BE%E7%BD%AEopenwrt-%E7%BD%91%E6%98%93%E4%BA%91%E8%A7%A3%E9%94%81/</guid>
       <description> Linux 客户端 (1.2 版本以上需要自签证书 MITM，启动客户端需要增加 –ignore-certificate-errors 参数)
  sudo vi /usr/share/applications/netease-cloud-music.desktop  在Exec行末尾增加--ignore-certificate-errors参数
  </description>
@@ -20,10 +20,10 @@
     
     <item>
       <title>Linux后台运行hexo</title>
-      <link>https://example.org/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</link>
+      <link>https://blog.innas.cn/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</link>
       <pubDate>Mon, 02 Aug 2021 12:44:38 +0000</pubDate>
       
-      <guid>https://example.org/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</guid>
+      <guid>https://blog.innas.cn/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</guid>
       <description> hexo是一个非常高效的博客，但由于其设计特点，目的是为了转换为静态页面， 因此不必要一直在后台运行，但是我想随时随地写博客同步到github， 使用hexo admin编辑器，这就需要hexo一直在后台运行，于是在网上找到了pm2托管的方式。
   安装pm2  npm install -g pm2  在博客根目录创建一个js脚本  $ vim hexo_run.js // js脚本文件 const { exec } = require(&amp;#39;child_process&amp;#39;) exec(&amp;#39;hexo server -p &amp;lt;IP端口，不使用则使用默认4000端口&amp;gt;&amp;#39;,(error, stdout, stderr) =&amp;gt; { if(error){ console.log(&amp;#39;exec error: ${error}&amp;#39;) return } console.log(&amp;#39;stdout: ${stdout}&amp;#39;); console.log(&amp;#39;stderr: ${stderr}&amp;#39;); })  在博客根目录运行脚本  $ pm2 hexo_run.js </description>
     </item>

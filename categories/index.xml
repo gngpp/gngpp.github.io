@@ -2,188 +2,188 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on gngpp</title>
-    <link>https://example.org/categories/</link>
+    <link>https://blog.innas.cn/categories/</link>
     <description>Recent content in Categories on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 Apr 2022 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Apr 2022 11:39:34 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>macOS</title>
-      <link>https://example.org/categories/macos/</link>
+      <link>https://blog.innas.cn/categories/macos/</link>
       <pubDate>Mon, 25 Apr 2022 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/macos/</guid>
+      <guid>https://blog.innas.cn/categories/macos/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Config</title>
-      <link>https://example.org/categories/config/</link>
+      <link>https://blog.innas.cn/categories/config/</link>
       <pubDate>Wed, 30 Mar 2022 00:38:29 +0000</pubDate>
       
-      <guid>https://example.org/categories/config/</guid>
+      <guid>https://blog.innas.cn/categories/config/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PVE</title>
-      <link>https://example.org/categories/pve/</link>
+      <link>https://blog.innas.cn/categories/pve/</link>
       <pubDate>Tue, 15 Feb 2022 00:55:42 +0000</pubDate>
       
-      <guid>https://example.org/categories/pve/</guid>
+      <guid>https://blog.innas.cn/categories/pve/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker</title>
-      <link>https://example.org/categories/docker/</link>
+      <link>https://blog.innas.cn/categories/docker/</link>
       <pubDate>Tue, 08 Feb 2022 21:04:22 +0000</pubDate>
       
-      <guid>https://example.org/categories/docker/</guid>
+      <guid>https://blog.innas.cn/categories/docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>BUG</title>
-      <link>https://example.org/categories/bug/</link>
+      <link>https://blog.innas.cn/categories/bug/</link>
       <pubDate>Wed, 27 Oct 2021 18:32:47 +0000</pubDate>
       
-      <guid>https://example.org/categories/bug/</guid>
+      <guid>https://blog.innas.cn/categories/bug/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hexo</title>
-      <link>https://example.org/categories/hexo/</link>
+      <link>https://blog.innas.cn/categories/hexo/</link>
       <pubDate>Mon, 02 Aug 2021 21:07:01 +0000</pubDate>
       
-      <guid>https://example.org/categories/hexo/</guid>
+      <guid>https://blog.innas.cn/categories/hexo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Elasticsearch</title>
-      <link>https://example.org/categories/elasticsearch/</link>
+      <link>https://blog.innas.cn/categories/elasticsearch/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/elasticsearch/</guid>
+      <guid>https://blog.innas.cn/categories/elasticsearch/</guid>
       <description></description>
     </item>
     
     <item>
       <title>JDK</title>
-      <link>https://example.org/categories/jdk/</link>
+      <link>https://blog.innas.cn/categories/jdk/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/jdk/</guid>
+      <guid>https://blog.innas.cn/categories/jdk/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Nginx</title>
-      <link>https://example.org/categories/nginx/</link>
+      <link>https://blog.innas.cn/categories/nginx/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/nginx/</guid>
+      <guid>https://blog.innas.cn/categories/nginx/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spring Security</title>
-      <link>https://example.org/categories/spring-security/</link>
+      <link>https://blog.innas.cn/categories/spring-security/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/spring-security/</guid>
+      <guid>https://blog.innas.cn/categories/spring-security/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spring-Bean</title>
-      <link>https://example.org/categories/spring-bean/</link>
+      <link>https://blog.innas.cn/categories/spring-bean/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/spring-bean/</guid>
+      <guid>https://blog.innas.cn/categories/spring-bean/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spring-Core</title>
-      <link>https://example.org/categories/spring-core/</link>
+      <link>https://blog.innas.cn/categories/spring-core/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/spring-core/</guid>
+      <guid>https://blog.innas.cn/categories/spring-core/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spring-functionality</title>
-      <link>https://example.org/categories/spring-functionality/</link>
+      <link>https://blog.innas.cn/categories/spring-functionality/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/spring-functionality/</guid>
+      <guid>https://blog.innas.cn/categories/spring-functionality/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spring-Interview</title>
-      <link>https://example.org/categories/spring-interview/</link>
+      <link>https://blog.innas.cn/categories/spring-interview/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/spring-interview/</guid>
+      <guid>https://blog.innas.cn/categories/spring-interview/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Stream</title>
-      <link>https://example.org/categories/stream/</link>
+      <link>https://blog.innas.cn/categories/stream/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/categories/stream/</guid>
+      <guid>https://blog.innas.cn/categories/stream/</guid>
       <description></description>
     </item>
     
     <item>
       <title>skill</title>
-      <link>https://example.org/categories/skill/</link>
+      <link>https://blog.innas.cn/categories/skill/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/categories/skill/</guid>
+      <guid>https://blog.innas.cn/categories/skill/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Template</title>
-      <link>https://example.org/categories/template/</link>
+      <link>https://blog.innas.cn/categories/template/</link>
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
-      <guid>https://example.org/categories/template/</guid>
+      <guid>https://blog.innas.cn/categories/template/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spring Boot</title>
-      <link>https://example.org/categories/spring-boot/</link>
+      <link>https://blog.innas.cn/categories/spring-boot/</link>
       <pubDate>Mon, 02 Aug 2021 11:34:30 +0000</pubDate>
       
-      <guid>https://example.org/categories/spring-boot/</guid>
+      <guid>https://blog.innas.cn/categories/spring-boot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Vim</title>
-      <link>https://example.org/categories/vim/</link>
+      <link>https://blog.innas.cn/categories/vim/</link>
       <pubDate>Sat, 02 May 2020 19:26:50 +0000</pubDate>
       
-      <guid>https://example.org/categories/vim/</guid>
+      <guid>https://blog.innas.cn/categories/vim/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CI/CD</title>
-      <link>https://example.org/categories/ci/cd/</link>
+      <link>https://blog.innas.cn/categories/ci/cd/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.org/categories/ci/cd/</guid>
+      <guid>https://blog.innas.cn/categories/ci/cd/</guid>
       <description></description>
     </item>
     

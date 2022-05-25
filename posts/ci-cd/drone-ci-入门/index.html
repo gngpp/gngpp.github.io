@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+    <link rel="stylesheet" href="https://blog.innas.cn/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -20,7 +20,7 @@ services:  drone-server:  image: drone/drone:latest  ports:  - 3306:80  - 10043:
 <meta property="og:description" content="Drone CI 基本操作 1. Drone-Server Drone-server是整个CI的核心，drone.yml的解析以及与其它各个git平台的集成，还有UI的显示等功能. 其必须运行在docker环境下, 配置文件如下。
 services:  drone-server:  image: drone/drone:latest  ports:  - 3306:80  - 10043:443  volumes:  - /var/lib/drone:/var/lib/drone  restart: always  environment:  - DRONE_GITHUB_CLIENT_ID=  - DRONE_GITHUB_CLIENT_SECRET=  - DRONE_RPC_SECRET=a7ab0d75fe294718575953b164c12ddf  - DRONE_RPC_PROTO=http  - DRONE_SERVER_HOST=you host  - DRONE_SERVER_PROTO=http  - DRONE_SECRET=462e36f444bd7ba17d2372f2b391ba5f  - DRONE_LOGS_DEBUG=true  - DRONE_LOGS_TEXT=true  - DRONE_LOGS_PRETTY=true  - DRONE_LOGS_COLOR=true  - DRONE_LOGS_TRACE=true  - DRONE_RPC_DUMP_HTTP=true  - DRONE_RPC_DUMP_HTTP_BODY=true  - DRONE_UI_USERNAME=root  - DRONE_UI_PASSWORD=root  - DRONE_USER_CREATE=username:lyqingye,admin:true  - DRONE_OPEN=true 其中：" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.org/posts/ci-cd/drone-ci-%E5%85%A5%E9%97%A8/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://blog.innas.cn/posts/ci-cd/drone-ci-%E5%85%A5%E9%97%A8/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-05-02T19:07:06+00:00" />
 <meta property="article:modified_time" content="2020-05-02T19:07:06+00:00" />
 
@@ -29,7 +29,7 @@ services:  drone-server:  image: drone/drone:latest  ports:  - 3306:80  - 10043:
   </head>
   <body>
     <header class="app-header">
-      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <a href="https://blog.innas.cn/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
       <h1>gngpp</h1>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">Home</a>
@@ -80,7 +80,7 @@ services:  drone-server:  image: drone/drone:latest  ports:  - 3306:80  - 10043:
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://example.org/tags/drone-ci/">Drone-ci</a>
+              <a class="tag" href="https://blog.innas.cn/tags/drone-ci/">Drone-ci</a>
         </div>
       </div>
     </header>

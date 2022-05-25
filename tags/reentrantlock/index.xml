@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ReentrantLock on gngpp</title>
-    <link>https://example.org/tags/reentrantlock/</link>
+    <link>https://blog.innas.cn/tags/reentrantlock/</link>
     <description>Recent content in ReentrantLock on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/tags/reentrantlock/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/tags/reentrantlock/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ReentrantLock</title>
-      <link>https://example.org/posts/jdk/reentrantlock/</link>
+      <link>https://blog.innas.cn/posts/jdk/reentrantlock/</link>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
-      <guid>https://example.org/posts/jdk/reentrantlock/</guid>
+      <guid>https://blog.innas.cn/posts/jdk/reentrantlock/</guid>
       <description>前言 ReentrantLock作为 AQS的实现类之一，其是基于 CAS实现的锁，此锁为独占锁，并且用一个阻塞队列来阻塞前来拿锁的线程。队列为CLH 队列
 其使用两种策略，一种是非公平，一种是公平，默认是 非公平锁。在这里先讨论非公平锁
   先来看一下 用于阻塞线程的CLH 队列  看一下该节点的定义：
