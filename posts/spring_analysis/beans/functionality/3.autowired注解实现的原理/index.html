@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>3.@Autowired注解实现的原理 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="3.@Autowired注解实现的原理"/>
+<meta name="twitter:description" content="前言 @Autowired 注解的实现原理
+第二小节说了，byType是根据 method 和methodParm 来装配的
+在这里 @Autowried 是根据 field来进行装配的
+AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired  注解装配
+spring 也支持 JSR330 的 Inject 注解
+先看这个 processor 初始化部分
+@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&lt;?&gt; beanType, String beanName) {  // [1] 预处理，准备注解数据，这个在new instance 后调用  // 调用之后才是 填充bean依赖数据  InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);  metadata.checkConfigMembers(beanDefinition); } 继续跟进
+private InjectionMetadata findAutowiringMetadata(String beanName, Class&lt;?&gt; clazz, @Nullable PropertyValues pvs) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why?"/>
+
+    <meta property="og:title" content="3.@Autowired注解实现的原理" />
+<meta property="og:description" content="前言 @Autowired 注解的实现原理
+第二小节说了，byType是根据 method 和methodParm 来装配的
+在这里 @Autowried 是根据 field来进行装配的
+AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired  注解装配
+spring 也支持 JSR330 的 Inject 注解
+先看这个 processor 初始化部分
+@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&lt;?&gt; beanType, String beanName) {  // [1] 预处理，准备注解数据，这个在new instance 后调用  // 调用之后才是 填充bean依赖数据  InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);  metadata.checkConfigMembers(beanDefinition); } 继续跟进
+private InjectionMetadata findAutowiringMetadata(String beanName, Class&lt;?&gt; clazz, @Nullable PropertyValues pvs) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/spring_analysis/beans/functionality/3.autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">3.@Autowired注解实现的原理</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/spring-bean/">Spring-Bean</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h3 id="前言">前言</h3>
+<p><code>@Autowired</code> 注解的实现原理</p>
+<p>第二小节说了，<code>byType</code>是根据 <code>method</code> 和<code>methodParm</code> 来装配的</p>
+<p>在这里 <code>@Autowried </code>是根据 <code>field</code>来进行装配的</p>
+<p><code>AutowiredAnnotationBeanPostProcessor</code> 这个处理器来负责实现<code>@Autowired </code> 注解装配</p>
+<p><code>spring</code> 也支持 <code>JSR330</code> 的 <code>Inject</code> 注解</p>
+<p>先看这个 <code>processor</code> 初始化部分</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postProcessMergedBeanDefinition</span><span style="color:#f92672">(</span>RootBeanDefinition beanDefinition<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;?&gt;</span> beanType<span style="color:#f92672">,</span> String beanName<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// [1] 预处理，准备注解数据，这个在new instance 后调用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">// 调用之后才是 填充bean依赖数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   InjectionMetadata metadata <span style="color:#f92672">=</span> findAutowiringMetadata<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> beanType<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   metadata<span style="color:#f92672">.</span><span style="color:#a6e22e">checkConfigMembers</span><span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>继续跟进</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> InjectionMetadata <span style="color:#a6e22e">findAutowiringMetadata</span><span style="color:#f92672">(</span>String beanName<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;?&gt;</span> clazz<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> PropertyValues pvs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型  NOTE so why? i don&#39;t know
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 第一步从缓存中搜索，没有就调用 {@link #buildAutowiringMetadata(Class)} 来生成注解数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *-----------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Fall back to class name as cache key, for backwards compatibility with custom callers.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		String cacheKey <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">hasLength</span><span style="color:#f92672">(</span>beanName<span style="color:#f92672">)</span> <span style="color:#f92672">?</span> beanName <span style="color:#f92672">:</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Quick check on the concurrent map first, with minimal locking.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [1] 从缓存中查找
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		InjectionMetadata metadata <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">injectionMetadataCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>cacheKey<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>InjectionMetadata<span style="color:#f92672">.</span><span style="color:#a6e22e">needsRefresh</span><span style="color:#f92672">(</span>metadata<span style="color:#f92672">,</span> clazz<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">injectionMetadataCache</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				metadata <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">injectionMetadataCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>cacheKey<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>InjectionMetadata<span style="color:#f92672">.</span><span style="color:#a6e22e">needsRefresh</span><span style="color:#f92672">(</span>metadata<span style="color:#f92672">,</span> clazz<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>metadata <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						metadata<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">(</span>pvs<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 缓存找不到那就 build一个 Note step in
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					metadata <span style="color:#f92672">=</span> buildAutowiringMetadata<span style="color:#f92672">(</span>clazz<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">injectionMetadataCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>cacheKey<span style="color:#f92672">,</span> metadata<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> metadata<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p><code>InjectionMetadata</code> 这个是关键的注入数据，继续跟进这个数据的产生</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> InjectionMetadata <span style="color:#a6e22e">buildAutowiringMetadata</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> Class<span style="color:#f92672">&lt;?&gt;</span> clazz<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**-------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 生成注解数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 遍历类的 filed 和method 字段，或许注解数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * {@link AutoWried} 注解支持方法filed和method，前提是不支持 静态的属性和方法，如果是方法，只能放在构造函数或者setter方法上面
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * 并且方法一定要有参数，否则它装配什么。。。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * *------------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Note 确保是java bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>AnnotationUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isCandidateClass</span><span style="color:#f92672">(</span>clazz<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">autowiredAnnotationTypes</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> InjectionMetadata<span style="color:#f92672">.</span><span style="color:#a6e22e">EMPTY</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		List<span style="color:#f92672">&lt;</span>InjectionMetadata<span style="color:#f92672">.</span><span style="color:#a6e22e">InjectedElement</span><span style="color:#f92672">&gt;</span> elements <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>		Class<span style="color:#f92672">&lt;?&gt;</span> targetClass <span style="color:#f92672">=</span> clazz<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">do</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">final</span> List<span style="color:#f92672">&lt;</span>InjectionMetadata<span style="color:#f92672">.</span><span style="color:#a6e22e">InjectedElement</span><span style="color:#f92672">&gt;</span> currElements <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// TODO 因为@AutoWried 注解支持 filed 和 method
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// TODO 一般是 setter / constructor 方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 利用java反射遍历 属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			ReflectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">doWithLocalFields</span><span style="color:#f92672">(</span>targetClass<span style="color:#f92672">,</span> field <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 读取注解
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				MergedAnnotation<span style="color:#f92672">&lt;?&gt;</span> ann <span style="color:#f92672">=</span> findAutowiredAnnotation<span style="color:#f92672">(</span>field<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ann <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note 不支持static 的属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Modifier<span style="color:#f92672">.</span><span style="color:#a6e22e">isStatic</span><span style="color:#f92672">(</span>field<span style="color:#f92672">.</span><span style="color:#a6e22e">getModifiers</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isInfoEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Autowired annotation is not supported on static fields: &#34;</span> <span style="color:#f92672">+</span> field<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// is required
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">boolean</span> required <span style="color:#f92672">=</span> determineRequiredStatus<span style="color:#f92672">(</span>ann<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note 保存注解数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					currElements<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AutowiredFieldElement<span style="color:#f92672">(</span>field<span style="color:#f92672">,</span> required<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 利用java反射遍历 方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			ReflectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">doWithLocalMethods</span><span style="color:#f92672">(</span>targetClass<span style="color:#f92672">,</span> method <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				Method bridgedMethod <span style="color:#f92672">=</span> BridgeMethodResolver<span style="color:#f92672">.</span><span style="color:#a6e22e">findBridgedMethod</span><span style="color:#f92672">(</span>method<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>BridgeMethodResolver<span style="color:#f92672">.</span><span style="color:#a6e22e">isVisibilityBridgeMethodPair</span><span style="color:#f92672">(</span>method<span style="color:#f92672">,</span> bridgedMethod<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Note 从方法上获取注解
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				MergedAnnotation<span style="color:#f92672">&lt;?&gt;</span> ann <span style="color:#f92672">=</span> findAutowiredAnnotation<span style="color:#f92672">(</span>bridgedMethod<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ann <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>ClassUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getMostSpecificMethod</span><span style="color:#f92672">(</span>method<span style="color:#f92672">,</span> clazz<span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note 不支持 static 方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Modifier<span style="color:#f92672">.</span><span style="color:#a6e22e">isStatic</span><span style="color:#f92672">(</span>method<span style="color:#f92672">.</span><span style="color:#a6e22e">getModifiers</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isInfoEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Autowired annotation is not supported on static methods: &#34;</span> <span style="color:#f92672">+</span> method<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note 不支持无参数的方法，所以说只能用在 setter 和 contructor 方法上
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>method<span style="color:#f92672">.</span><span style="color:#a6e22e">getParameterCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isInfoEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Autowired annotation should only be used on methods with parameters: &#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>									method<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">boolean</span> required <span style="color:#f92672">=</span> determineRequiredStatus<span style="color:#f92672">(</span>ann<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note 获取方法的参数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					PropertyDescriptor pd <span style="color:#f92672">=</span> BeanUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">findPropertyForMethod</span><span style="color:#f92672">(</span>bridgedMethod<span style="color:#f92672">,</span> clazz<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note 保存注解数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					currElements<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AutowiredMethodElement<span style="color:#f92672">(</span>method<span style="color:#f92672">,</span> required<span style="color:#f92672">,</span> pd<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			elements<span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> currElements<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			targetClass <span style="color:#f92672">=</span> targetClass<span style="color:#f92672">.</span><span style="color:#a6e22e">getSuperclass</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>targetClass <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> targetClass <span style="color:#f92672">!=</span> Object<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> InjectionMetadata<span style="color:#f92672">.</span><span style="color:#a6e22e">forElements</span><span style="color:#f92672">(</span>elements<span style="color:#f92672">,</span> clazz<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这个方法用于生成注解配置数据，其主要从两个点入手：</p>
+<ul>
+<li>属性</li>
+<li>方法</li>
+</ul>
+<p>其从上面两个点进行注解读取，如果为 <code>@Autowried</code> 或 <code>@Inject</code> 注解则将其方法或者字段信息进行保存</p>
+<p>上述就是初始化过程。</p>
+<hr>
+<p>我们继续看处理部分</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> PropertyValues <span style="color:#a6e22e">postProcessProperties</span><span style="color:#f92672">(</span>PropertyValues pvs<span style="color:#f92672">,</span> Object bean<span style="color:#f92672">,</span> String beanName<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [1] 先拿到注册数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		InjectionMetadata metadata <span style="color:#f92672">=</span> findAutowiringMetadata<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> bean<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(),</span> pvs<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// [2] 根据注解数据然后注入依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			metadata<span style="color:#f92672">.</span><span style="color:#a6e22e">inject</span><span style="color:#f92672">(</span>bean<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> pvs<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BeanCreationException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> ex<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Injection of autowired dependencies failed&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> pvs<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>继续跟进</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">inject</span><span style="color:#f92672">(</span>Object bean<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> String beanName<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> PropertyValues pvs<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">/**--------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * [DESC] 根据注解数据，注入依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * [1] 尝试从缓存中获取已经缓存了的属性数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * [2] 如果缓存没有，那就根据依赖的field信息进行依赖修复 {@link org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#resolveDependency}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * [3] 解析完毕后，缓存数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * [4] 调用field 的setter方法设置属性值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 *--------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>			Field field <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Field<span style="color:#f92672">)</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">member</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			Object value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// [1] 尝试从缓存中获取已经缓存的修复了的属性值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cached</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				value <span style="color:#f92672">=</span> resolvedCachedArgument<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cachedFieldValue</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// [2] 依赖描述符, 可以看出它是根据字段来进行依赖修复的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				DependencyDescriptor desc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DependencyDescriptor<span style="color:#f92672">(</span>field<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">required</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				desc<span style="color:#f92672">.</span><span style="color:#a6e22e">setContainingClass</span><span style="color:#f92672">(</span>bean<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>				Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> autowiredBeanNames <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashSet<span style="color:#f92672">&lt;&gt;(</span>1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">state</span><span style="color:#f92672">(</span>beanFactory <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;No BeanFactory available&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				TypeConverter typeConverter <span style="color:#f92672">=</span> beanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getTypeConverter</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note [3] 直接调用 factory 进行依赖修复，这个和getBean 的修复是一样的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">// Note 如果用了 @Qualifier(&#34;personA&#34;) 注解 那就加载指定名称的bean，很正常。..
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					value <span style="color:#f92672">=</span> beanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveDependency</span><span style="color:#f92672">(</span>desc<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> autowiredBeanNames<span style="color:#f92672">,</span> typeConverter<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BeansException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> UnsatisfiedDependencyException<span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> InjectionPoint<span style="color:#f92672">(</span>field<span style="color:#f92672">),</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// [4] 缓存数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cached</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">required</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cachedFieldValue</span> <span style="color:#f92672">=</span> desc<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>							registerDependentBeans<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> autowiredBeanNames<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>autowiredBeanNames<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>								String autowiredBeanName <span style="color:#f92672">=</span> autowiredBeanNames<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">().</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>								<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>beanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">containsBean</span><span style="color:#f92672">(</span>autowiredBeanName<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>										beanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">isTypeMatch</span><span style="color:#f92672">(</span>autowiredBeanName<span style="color:#f92672">,</span> field<span style="color:#f92672">.</span><span style="color:#a6e22e">getType</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>									<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cachedFieldValue</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ShortcutDependencyDescriptor<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>											desc<span style="color:#f92672">,</span> autowiredBeanName<span style="color:#f92672">,</span> field<span style="color:#f92672">.</span><span style="color:#a6e22e">getType</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>								<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cachedFieldValue</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cached</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// [5] 最后调用 setter 方法将 依赖属性值 丢进去
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				ReflectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">makeAccessible</span><span style="color:#f92672">(</span>field<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				field<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>bean<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这个是属性的自动装配，意思就是 <code>@Autowried</code> 注解应用在属性上的处理方法，最终还是调用 <code>resolveDependency </code> 这个方法解析过了，在这就不再赘述，因为这个方法和用 <code>xml </code>配置修复依赖是一样的，这样就轻松的扩展了。使用注解装配。。看起来还蛮方便的</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

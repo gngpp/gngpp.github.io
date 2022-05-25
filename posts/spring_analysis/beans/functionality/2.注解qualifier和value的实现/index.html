@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>2.注解@Qualifier和@Value的实现 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="2.注解@Qualifier和@Value的实现"/>
+<meta name="twitter:description" content="前言 @Qualifier用于注解在属性、方法、参数，指定用于修复依赖的 bean
+QualifierAnnotationAutowireCandidateResolver用于支持 @Qualifier和 @Value注解
+这得分两种情形，否则会出意外的BUG出现 :
+ 以byType 方式装配 使用注解 Autowried 装配  当以byType 方式装配的时候，@Qualifier 要写在setter 方法或者参数上
+当以@Autowried注解装配，则写在 属性 上
+因为byType 是以 setter 方法进行依赖修复的
+@Autowried 是以属性的方式进行依赖修复
+下面看源码一目了然
+protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) { 	// Note 根据类型来自动装配 	// Note 那就必然涉及到类型的转换  	// [1] 先new 一个类型转转换器 	TypeConverter converter = getCustomTypeConverter(); 	if (converter == null) { 	// 如果没有就用Wrapper内置的类型转换，支持基础类型 	converter = bw; 	}  	// [2] 遍历属性和装配了 	Set&lt;String&gt; autowiredBeanNames = new LinkedHashSet&lt;&gt;(4);  	// NOTE 在这里排除一些不满足装配条件的属性 	// NOTE 使用 &lt;property name=&#34;impl1&#34; ref=&#34;BEAN1&#34;/&gt; ref属性引用的bean，这个是不会被装配的 	// NOTE CGLIB 定义的属性也不会被装配 	// NOTE 简单类型是不会被装配 	// TODO 之所以使用 ref是因为接触循环依赖？目前还不清楚 	String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw); 	for (String propertyName : propertyNames) { 	try {  	// Note 第一步肯定是获取属性的描述符 	PropertyDescriptor pd = bw."/>
+
+    <meta property="og:title" content="2.注解@Qualifier和@Value的实现" />
+<meta property="og:description" content="前言 @Qualifier用于注解在属性、方法、参数，指定用于修复依赖的 bean
+QualifierAnnotationAutowireCandidateResolver用于支持 @Qualifier和 @Value注解
+这得分两种情形，否则会出意外的BUG出现 :
+ 以byType 方式装配 使用注解 Autowried 装配  当以byType 方式装配的时候，@Qualifier 要写在setter 方法或者参数上
+当以@Autowried注解装配，则写在 属性 上
+因为byType 是以 setter 方法进行依赖修复的
+@Autowried 是以属性的方式进行依赖修复
+下面看源码一目了然
+protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) { 	// Note 根据类型来自动装配 	// Note 那就必然涉及到类型的转换  	// [1] 先new 一个类型转转换器 	TypeConverter converter = getCustomTypeConverter(); 	if (converter == null) { 	// 如果没有就用Wrapper内置的类型转换，支持基础类型 	converter = bw; 	}  	// [2] 遍历属性和装配了 	Set&lt;String&gt; autowiredBeanNames = new LinkedHashSet&lt;&gt;(4);  	// NOTE 在这里排除一些不满足装配条件的属性 	// NOTE 使用 &lt;property name=&#34;impl1&#34; ref=&#34;BEAN1&#34;/&gt; ref属性引用的bean，这个是不会被装配的 	// NOTE CGLIB 定义的属性也不会被装配 	// NOTE 简单类型是不会被装配 	// TODO 之所以使用 ref是因为接触循环依赖？目前还不清楚 	String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw); 	for (String propertyName : propertyNames) { 	try {  	// Note 第一步肯定是获取属性的描述符 	PropertyDescriptor pd = bw." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">2.注解@Qualifier和@Value的实现</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          6 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/spring-bean/">Spring-Bean</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h3 id="前言">前言</h3>
+<p><code>@Qualifier</code>用于注解在属性、方法、参数，指定用于修复依赖的 <code>bean</code></p>
+<p><code>QualifierAnnotationAutowireCandidateResolver</code>用于支持 <code>@Qualifier</code>和 <code>@Value</code>注解</p>
+<p>这得分两种情形，否则会出意外的<code>BUG</code>出现  :</p>
+<ul>
+<li>以<code>byType</code> 方式装配</li>
+<li>使用注解 <code>Autowried</code> 装配</li>
+</ul>
+<p>当以<code>byType</code> 方式装配的时候，<code>@Qualifier</code> 要写在<code>setter</code> 方法或者参数上</p>
+<p>当以<code>@Autowried</code>注解装配，则写在 <code>属性</code> 上</p>
+<p>因为<code>byType</code> 是以 <code>setter</code> 方法进行依赖修复的</p>
+<p><code>@Autowried</code> 是以属性的方式进行依赖修复</p>
+<p>下面看源码一目了然</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">autowireByType</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>			String beanName<span style="color:#f92672">,</span> AbstractBeanDefinition mbd<span style="color:#f92672">,</span> BeanWrapper bw<span style="color:#f92672">,</span> MutablePropertyValues pvs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Note 根据类型来自动装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// Note 那就必然涉及到类型的转换
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [1] 先new 一个类型转转换器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		TypeConverter converter <span style="color:#f92672">=</span> getCustomTypeConverter<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>converter <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 如果没有就用Wrapper内置的类型转换，支持基础类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			converter <span style="color:#f92672">=</span> bw<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [2] 遍历属性和装配了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> autowiredBeanNames <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashSet<span style="color:#f92672">&lt;&gt;(</span>4<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE 在这里排除一些不满足装配条件的属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTE 使用 &lt;property name=&#34;impl1&#34; ref=&#34;BEAN1&#34;/&gt; ref属性引用的bean，这个是不会被装配的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTE CGLIB 定义的属性也不会被装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTE 简单类型是不会被装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// TODO 之所以使用 ref是因为接触循环依赖？目前还不清楚
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		String<span style="color:#f92672">[]</span> propertyNames <span style="color:#f92672">=</span> unsatisfiedNonSimpleProperties<span style="color:#f92672">(</span>mbd<span style="color:#f92672">,</span> bw<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String propertyName <span style="color:#f92672">:</span> propertyNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Note 第一步肯定是获取属性的描述符
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				PropertyDescriptor pd <span style="color:#f92672">=</span> bw<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyDescriptor</span><span style="color:#f92672">(</span>propertyName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Don&#39;t try autowiring by type for type Object: never makes sense,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#75715e">// even if it technically is a unsatisfied, non-simple property.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Note 类型是 Object 就不装配，显然Object类型这没法装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Object<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">!=</span> pd<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyType</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 获取Get方法参数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					MethodParameter methodParam <span style="color:#f92672">=</span> BeanUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getWriteMethodParameter</span><span style="color:#f92672">(</span>pd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Do not allow eager init for type matching in case of a prioritized post-processor.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">boolean</span> eager <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>PriorityOrdered<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isInstance</span><span style="color:#f92672">(</span>bw<span style="color:#f92672">.</span><span style="color:#a6e22e">getWrappedInstance</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 确认Get方法的依赖？ TODO：进去看看
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					DependencyDescriptor desc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AutowireByTypeDependencyDescriptor<span style="color:#f92672">(</span>methodParam<span style="color:#f92672">,</span> eager<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 解析Get方法的参数依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">// NOTE 解析依赖，关键的地方了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">/**@see DefaultListableBeanFactory#resolveDependency*/</span>
+</span></span><span style="display:flex;"><span>					Object autowiredArgument <span style="color:#f92672">=</span> resolveDependency<span style="color:#f92672">(</span>desc<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> autowiredBeanNames<span style="color:#f92672">,</span> converter<span style="color:#f92672">);</span>
+</span></span></code></pre></div><p>可以看到 <code>byType</code> 修复的时候 它是 获取 <code>setter</code> 方法然后拿到其参数进行依赖修复的</p>
+<p>下面看修复依赖的 一部分代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">doResolveDependency</span><span style="color:#f92672">(</span>DependencyDescriptor descriptor<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> String beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">@Nullable</span> Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> autowiredBeanNames<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> TypeConverter typeConverter<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// NOTICE JDK8 的 CDI ，值得和 spring 的 DI进行比较 都是进行依赖注入的东西
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTICE JSR365 CDI 与此关联的还有 JSR299 webBean管理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		InjectionPoint previousInjectionPoint <span style="color:#f92672">=</span> ConstructorResolver<span style="color:#f92672">.</span><span style="color:#a6e22e">setCurrentInjectionPoint</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			Object shortcut <span style="color:#f92672">=</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveShortcut</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>shortcut <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> shortcut<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Class<span style="color:#f92672">&lt;?&gt;</span> type <span style="color:#f92672">=</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getDependencyType</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * NOTE 获取建议的值 {@link QualifierAnnotationAutowireCandidateResolver} 这个支持 {@link Value} 注解提供建议值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * NOTE factory 是 {@link SimpleAutowireCandidateResolver} 这个是不支持提供建议值的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * NOTE 如果需要启动注解，就需要添加注册装配处理器 {@link AutowiredAnnotationBeanPostProcessor}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * NOTE 上述这些东西是用来支持  JSR330 依赖注入注解的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			Object value <span style="color:#f92672">=</span> getAutowireCandidateResolver<span style="color:#f92672">().</span><span style="color:#a6e22e">getSuggestedValue</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#66d9ef">instanceof</span> String<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// NOTE 如果注解带的值是字符串类型，这里可以扩展成支持 property 的字符串，也就是需要解析字符串
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">// NOTE 比如 ${name.val} 之类的 环境变量表达式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					String strVal <span style="color:#f92672">=</span> resolveEmbeddedValue<span style="color:#f92672">((</span>String<span style="color:#f92672">)</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					BeanDefinition bd <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>beanName <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> containsBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">)</span> <span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>							getMergedBeanDefinition<span style="color:#f92672">(</span>beanName<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// NOTE 解析 Bean定义表达式，这个是在 Context才支持的，beans包不支持这个
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					value <span style="color:#f92672">=</span> evaluateBeanDefinitionString<span style="color:#f92672">(</span>strVal<span style="color:#f92672">,</span> bd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// NOTE 类型转换
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				TypeConverter converter <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>typeConverter <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> typeConverter <span style="color:#f92672">:</span> getTypeConverter<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">return</span> converter<span style="color:#f92672">.</span><span style="color:#a6e22e">convertIfNecessary</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getTypeDescriptor</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>UnsupportedOperationException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// A custom TypeConverter which does not support TypeDescriptor resolution...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getField</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>							converter<span style="color:#f92672">.</span><span style="color:#a6e22e">convertIfNecessary</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getField</span><span style="color:#f92672">())</span> <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>							converter<span style="color:#f92672">.</span><span style="color:#a6e22e">convertIfNecessary</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethodParameter</span><span style="color:#f92672">()));</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 处理 集合 和 映射数据结构
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Object multipleBeans <span style="color:#f92672">=</span> resolveMultipleBeans<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> autowiredBeanNames<span style="color:#f92672">,</span> typeConverter<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>multipleBeans <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> multipleBeans<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 匹配该 type 的Class
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTICE 在这里用于确定此属性所需要的bean名称，因为 根据类型来装配是不可靠的，因为一个类型的bean可能有多个
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTICE 所以在这里 spring 提供了 @Qualifier(&#34;personA&#34;) 注解来限定装配哪一个名称的bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTICE 如果你用xml 就可以用 ref 来引用id，或者 qualifier ，TODO 这个我没用过 哈哈
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> matchingBeans <span style="color:#f92672">=</span> findAutowireCandidates<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchingBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isRequired<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					raiseNoMatchingBeanFound<span style="color:#f92672">(</span>type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvableType</span><span style="color:#f92672">(),</span> descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			String autowiredBeanName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			Object instanceCandidate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// NOTE 在这里匹配 使用 @Qualifier 指定的 bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchingBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				autowiredBeanName <span style="color:#f92672">=</span> determineAutowireCandidate<span style="color:#f92672">(</span>matchingBeans<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>autowiredBeanName <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isRequired<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">)</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span>indicatesMultipleBeans<span style="color:#f92672">(</span>type<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// NOTE 这里 无法修复 非限定的 bean，爆异常
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#66d9ef">return</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveNotUnique</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvableType</span><span style="color:#f92672">(),</span> matchingBeans<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// In case of an optional Collection/Map, silently ignore a non-unique case:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// possibly it was meant to be an empty collection of multiple regular beans
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// (before 4.3 in particular when we didn&#39;t even look for collection beans).
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				instanceCandidate <span style="color:#f92672">=</span> matchingBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>autowiredBeanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>其首先尝试获取 <code>@Value</code> 注解建议的值，此注解实现过程后面会说</p>
+<p><code>Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);</code></p>
+<p>这一行代码就是来确定，这个<code>setter</code> 方法依赖的 <code>类型</code> 是属于哪个<code>BeanDefinition</code>的如果，因为是按照类型来装配，有可能 <code>BeanDefition</code> 相同的 <code>Bean</code> 有多个，这个时候就要确定一个，如果有两个或两个以上，它是无法修复的，并且会抛异常。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findAutowireCandidates</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">@Nullable</span> String beanName<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;?&gt;</span> requiredType<span style="color:#f92672">,</span> DependencyDescriptor descriptor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE setp In
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		String<span style="color:#f92672">[]</span> candidateNames <span style="color:#f92672">=</span> BeanFactoryUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">beanNamesForTypeIncludingAncestors</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> requiredType<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">isEager</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>		Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashMap<span style="color:#f92672">&lt;&gt;(</span>candidateNames<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&lt;?&gt;,</span> Object<span style="color:#f92672">&gt;</span> classObjectEntry <span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">resolvableDependencies</span><span style="color:#f92672">.</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			Class<span style="color:#f92672">&lt;?&gt;</span> autowiringType <span style="color:#f92672">=</span> classObjectEntry<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>autowiringType<span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableFrom</span><span style="color:#f92672">(</span>requiredType<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				Object autowiringValue <span style="color:#f92672">=</span> classObjectEntry<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				autowiringValue <span style="color:#f92672">=</span> AutowireUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveAutowiringValue</span><span style="color:#f92672">(</span>autowiringValue<span style="color:#f92672">,</span> requiredType<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>requiredType<span style="color:#f92672">.</span><span style="color:#a6e22e">isInstance</span><span style="color:#f92672">(</span>autowiringValue<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					result<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ObjectUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">identityToString</span><span style="color:#f92672">(</span>autowiringValue<span style="color:#f92672">),</span> autowiringValue<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String candidate <span style="color:#f92672">:</span> candidateNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// NOTE 调用isAutowireCandidate 来确定BEAN
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>isSelfReference<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> candidate<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> isAutowireCandidate<span style="color:#f92672">(</span>candidate<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				addCandidateEntry<span style="color:#f92672">(</span>result<span style="color:#f92672">,</span> candidate<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">,</span> requiredType<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#f92672">[]</span> candidateNames <span style="color:#f92672">=</span> BeanFactoryUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">beanNamesForTypeIncludingAncestors</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> requiredType<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">isEager</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div><p>这一句是用来获取该类型的所有<code>Bean</code> 的名称</p>
+<p>然后调用  <code>isAutowireCandidate </code>判断，该名称的 <code>Bean</code> 是不是我们要的，因为有多个我们就选一个，这个时候就是 <code>@Qualifier</code> 起作用的时候，这个时候跳到<code>QualifierAnnotationAutowireCandidateResolver</code> 的 <code>isAutowireCandidate</code> 方法里面</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAutowireCandidate</span><span style="color:#f92672">(</span>BeanDefinitionHolder bdHolder<span style="color:#f92672">,</span> DependencyDescriptor descriptor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * 用于确认该BeanDefinition 是不是 我们要装配到 DependencyDescriptor的 bean def
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 */</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">boolean</span> match <span style="color:#f92672">=</span> <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isAutowireCandidate</span><span style="color:#f92672">(</span>bdHolder<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>match<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 先确认属性/方法上的注解，取决于DependencyDescriptor  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			match <span style="color:#f92672">=</span> checkQualifiers<span style="color:#f92672">(</span>bdHolder<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getAnnotations</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>match<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 再确认 方法里面的参数是否匹配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				MethodParameter methodParam <span style="color:#f92672">=</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethodParameter</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>methodParam <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					Method method <span style="color:#f92672">=</span> methodParam<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>method <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">void</span><span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">==</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">getReturnType</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						match <span style="color:#f92672">=</span> checkQualifiers<span style="color:#f92672">(</span>bdHolder<span style="color:#f92672">,</span> methodParam<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethodAnnotations</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> match<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p><code>checkQualifiers</code> 这个是核心，<code>DependencyDescriptor</code>  如果是 <code>byType</code> 那就是 <code>method</code></p>
+<p>如果是 <code>method</code> 它还会检查 <code>method param</code> 也就是参数上有没有 <code>@Qualifier</code> 注解</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">checkQualifiers</span><span style="color:#f92672">(</span>BeanDefinitionHolder bdHolder<span style="color:#f92672">,</span> Annotation<span style="color:#f92672">[]</span> annotationsToSearch<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * 检查是限定的 Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [1] 如果没有注解，那么直接返回true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ObjectUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>annotationsToSearch<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		SimpleTypeConverter typeConverter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleTypeConverter<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [2] 遍历注解
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Annotation annotation <span style="color:#f92672">:</span> annotationsToSearch<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			Class<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Annotation<span style="color:#f92672">&gt;</span> type <span style="color:#f92672">=</span> annotation<span style="color:#f92672">.</span><span style="color:#a6e22e">annotationType</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">boolean</span> checkMeta <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">boolean</span> fallbackToMeta <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 判断注解是不是 @Qualifier, spring 有自己的 Qualifier注解，担其也支持 JSR330的标准
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isQualifier<span style="color:#f92672">(</span>type<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 匹配 BeanDefinition 和 qualifier 指定的 Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>checkQualifier<span style="color:#f92672">(</span>bdHolder<span style="color:#f92672">,</span> annotation<span style="color:#f92672">,</span> typeConverter<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					fallbackToMeta <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					checkMeta <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 检查 注解内部，也就是 注解 中的注解，再次判断
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>checkMeta<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">boolean</span> foundMeta <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Annotation metaAnn <span style="color:#f92672">:</span> type<span style="color:#f92672">.</span><span style="color:#a6e22e">getAnnotations</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					Class<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Annotation<span style="color:#f92672">&gt;</span> metaType <span style="color:#f92672">=</span> metaAnn<span style="color:#f92672">.</span><span style="color:#a6e22e">annotationType</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isQualifier<span style="color:#f92672">(</span>metaType<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						foundMeta <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// Only accept fallback match if @Qualifier annotation has a value...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// Otherwise it is just a marker for a custom qualifier annotation.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>fallbackToMeta <span style="color:#f92672">&amp;&amp;</span> StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>AnnotationUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">(</span>metaAnn<span style="color:#f92672">)))</span> <span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>								<span style="color:#f92672">!</span>checkQualifier<span style="color:#f92672">(</span>bdHolder<span style="color:#f92672">,</span> metaAnn<span style="color:#f92672">,</span> typeConverter<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>fallbackToMeta <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>foundMeta<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>在这里面会遍历所有注解，并且用 <code>isQualifier</code> 判断是不是 <code>@Qualifier</code> 注解 或者 <code>JSR330 Qualifier</code> 注解，这两个注解是不一样的，一个是 <code>spring</code> 提供的 ，另外一个是 <code>JSR330 </code> 标准 提供的</p>
+<p>如果是上诉两种类型的注解，那就 <code>checkQualifier</code> 检查是不是限定了 <code>name</code> ，也就是说这个注解必须提供了值，也就是限定装配的那个 <code>bean</code> 的名称。</p>
+<p>如果说这个注解没有提供值，则检测这个注解的内部，是不是还有 <code>Qualifier</code> 注解，丧心病狂</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">checkQualifier</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>			BeanDefinitionHolder bdHolder<span style="color:#f92672">,</span> Annotation annotation<span style="color:#f92672">,</span> TypeConverter typeConverter<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE 获取注解属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> attributes <span style="color:#f92672">=</span> AnnotationUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getAnnotationAttributes</span><span style="color:#f92672">(</span>annotation<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>attributes<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> qualifier <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// If no attributes, the qualifier must be present
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTE 没有提供属性， over
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> entry <span style="color:#f92672">:</span> attributes<span style="color:#f92672">.</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			String attributeName <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			Object expectedValue <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			Object actualValue <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Check qualifier first
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>qualifier <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				actualValue <span style="color:#f92672">=</span> qualifier<span style="color:#f92672">.</span><span style="color:#a6e22e">getAttribute</span><span style="color:#f92672">(</span>attributeName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>actualValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Fall back on bean definition attribute
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				actualValue <span style="color:#f92672">=</span> bd<span style="color:#f92672">.</span><span style="color:#a6e22e">getAttribute</span><span style="color:#f92672">(</span>attributeName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// NOTE 注解包括属性名为 value 的属性，那么就直接说明这是符合的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>actualValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> attributeName<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>AutowireCandidateQualifier<span style="color:#f92672">.</span><span style="color:#a6e22e">VALUE_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>					expectedValue <span style="color:#66d9ef">instanceof</span> String <span style="color:#f92672">&amp;&amp;</span> bdHolder<span style="color:#f92672">.</span><span style="color:#a6e22e">matchesName</span><span style="color:#f92672">((</span>String<span style="color:#f92672">)</span> expectedValue<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Fall back on bean name (or alias) match
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>actualValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> qualifier <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Fall back on default, but only if the qualifier is present
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				actualValue <span style="color:#f92672">=</span> AnnotationUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getDefaultValue</span><span style="color:#f92672">(</span>annotation<span style="color:#f92672">,</span> attributeName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>actualValue <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				actualValue <span style="color:#f92672">=</span> typeConverter<span style="color:#f92672">.</span><span style="color:#a6e22e">convertIfNecessary</span><span style="color:#f92672">(</span>actualValue<span style="color:#f92672">,</span> expectedValue<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>expectedValue<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>actualValue<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这里就是真正的判断逻辑了，就是获取注解的 <code>value </code>然后这个值 和 <code>beanDefinitonHoder</code> 匹配那就 ok，这个 <code>hoder</code> 是一个<code>map</code> 里面有我们定义的 <code>bean</code>的名称 对应的 <code>beanDefinition</code></p>
+<p>这就是 <code>@Qualifier</code> 实现的原理。</p>
+<hr>
+<p>顺手也可以看得出 <code>@Value</code> 的实现方式。</p>
+<p>且看 <code>QualifierAnnotationAutowireCandidateResolver</code> 的 <code>getSuggestedValue</code> 获取建议的值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getSuggestedValue</span><span style="color:#f92672">(</span>DependencyDescriptor descriptor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 首先从 方法/属性 中获取 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Object value <span style="color:#f92672">=</span> findValue<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getAnnotations</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 也可以从 参数中 获取
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			MethodParameter methodParam <span style="color:#f92672">=</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethodParameter</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>methodParam <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				value <span style="color:#f92672">=</span> findValue<span style="color:#f92672">(</span>methodParam<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethodAnnotations</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>和<code>@Qualifier</code> 有点相似，提供从方法或者属性，也提供方法上面的参数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">findValue</span><span style="color:#f92672">(</span>Annotation<span style="color:#f92672">[]</span> annotationsToSearch<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>annotationsToSearch<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>   <span style="color:#75715e">// qualifier annotations have to be local
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			AnnotationAttributes attr <span style="color:#f92672">=</span> AnnotatedElementUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getMergedAnnotationAttributes</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 获取注解 限定 注解类型为 Value.class 也就是 @Value
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					AnnotatedElementUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">forAnnotations</span><span style="color:#f92672">(</span>annotationsToSearch<span style="color:#f92672">),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">valueAnnotationType</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>attr <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 获取真正的值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">return</span> extractValue<span style="color:#f92672">(</span>attr<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 * Extract the value attribute from the given annotation.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 * @since 4.3
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 */</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">extractValue</span><span style="color:#f92672">(</span>AnnotationAttributes attr<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 获取注解属性的值，属性的名称就是 value
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Object value <span style="color:#f92672">=</span> attr<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>AnnotationUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">VALUE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Value annotation must have a value attribute&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这个不用多解释了，也就是 获取 注解上的属性，很easy</p>
+<p>拿到值后还需要修复，比如说环境变量等，这里暂时不讨论</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

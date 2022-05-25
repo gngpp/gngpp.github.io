@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>MyBatis-Plus ServiceImpl模版 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MyBatis-Plus ServiceImpl模版"/>
+<meta name="twitter:description" content="##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &#34;ServiceImpl&#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &#34;.java&#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &#34;/service/impl&#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.#{end}service.impl;  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import $!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper; import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service; import org.springframework.stereotype.Service; import org.springframework.util.CollectionUtils; import javax.annotation.Resource; import java.util.List; import com.github.pagehelper.PageHelper; import com.github.pagehelper.PageInfo; import java.util.Collections;   /** * $!{tableInfo.comment}($!{tableInfo.name})表服务实现类 * * @author $!author * @since $!time.currTime() */ @Service(&#34;$!tool.firstLowerCase($!{tableInfo.name})Service&#34;) public class $!{tableName} implements $!{tableInfo.name}Service {  @Resource  private $!{tableInfo.name}Mapper $!tool.firstLowerCase($!{tableInfo.name})Mapper;   /** * 通过ID查询单条数据 * * @param $!"/>
+
+    <meta property="og:title" content="MyBatis-Plus ServiceImpl模版" />
+<meta property="og:description" content="##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &#34;ServiceImpl&#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &#34;.java&#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &#34;/service/impl&#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.#{end}service.impl;  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import $!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper; import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service; import org.springframework.stereotype.Service; import org.springframework.util.CollectionUtils; import javax.annotation.Resource; import java.util.List; import com.github.pagehelper.PageHelper; import com.github.pagehelper.PageInfo; import java.util.Collections;   /** * $!{tableInfo.comment}($!{tableInfo.name})表服务实现类 * * @author $!author * @since $!time.currTime() */ @Service(&#34;$!tool.firstLowerCase($!{tableInfo.name})Service&#34;) public class $!{tableName} implements $!{tableInfo.name}Service {  @Resource  private $!{tableInfo.name}Mapper $!tool.firstLowerCase($!{tableInfo.name})Mapper;   /** * 通过ID查询单条数据 * * @param $!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/template/mybatis/serviceimpl/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:38:18+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:38:18+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">MyBatis-Plus ServiceImpl模版</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/easycode/">EasyCode</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">##</span>定义初始变量
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>set<span style="color:#f92672">(</span>$tableName <span style="color:#f92672">=</span> $tool<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>$tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;ServiceImpl&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">##</span>设置回调
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">!</span>callback<span style="color:#f92672">.</span><span style="color:#a6e22e">setFileName</span><span style="color:#f92672">(</span>$tool<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>$tableName<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;.java&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">!</span>callback<span style="color:#f92672">.</span><span style="color:#a6e22e">setSavePath</span><span style="color:#f92672">(</span>$tool<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>$tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">savePath</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/service/impl&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">##</span>拿到主键
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#66d9ef">if</span><span style="color:#f92672">(!</span>$tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">pkColumn</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span>
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">#</span>set<span style="color:#f92672">(</span>$pk <span style="color:#f92672">=</span> $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">pkColumn</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>end
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>$tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">savePackageName</span><span style="color:#f92672">)</span><span style="color:#f92672">package</span> <span style="color:#960050;background-color:#1e0010">$!{</span>tableInfo.savePackageName<span style="color:#f92672">}.</span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>end<span style="color:#f92672">}</span>service<span style="color:#f92672">.</span><span style="color:#a6e22e">impl</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#960050;background-color:#1e0010">$!{</span>tableInfo.savePackageName<span style="color:#f92672">}.</span><span style="color:#a6e22e">pojo</span><span style="color:#f92672">.</span><span style="color:#a6e22e">$</span><span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#960050;background-color:#1e0010">$!{</span>tableInfo.savePackageName<span style="color:#f92672">}.</span><span style="color:#a6e22e">mapper</span><span style="color:#f92672">.</span><span style="color:#a6e22e">$</span><span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>Mapper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#960050;background-color:#1e0010">$!{</span>tableInfo.savePackageName<span style="color:#f92672">}.</span><span style="color:#a6e22e">service</span><span style="color:#f92672">.</span><span style="color:#a6e22e">$</span><span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>Service<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.stereotype.Service<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.util.CollectionUtils<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> javax.annotation.Resource<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.github.pagehelper.PageHelper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.github.pagehelper.PageInfo<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Collections<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* $!{tableInfo.comment}($!{tableInfo.name})表服务实现类
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* @author $!author
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* @since $!time.currTime()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Service</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;$!tool.firstLowerCase($!{tableInfo.name})Service&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">$</span><span style="color:#f92672">!{</span>tableName<span style="color:#f92672">}</span> <span style="color:#66d9ef">implements</span> $<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>Service <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Resource</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">private</span> $<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>Mapper $<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>Mapper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 通过ID查询单条数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param $!pk.name 主键
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 实例对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> $<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span> queryById<span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">shortType</span> $<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> $<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryById</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 新增数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param $!tool.firstLowerCase($!{tableInfo.name}) 实例对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 插入是否成功
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">insertOne</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span> $<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> $<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">insertOne</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}))</span> <span style="color:#f92672">==</span> 1<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 修改数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param $!tool.firstLowerCase($!{tableInfo.name}) 实例对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 更新是否成功
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span> $<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> $<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}))</span> <span style="color:#f92672">==</span> 1<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 通过主键删除数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param $!pk.name 主键
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 是否成功
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">deleteById</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">shortType</span> $<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> $<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">deleteById</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> 1<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 批量插入数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param $!tool.firstLowerCase($!{tableInfo.name})List 数据列表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 是否插入成功
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">batchInsert</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}&gt;</span> $<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>List<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>List<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> $<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">batchInsert</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>List<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> $tool<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}),</span><span style="color:#e6db74">&#34;List.size()&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 根据主键列表批量查询数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param $!tool.firstLowerCase($!{tableInfo.name})IdList 主键列表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 查询结果List
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}&gt;</span> batchQueryByIdList<span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">shortType</span><span style="color:#f92672">&gt;</span> $<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>IdList<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>IdList<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> $<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">batchQueryByIdList</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>IdList<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">emptyList</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 根据主键列表批量删除数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param $!tool.firstLowerCase($!{tableInfo.name})IdList 主键列表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 是否删除成功
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">batchDeleteByIdList</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">shortType</span><span style="color:#f92672">&gt;</span> $<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>IdList<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>IdList<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> $<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">batchDeleteByIdList</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>IdList<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> $tool<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}),</span><span style="color:#e6db74">&#34;IdList.size()&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 通过实体作为筛选条件查询, 查询所有数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param $!tool.firstLowerCase($!{tableInfo.name}) 实例对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 对象列表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}&gt;</span> queryAllBySelective<span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span> $<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})){</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> $<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryAll</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}));</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 条件筛选性分页查询所有数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param pageNumber 开始页
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param pageSize 页大小
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param queryCondition 条件查询实体
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return 分页结果
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> PageInfo<span style="color:#f92672">&lt;</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}&gt;</span> pagingSelectiveQueryAll<span style="color:#f92672">(</span>Integer pageNumber<span style="color:#f92672">,</span>Integer pageSize<span style="color:#f92672">,</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span> queryCondition<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>     PageHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">startPage</span><span style="color:#f92672">(</span>pageNumber<span style="color:#f92672">,</span> pageSize<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> PageInfo<span style="color:#f92672">&lt;</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}&gt;(</span>$<span style="color:#f92672">!{</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})}</span>Mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryAll</span><span style="color:#f92672">(</span>queryCondition<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

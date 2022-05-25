@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>PVE、使用hostapd创建无线AP // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PVE、使用hostapd创建无线AP"/>
+<meta name="twitter:description" content="hostapd介绍  Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
+它能做什么？  创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运  它不能做什么?  在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作  IP、DHCP 和路由  Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
+PVE（Debian）应用hostapd  使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
+ PVE安装hostapd apt install hostapd -y  查看默认配置文件路径 安装好hostapd，查看/etc/default/hostapd，默认DAEMON_CONF配置路径  cat /ect/default/hostapd  编辑默认配置文件 用vim编辑/etc/hostapd/hostapd."/>
+
+    <meta property="og:title" content="PVE、使用hostapd创建无线AP" />
+<meta property="og:description" content="hostapd介绍  Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
+它能做什么？  创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运  它不能做什么?  在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作  IP、DHCP 和路由  Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
+PVE（Debian）应用hostapd  使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
+ PVE安装hostapd apt install hostapd -y  查看默认配置文件路径 安装好hostapd，查看/etc/default/hostapd，默认DAEMON_CONF配置路径  cat /ect/default/hostapd  编辑默认配置文件 用vim编辑/etc/hostapd/hostapd." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8hostapd%E5%88%9B%E5%BB%BA%E6%97%A0%E7%BA%BFap/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-04T13:36:56+00:00" />
+<meta property="article:modified_time" content="2022-02-04T13:36:56+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">PVE、使用hostapd创建无线AP</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Feb 4, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          8 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/hostapd/">hostapd</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="hostapd介绍">hostapd介绍</h1>
+<p>  Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)</p>
+<h3 id="它能做什么">它能做什么？</h3>
+<ul>
+<li>创建一个AP</li>
+<li>在同一张卡上创建多个AP（如果卡支持，通常最多8个）</li>
+<li>在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中</li>
+<li>在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运</li>
+</ul>
+<h3 id="它不能做什么">它不能做什么?</h3>
+<ul>
+<li>在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道</li>
+<li>创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP</li>
+<li>为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器</li>
+<li>为 AP 本身分配 IP，这不是 hostapd 的工作</li>
+</ul>
+<h3 id="ipdhcp-和路由">IP、DHCP 和路由</h3>
+<p>  Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。</p>
+<h1 id="pvedebian应用hostapd">PVE（Debian）应用hostapd</h1>
+<p>  使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。</p>
+<ul>
+<li>PVE安装hostapd
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>apt install hostapd -y
+</span></span></code></pre></div></li>
+<li>查看默认配置文件路径
+  安装好hostapd，查看<code>/etc/default/hostapd</code>，默认DAEMON_CONF配置路径</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cat /ect/default/hostapd
+</span></span></code></pre></div><p><img src="/img/PVE%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89HTTPS%E8%AF%81%E4%B9%A6/img.png" alt=""></p>
+<ul>
+<li>编辑默认配置文件
+  用vim编辑<code>/etc/hostapd/hostapd.conf</code>添加以下内容后保存</li>
+</ul>
+<blockquote>
+<p>2.4GHz</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># pve bridge</span>
+</span></span><span style="display:flex;"><span>bridge<span style="color:#f92672">=</span>vmbr0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># AP netdevice name (without &#39;ap&#39; postfix, i.e., wlan0 uses wlan0ap for</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># management frames); ath0 for madwifi</span>
+</span></span><span style="display:flex;"><span>interface<span style="color:#f92672">=</span>wlp4s0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Driver interface type (hostap/wired/madwifi/test/none/nl80211/bsd);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># default: hostap). nl80211 is used with all Linux mac80211 drivers.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use driver=none if building hostapd as a standalone RADIUS server that does</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># not control any wireless/wired driver.</span>
+</span></span><span style="display:flex;"><span>driver<span style="color:#f92672">=</span>nl80211
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SSID to be used in IEEE 802.11 management frames</span>
+</span></span><span style="display:flex;"><span>ssid<span style="color:#f92672">=</span>wifi_anme
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Operation mode (a = IEEE 802.11a, b = IEEE 802.11b, g = IEEE 802.11g,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ad = IEEE 802.11ad (60 GHz); a/g options are used with IEEE 802.11n, too, to</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># specify band)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Default: IEEE 802.11b</span>
+</span></span><span style="display:flex;"><span>hw_mode<span style="color:#f92672">=</span>b
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Channel number (IEEE 802.11)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (default: 0, i.e., not set)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Please note that some drivers do not use this value from hostapd and the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># channel will need to be configured separately with iwconfig.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If CONFIG_ACS build option is enabled, the channel can be selected</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># automatically at run time by setting channel=acs_survey or channel=0, both of</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># which will enable the ACS survey based algorithm.</span>
+</span></span><span style="display:flex;"><span>channel<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Station MAC address -based authentication</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Please note that this kind of access control requires a driver that uses</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># hostapd to take care of management frame processing and as such, this can be</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># used with driver=hostap or driver=nl80211, but not with driver=madwifi.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 0 = accept unless in deny list</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1 = deny unless in accept list</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2 = use external RADIUS server (accept/deny lists are searched first)</span>
+</span></span><span style="display:flex;"><span>macaddr_acl<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># IEEE 802.11 specifies two authentication algorithms. hostapd can be</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># configured to allow both of these or only one. Open system authentication</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># should be used with IEEE 802.1X.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Bit fields of allowed authentication algorithms:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bit 0 = Open System Authentication</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bit 1 = Shared Key Authentication (requires WEP)</span>
+</span></span><span style="display:flex;"><span>auth_algs<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Send empty SSID in beacons and ignore probe request frames that do not</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># specify full SSID, i.e., require stations to know SSID.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># default: disabled (0)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1 = send empty (length=0) SSID in beacon and ignore probe request for</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     broadcast SSID</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2 = clear SSID (ASCII 0), but keep the original length (this may be required</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     with some clients that do not support empty SSID) and ignore probe</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     requests for broadcast SSID</span>
+</span></span><span style="display:flex;"><span>ignore_broadcast_ssid<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Enable WPA. Setting this variable configures the AP to require WPA (either</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># WPA-PSK or WPA-RADIUS/EAP based on other configuration). For WPA-PSK, either</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_psk or wpa_passphrase must be set and wpa_key_mgmt must include WPA-PSK.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Instead of wpa_psk / wpa_passphrase, wpa_psk_radius might suffice.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># For WPA-RADIUS/EAP, ieee8021x must be set (but without dynamic WEP keys),</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># RADIUS authentication server must be configured, and WPA-EAP must be included</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># in wpa_key_mgmt.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This field is a bit field that can be used to enable WPA (IEEE 802.11i/D3.0)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># and/or WPA2 (full IEEE 802.11i/RSN):</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bit0 = WPA</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bit1 = IEEE 802.11i/RSN (WPA2) (dot11RSNAEnabled)</span>
+</span></span><span style="display:flex;"><span>wpa<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># WPA pre-shared keys for WPA-PSK. This can be either entered as a 256-bit</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># secret in hex format (64 hex digits), wpa_psk, or as an ASCII passphrase</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (8..63 characters) that will be converted to PSK. This conversion uses SSID</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># so the PSK changes when ASCII passphrase is used and the SSID is changed.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_psk (dot11RSNAConfigPSKValue)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_passphrase (dot11RSNAConfigPSKPassPhrase)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_psk=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef</span>
+</span></span><span style="display:flex;"><span>wpa_passphrase<span style="color:#f92672">=</span>wifi_password
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set of accepted key management algorithms (WPA-PSK, WPA-EAP, or both). The</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># entries are separated with a space. WPA-PSK-SHA256 and WPA-EAP-SHA256 can be</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># added to enable SHA256-based stronger algorithms.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (dot11RSNAConfigAuthenticationSuitesTable)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_key_mgmt=WPA-PSK WPA-EAP</span>
+</span></span><span style="display:flex;"><span>wpa_key_mgmt<span style="color:#f92672">=</span>WPA-PSK
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set of accepted cipher suites (encryption algorithms) for pairwise keys</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (unicast packets). This is a space separated list of algorithms:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># CCMP = AES in Counter mode with CBC-MAC [RFC 3610, IEEE 802.11i/D7.0]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># TKIP = Temporal Key Integrity Protocol [IEEE 802.11i/D7.0]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Group cipher suite (encryption algorithm for broadcast and multicast frames)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># is automatically selected based on this configuration. If only CCMP is</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># allowed as the pairwise cipher, group cipher will also be CCMP. Otherwise,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># TKIP will be used as the group cipher.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (dot11RSNAConfigPairwiseCiphersTable)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Pairwise cipher for WPA (v1) (default: TKIP)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_pairwise=TKIP CCMP</span>
+</span></span><span style="display:flex;"><span>wpa_pairwise<span style="color:#f92672">=</span>TKIP
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Pairwise cipher for RSN/WPA2 (default: use wpa_pairwise value)</span>
+</span></span><span style="display:flex;"><span>rsn_pairwise<span style="color:#f92672">=</span>CCMP
+</span></span></code></pre></div><blockquote>
+<p>5.0GHz</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># pve bridge</span>
+</span></span><span style="display:flex;"><span>bridge<span style="color:#f92672">=</span>vmbr0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># AP netdevice name (without &#39;ap&#39; postfix, i.e., wlan0 uses wlan0ap for</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># management frames); ath0 for madwifi</span>
+</span></span><span style="display:flex;"><span>interface<span style="color:#f92672">=</span>wlp4s0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Driver interface type (hostap/wired/madwifi/test/none/nl80211/bsd);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># default: hostap). nl80211 is used with all Linux mac80211 drivers.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use driver=none if building hostapd as a standalone RADIUS server that does</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># not control any wireless/wired driver.</span>
+</span></span><span style="display:flex;"><span>driver<span style="color:#f92672">=</span>nl80211
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SSID to be used in IEEE 802.11 management frames</span>
+</span></span><span style="display:flex;"><span>ssid<span style="color:#f92672">=</span>AP
+</span></span><span style="display:flex;"><span>require_vht<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Operation mode (a = IEEE 802.11a, b = IEEE 802.11b, g = IEEE 802.11g,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ad = IEEE 802.11ad (60 GHz); a/g options are used with IEEE 802.11n, too, to</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># specify band)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Default: IEEE 802.11b</span>
+</span></span><span style="display:flex;"><span>hw_mode<span style="color:#f92672">=</span>a
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Channel number (IEEE 802.11)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (default: 0, i.e., not set)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Please note that some drivers do not use this value from hostapd and the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># channel will need to be configured separately with iwconfig.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If CONFIG_ACS build option is enabled, the channel can be selected</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># automatically at run time by setting channel=acs_survey or channel=0, both of</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># which will enable the ACS survey based algorithm.</span>
+</span></span><span style="display:flex;"><span>channel<span style="color:#f92672">=</span><span style="color:#ae81ff">44</span>
+</span></span><span style="display:flex;"><span>ieee80211n<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>ieee80211ac<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Station MAC address -based authentication</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Please note that this kind of access control requires a driver that uses</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># hostapd to take care of management frame processing and as such, this can be</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># used with driver=hostap or driver=nl80211, but not with driver=madwifi.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 0 = accept unless in deny list</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1 = deny unless in accept list</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2 = use external RADIUS server (accept/deny lists are searched first)</span>
+</span></span><span style="display:flex;"><span>macaddr_acl<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># IEEE 802.11 specifies two authentication algorithms. hostapd can be</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># configured to allow both of these or only one. Open system authentication</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># should be used with IEEE 802.1X.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Bit fields of allowed authentication algorithms:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bit 0 = Open System Authentication</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bit 1 = Shared Key Authentication (requires WEP)</span>
+</span></span><span style="display:flex;"><span>auth_algs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Send empty SSID in beacons and ignore probe request frames that do not</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># specify full SSID, i.e., require stations to know SSID.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># default: disabled (0)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1 = send empty (length=0) SSID in beacon and ignore probe request for</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     broadcast SSID</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2 = clear SSID (ASCII 0), but keep the original length (this may be required</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     with some clients that do not support empty SSID) and ignore probe</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     requests for broadcast SSID</span>
+</span></span><span style="display:flex;"><span>ignore_broadcast_ssid<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Enable WPA. Setting this variable configures the AP to require WPA (either</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># WPA-PSK or WPA-RADIUS/EAP based on other configuration). For WPA-PSK, either</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_psk or wpa_passphrase must be set and wpa_key_mgmt must include WPA-PSK.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Instead of wpa_psk / wpa_passphrase, wpa_psk_radius might suffice.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># For WPA-RADIUS/EAP, ieee8021x must be set (but without dynamic WEP keys),</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># RADIUS authentication server must be configured, and WPA-EAP must be included</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># in wpa_key_mgmt.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This field is a bit field that can be used to enable WPA (IEEE 802.11i/D3.0)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># and/or WPA2 (full IEEE 802.11i/RSN):</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bit0 = WPA</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bit1 = IEEE 802.11i/RSN (WPA2) (dot11RSNAEnabled)</span>
+</span></span><span style="display:flex;"><span>wpa<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># WPA pre-shared keys for WPA-PSK. This can be either entered as a 256-bit</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># secret in hex format (64 hex digits), wpa_psk, or as an ASCII passphrase</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (8..63 characters) that will be converted to PSK. This conversion uses SSID</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># so the PSK changes when ASCII passphrase is used and the SSID is changed.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_psk (dot11RSNAConfigPSKValue)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_passphrase (dot11RSNAConfigPSKPassPhrase)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_psk=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef</span>
+</span></span><span style="display:flex;"><span>wpa_passphrase<span style="color:#f92672">=</span><span style="color:#ae81ff">123456789</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set of accepted key management algorithms (WPA-PSK, WPA-EAP, or both). The</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># entries are separated with a space. WPA-PSK-SHA256 and WPA-EAP-SHA256 can be</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># added to enable SHA256-based stronger algorithms.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (dot11RSNAConfigAuthenticationSuitesTable)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_key_mgmt=WPA-PSK WPA-EAP</span>
+</span></span><span style="display:flex;"><span>wpa_key_mgmt<span style="color:#f92672">=</span>WPA-PSK
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set of accepted cipher suites (encryption algorithms) for pairwise keys</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (unicast packets). This is a space separated list of algorithms:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># CCMP = AES in Counter mode with CBC-MAC [RFC 3610, IEEE 802.11i/D7.0]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># TKIP = Temporal Key Integrity Protocol [IEEE 802.11i/D7.0]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Group cipher suite (encryption algorithm for broadcast and multicast frames)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># is automatically selected based on this configuration. If only CCMP is</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># allowed as the pairwise cipher, group cipher will also be CCMP. Otherwise,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># TKIP will be used as the group cipher.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (dot11RSNAConfigPairwiseCiphersTable)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Pairwise cipher for WPA (v1) (default: TKIP)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wpa_pairwise=TKIP CCMP</span>
+</span></span><span style="display:flex;"><span>wpa_pairwise<span style="color:#f92672">=</span>TKIP
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Pairwise cipher for RSN/WPA2 (default: use wpa_pairwise value)</span>
+</span></span><span style="display:flex;"><span>rsn_pairwise<span style="color:#f92672">=</span>CCMP
+</span></span></code></pre></div><p>  <code>hw_mode=a</code>这里是网卡驱动支持的模式，笔者的网卡<code>BCM943602CS</code>是支持2.4G/5G频的(<code>iw list</code> 可以查看频段通道数)。如果你不知道你网卡在Linux下的驱动能支持什么模式，自己看文档注释，挨个试就知道了。
+  更多信息请查看：<a href="https://wireless.wiki.kernel.org/en/users/documentation/hostapd">hostapd文档</a></p>
+<h3 id="测试配置文件">测试配置文件</h3>
+<p>  做好配置文件后，要测试配置是否能正常使用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>hostapd /etc/hostapd/hostapd.conf
+</span></span></code></pre></div><p>  如果能正常连接成功后下会输出类似下面的日志。
+<img src="/img/PVE%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89HTTPS%E8%AF%81%E4%B9%A6/img_1.png" alt=""></p>
+<h3 id="hostapd服务基本操作">hostapd服务基本操作</h3>
+<p>  如果您启停hostapd服务出现类似<code>Failed to start hostapd.service: Unit hostapd.service is masked.</code>等错误，请执行下面命令。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo systemctl unmask hostapd
+</span></span><span style="display:flex;"><span>sudo systemctl enable hostapd
+</span></span><span style="display:flex;"><span>sudo systemctl start hostapd
+</span></span></code></pre></div><p>  更多有关信息请查看GitHub Issues：<a href="https://github.com/raspberrypi/documentation/issues/1018">issue</a>。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

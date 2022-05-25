@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>https on gngpp</title>
+    <link>https://example.org/tags/https/</link>
+    <description>Recent content in https on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 10 Feb 2022 21:05:31 +0000</lastBuildDate><atom:link href="https://example.org/tags/https/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE使用自定义HTTPS证书</title>
+      <link>https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89https%E8%AF%81%E4%B9%A6/</link>
+      <pubDate>Thu, 10 Feb 2022 21:05:31 +0000</pubDate>
+      
+      <guid>https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89https%E8%AF%81%E4%B9%A6/</guid>
+      <description>前言  PVE需要使用https来访问，默认使用的是自带的SSL自签证书浏览器是不认可的，所以会爆红访问提示不安全，这里笔者为大家提供配置免费证书的方法，让你的PVE访问变得安全，而且关键时只有配置证书了的PVE才能外网访问控制台。
+SSL证书申请  证书申请可以在：https://freessl.cn 申请   最方便是使用DNS验证(文件验证不支持域名带端口验证)，添加一个CNAME/TXT记录验证即可颁发证书，之后进入FreeSSL控制台下载证书，或者把证书保存到本地的KeyManager（https://keymanager.org支持多平台）后查看证书
+  查看PEM
+ PVE配置证书  上传自定义证书
+  如果是不小心把自带证书删掉了，或者自定义证书也没了，可以重启pveproxy服务，重新生成自带证书。
+ systemctl restart pveproxy </description>
+    </item>
+    
+  </channel>
+</rss>

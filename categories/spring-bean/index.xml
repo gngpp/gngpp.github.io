@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring-Bean on gngpp</title>
+    <link>https://example.org/categories/spring-bean/</link>
+    <description>Recent content in Spring-Bean on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/categories/spring-bean/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>1.Bean的包装</title>
+      <link>https://example.org/posts/spring_analysis/beans/1.bean%E7%9A%84%E5%8C%85%E8%A3%85/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/1.bean%E7%9A%84%E5%8C%85%E8%A3%85/</guid>
+      <description>1.前言 为什么先从对bean的包装开始阅读源码呢，因为beans包的核心就是BeanFactory 🐶，其作用就是对bean进行管理，那么对bean管理的前提就是对bean进行解析，然后支持属性的set 或 get 操作。那么我们列举一下BeanFactory的主要职责，即使没阅读过源码，也应该知道个大概过程.
+ 解析xml或者其它配置文件得到 BeanDefinition 实例化 Instance AutoWired自动装配 Bean的依赖  所以，我们先了解如何去得到一个Bean的 “定义” (解析xml那部分先不讲)
+2. BeanWrapper接口 这个类的主要作用是解析`Class` 然后获取属性，进一步封装，然后提供修改属性的接口 public interface BeanWrapper extends ConfigurablePropertyAccessor {  // 设置集合属性自增长的长度 	void setAutoGrowCollectionLimit(int autoGrowCollectionLimit); 	 // 获取当前集合属性自增长的长度 	int getAutoGrowCollectionLimit(); 		// 获取包装的Bean的Instance 	Object getWrappedInstance(); 		// 获取Bean的Class 	Class&amp;lt;?&amp;gt; getWrappedClass(); 		// 获取所有属性描述符 	PropertyDescriptor[] getPropertyDescriptors();   // 获取属性描述符 	PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException;  } 为什么上面会涉及到集合，因为Bean 支持nested (嵌套) 属性读写，也就是pojo</description>
+    </item>
+    
+    <item>
+      <title>2.嵌套属性解析</title>
+      <link>https://example.org/posts/spring_analysis/beans/2.%E5%B5%8C%E5%A5%97%E5%B1%9E%E6%80%A7%E8%A7%A3%E6%9E%90/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/2.%E5%B5%8C%E5%A5%97%E5%B1%9E%E6%80%A7%E8%A7%A3%E6%9E%90/</guid>
+      <description>前言 在上面的getPropertyDescriptor中用到了这个方法去解析 nested 嵌套属性，下面就来看下它怎么实现的
+首先我们得明确一件事情，BeanWrapperImp 继承自 AbstractNestablePropertyAccessor 因为 BeanWrapperImp 携带有 Instance ，所以 AbstractNestablePropertyAccessor 必然也携带有 Instance ，那按照我们的思路该如何解析 nested 属性呢，比如 有一个Bean
+class Student{  private name;  private Clazz clazzInfo; } class Clazz{  private Integer id; } 这个我们需要取出其ClazzId，用nested 表示就是 clazzInfo.id ，那我们该如何解析，首先找到第一个属性
+clazzInfo，然后从Student中获取 clazzInfo 的Instance ，然后在解析第二个属性 id ，然后再在classInfo 中拿到 id 的值，这显然是一个递归。
+下面来看实现:
+protected AbstractNestablePropertyAccessor getPropertyAccessorForPropertyPath(String propertyPath) {  // [1] 解析出第一个属性的分割索引  int pos = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(propertyPath);  首先看第一步：PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex
+private static int getNestedPropertySeparatorIndex(String propertyPath, boolean last) {  // [1] map[my.</description>
+    </item>
+    
+    <item>
+      <title>3.对Bean属性进行读取</title>
+      <link>https://example.org/posts/spring_analysis/beans/3.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E8%AF%BB%E5%8F%96/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/3.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E8%AF%BB%E5%8F%96/</guid>
+      <description>###前言
+  根据token获取该属性的 Instance
+在上面 解析中，我们已经拿到了token ，我们知道 token 里面包含了属性名和 keys ，接下来就能通过属性名拿到属性值了
+ Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException {  String propertyName = tokens.canonicalName;  String actualName = tokens.actualName;  // [1] 直接获取 handler,handler用于访问属性  PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
+protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) {  // [1] 实现很简单，直接从缓存获取属性描述符  PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName);  return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器</description>
+    </item>
+    
+    <item>
+      <title>4.对Bean属性进行写入</title>
+      <link>https://example.org/posts/spring_analysis/beans/4.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E5%86%99%E5%85%A5/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/4.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E5%86%99%E5%85%A5/</guid>
+      <description>前言 这个和getPropertyValue 有很多相似的地方
+ 解析嵌套属性得到 Accessor 生成 token 实际上也就是支持 集合类型 然后调用 AbstractNestablePropertyAccessor#setProperty  setPropertyValue
+public void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException{ 	// [1] 获取嵌套属性中的最后一个Accessor 	AbstractNestablePropertyAccessor nestedPa; 	try { 	nestedPa = getPropertyAccessorForPropertyPath(propertyName); 	} 	catch (NotReadablePropertyException ex) { 	throw new NotWritablePropertyException(getRootClass(), this.nestedPath + propertyName, 	&amp;#34;Nested property in path &amp;#39;&amp;#34; + propertyName + &amp;#34;&amp;#39; does not exist&amp;#34;, ex); 	} 	// [2] 生成Token 	PropertyTokenHolder tokens = getPropertyNameTokens(getFinalPath(nestedPa, propertyName));  	// [3] 根据Token设置值 	nestedPa.</description>
+    </item>
+    
+    <item>
+      <title>5.Bean类型转换</title>
+      <link>https://example.org/posts/spring_analysis/beans/5.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/5.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</guid>
+      <description>前言 类型转换在spring中很常用，比如说spring beans 就我们之前研究的setter/getter属性，还有spring mvc 的参数绑定，或者说是 i o c自动装配，都用到了类型转换。下面我们就单独研究它.
+实际上它调用的是 org.springframework.core.convert 中的 DefaultConversionService
+就不在这里讨论，单独讨论</description>
+    </item>
+    
+    <item>
+      <title>6.创建BeanInstance-概览</title>
+      <link>https://example.org/posts/spring_analysis/beans/6.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A6%82%E8%A7%88/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/6.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A6%82%E8%A7%88/</guid>
+      <description>前言 spring 对 bean 的操作可以分为以下三个步骤：
+ 创建 Instance 填充 Instance 初始化 Bean  所以在这里先从最基本的开始，创建 Instance
+首先 bean 的类型可以分为两种，仅讨论 beans 包下 的 BeanFactory ：
+ singleton prototype  先讨论 doGetBean 也就是 梦开始的地方
+protected &amp;lt;T&amp;gt; T doGetBean(final String name, @Nullable final Class&amp;lt;T&amp;gt; requiredType, 	@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException{  	/**------------------------------------------------------------------------------------------------------------- * 调用者：{@link #getBean(String)} ... * * [DESC] 获取指定的Bean * [1] 先从Singleton缓存中查找，若不存在遍历其父工厂递归getBean * [2] 调用{@link AbstractAutowireCapableBeanFactory#createBean(String, RootBeanDefinition, Object[])} 创建实例 *-------------------------------------------------------------------------------------------------------------*/   	// 获取真实的bean名字，类似 &amp;amp;BeanName 就会被解析为 BeanName就是去掉 &amp;amp; 这个符号 	// 然后从别名中获取真实名字 	// [TODO] 这里去掉了 &amp;amp; 并不影响后面处理 FactoryBean，FactoryBean是需要根据 &amp;amp; 这个字符来判断的，在这里去掉并不影响 	final String beanName = transformedBeanName(name); 	Object bean;  	// [1] 优先从单例缓存中查找 	Object sharedInstance = getSingleton(beanName); 	if (sharedInstance !</description>
+    </item>
+    
+    <item>
+      <title>7.创建BeanInstance-根据带参构造函数</title>
+      <link>https://example.org/posts/spring_analysis/beans/7.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A0%B9%E6%8D%AE%E5%B8%A6%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/7.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A0%B9%E6%8D%AE%E5%B8%A6%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</guid>
+      <description>前言 在上一节讨论到 ``autowireConstructor 利用其实例化Bean，这个功能是通过调用代参构造函数来拿到Instance` 的。不多bb，开搞
+protected BeanWrapper autowireConstructor( 	String beanName, RootBeanDefinition mbd, @Nullable Constructor&amp;lt;?&amp;gt;[] ctors, @Nullable Object[] explicitArgs) {  	return new ConstructorResolver(this).autowireConstructor(beanName, mbd, ctors, explicitArgs); 	} 上面 ConstructorResolver 这个是 构造函数解析器，是beans 中比较重要的一部分，后面也常常涉及到这个类，那么继续
+这个函数长度是 200 所以一点点分析，这样比较清晰
+public BeanWrapper autowireConstructor(String beanName, RootBeanDefinition mbd, 	@Nullable Constructor&amp;lt;?&amp;gt;[] chosenCtors, @Nullable Object[] explicitArgs) {  	/**------------------------------------------------------------------------------------------------------------ * [DESC] 解析构造函数进行数据装配然后实例化对象 * [1] 第一种情况就是只有一个构造函数并且构造函数没有参数，这和工厂方法有点像，那就直接调用无参构造函数 * [2] 第二种情况，就是多个构造函数和带参数 * 先判断是不是在构造函数上用了 {@link ConstructorProperties} 注解来标明构造函数的名称，若没有提供注解则直接从构造函数中获取参数名称 * 然后用 {@link #createArgumentArray} 去匹配和创建构造函数的参数数组，TODO 这个方法比较核心，提供许多策略去匹配参数 * [3] 最后根据构造函数的数组 直接调用构造函数 实例化对象 *------------------------------------------------------------------------------------------------------------*/ 	BeanWrapperImpl bw = new BeanWrapperImpl(); 	this.</description>
+    </item>
+    
+    <item>
+      <title>8.创建BeanInstance-根据无参构造函数</title>
+      <link>https://example.org/posts/spring_analysis/beans/8.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A0%B9%E6%8D%AE%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/8.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A0%B9%E6%8D%AE%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</guid>
+      <description>前言 利用无参数构造函数创建Bean 的Instance ，这个方式比较简单。来简单看一下, 其实在上一章节已经接触过了。。
+protected BeanWrapper instantiateBean(final String beanName, final RootBeanDefinition mbd) { 	try { 	Object beanInstance; 	final BeanFactory parent = this; 	if (System.getSecurityManager() != null) { 	beanInstance = AccessController.doPrivileged((PrivilegedAction&amp;lt;Object&amp;gt;) () -&amp;gt; 	getInstantiationStrategy().instantiate(mbd, beanName, parent), 	getAccessControlContext()); 	} 	else { 	beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, parent); 	} 	BeanWrapper bw = new BeanWrapperImpl(beanInstance); 	initBeanWrapper(bw); 	return bw; 	} 	catch (Throwable ex) { 	throw new BeanCreationException( 	mbd.</description>
+    </item>
+    
+    <item>
+      <title>9.自动装配Instance</title>
+      <link>https://example.org/posts/spring_analysis/beans/9.%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8Dinstance/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/9.%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8Dinstance/</guid>
+      <description>前言 我们已经完成了创建 Instance 的分析，接下来就应该是自动装配，只有装配完 Bean 才能被使用，在这里可能会看到 spring是如何解决 循环依赖的
+protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) 	throws BeanCreationException {  	/**------------------------------------------------------------------------------------------------------------ * [DESC] 负责创建Bean * [1] 如果是singleton对象，现在缓存中移除 * [2] 如果之前没有创建过singleton，则调用 {@link #createBeanInstance} 创建 * [3] 将单例添加到factory中，预先暴露bean，这可以支持spring去解决 singleton循环依赖问题 * [4] 调用 {@link #populateBean} 填充依赖属性 * [5] 调用 {@link #initializeBean} 初始化bean * [6] 如果Bean定义了Dependent-on 那就修复 依赖 *------------------------------------------------------------------------------------------------------------*/  	// 创建出来的实例是需要包装起来，然后才能修复依赖 	BeanWrapper instanceWrapper = null;  	// Note [1] 单例对象需要从缓存中移除 	// 如果之前没有创建过，那接下来就创建实例 	if (mbd.</description>
+    </item>
+    
+  </channel>
+</rss>

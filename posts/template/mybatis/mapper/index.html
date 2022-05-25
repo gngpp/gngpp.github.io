@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>MyBatis-Plus Mapper模版 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MyBatis-Plus Mapper模版"/>
+<meta name="twitter:description" content="##引入mybatis支持 $!mybatisSupport  ##设置保存名称与保存位置 $!callback.setFileName($tool.append($!{tableInfo.name}, &#34;Mapper.xml&#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &#34;/mapper&#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;  &lt;!DOCTYPE mapper PUBLIC &#34;-//mybatis.org//DTD Mapper 3.0//EN&#34; &#34;http://mybatis.org/dtd/mybatis-3-mapper.dtd&#34;&gt; &lt;mapper namespace=&#34;$!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper&#34;&gt;    &lt;resultMap type=&#34;$!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}&#34; id=&#34;$!{tableInfo.name}Map&#34;&gt;  #foreach($column in $tableInfo.fullColumn)  &lt;result property=&#34;$!column.name&#34; column=&#34;$!column.obj.name&#34; jdbcType=&#34;$!column.ext.jdbcType&#34;/&gt; #end  &lt;/resultMap&gt;   &lt;!--查询单个--&gt;  &lt;select id=&#34;queryById&#34; resultMap=&#34;$!{tableInfo.name}Map&#34;&gt;  SELECT  #allSqlColumn()   FROM $!tableInfo.obj.name  WHERE $!pk.obj.name = #{$!pk.name}  &lt;/select&gt;   &lt;!"/>
+
+    <meta property="og:title" content="MyBatis-Plus Mapper模版" />
+<meta property="og:description" content="##引入mybatis支持 $!mybatisSupport  ##设置保存名称与保存位置 $!callback.setFileName($tool.append($!{tableInfo.name}, &#34;Mapper.xml&#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &#34;/mapper&#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;  &lt;!DOCTYPE mapper PUBLIC &#34;-//mybatis.org//DTD Mapper 3.0//EN&#34; &#34;http://mybatis.org/dtd/mybatis-3-mapper.dtd&#34;&gt; &lt;mapper namespace=&#34;$!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper&#34;&gt;    &lt;resultMap type=&#34;$!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}&#34; id=&#34;$!{tableInfo.name}Map&#34;&gt;  #foreach($column in $tableInfo.fullColumn)  &lt;result property=&#34;$!column.name&#34; column=&#34;$!column.obj.name&#34; jdbcType=&#34;$!column.ext.jdbcType&#34;/&gt; #end  &lt;/resultMap&gt;   &lt;!--查询单个--&gt;  &lt;select id=&#34;queryById&#34; resultMap=&#34;$!{tableInfo.name}Map&#34;&gt;  SELECT  #allSqlColumn()   FROM $!tableInfo.obj.name  WHERE $!pk.obj.name = #{$!pk.name}  &lt;/select&gt;   &lt;!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/template/mybatis/mapper/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:38:18+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:38:18+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">MyBatis-Plus Mapper模版</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/easycode/">EasyCode</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">##</span>引入mybatis支持
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">!</span>mybatisSupport
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">##</span>设置保存名称与保存位置
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">!</span>callback<span style="color:#f92672">.</span><span style="color:#a6e22e">setFileName</span><span style="color:#f92672">(</span>$tool<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">},</span> <span style="color:#e6db74">&#34;Mapper.xml&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">!</span>callback<span style="color:#f92672">.</span><span style="color:#a6e22e">setSavePath</span><span style="color:#f92672">(</span>$tool<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>$tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">savePath</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/mapper&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">##</span>拿到主键
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#66d9ef">if</span><span style="color:#f92672">(!</span>$tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">pkColumn</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span>
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">#</span>set<span style="color:#f92672">(</span>$pk <span style="color:#f92672">=</span> $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">pkColumn</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>end
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span>xml version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0&#34;</span> encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">?&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;!</span>DOCTYPE mapper PUBLIC <span style="color:#e6db74">&#34;-//mybatis.org//DTD Mapper 3.0//EN&#34;</span> <span style="color:#e6db74">&#34;http://mybatis.org/dtd/mybatis-3-mapper.dtd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>mapper namespace<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>resultMap type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}&#34;</span> id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!{tableInfo.name}Map&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>foreach<span style="color:#f92672">(</span>$column in $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">fullColumn</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;</span>result property<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!column.name&#34;</span> column<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!column.obj.name&#34;</span> jdbcType<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!column.ext.jdbcType&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>end
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>resultMap<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>查询单个<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>select id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;queryById&#34;</span> resultMap<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!{tableInfo.name}Map&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     SELECT
+</span></span><span style="display:flex;"><span>       <span style="color:#960050;background-color:#1e0010">#</span>allSqlColumn<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>     FROM $<span style="color:#f92672">!</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>     WHERE $<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>select<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>通过实体作为筛选条件查询<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>select id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;queryAll&#34;</span> resultMap<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!{tableInfo.name}Map&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     SELECT
+</span></span><span style="display:flex;"><span>       <span style="color:#960050;background-color:#1e0010">#</span>allSqlColumn<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>     FROM $<span style="color:#f92672">!</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;</span>where<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>foreach<span style="color:#f92672">(</span>$column in $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">fullColumn</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">if</span> test<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!column.name != null#if($column.type.equals(&#34;</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#e6db74">&#34;)) and $!column.name != &#39;&#39;#end&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>             AND $<span style="color:#f92672">!</span>column<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!</span>column<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">&lt;/</span><span style="color:#66d9ef">if</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>end
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/</span>where<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>select<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>查询列表<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>select id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;queryList&#34;</span> resultMap<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!{tableInfo.name}Map&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     SELECT <span style="color:#960050;background-color:#1e0010">#</span>allSqlColumn<span style="color:#f92672">()</span> FROM $<span style="color:#f92672">!</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>select<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>新增所有列<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>insert id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;insertOne&#34;</span> keyProperty<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!pk.name&#34;</span> useGeneratedKeys<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     INSERT INTO $<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}(</span><span style="color:#960050;background-color:#1e0010">#</span>foreach<span style="color:#f92672">(</span>$column in $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">otherColumn</span><span style="color:#f92672">)</span>$<span style="color:#f92672">!</span>column<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>$velocityHasNext<span style="color:#f92672">),</span> <span style="color:#960050;background-color:#1e0010">#</span>end<span style="color:#960050;background-color:#1e0010">#</span>end<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>     VALUES <span style="color:#f92672">(</span><span style="color:#960050;background-color:#1e0010">#</span>foreach<span style="color:#f92672">(</span>$column in $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">otherColumn</span><span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!{</span>column<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}}</span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>$velocityHasNext<span style="color:#f92672">),</span> <span style="color:#960050;background-color:#1e0010">#</span>end<span style="color:#960050;background-color:#1e0010">#</span>end<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>insert<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>通过主键修改数据<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>update id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;update&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     UPDATE $<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;</span>set<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>foreach<span style="color:#f92672">(</span>$column in $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">otherColumn</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">if</span> test<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!column.name != null#if($column.type.equals(&#34;</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#e6db74">&#34;)) and $!column.name != &#39;&#39;#end&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>             $<span style="color:#f92672">!</span>column<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!</span>column<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">},</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">&lt;/</span><span style="color:#66d9ef">if</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span>end
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/</span>set<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     WHERE $<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>update<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>通过主键删除<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>delete id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;deleteById&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     DELETE FROM $<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span> WHERE $<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>delete<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>批量插入<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>insert id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;batchInsert&#34;</span> keyProperty<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!pk.name&#34;</span> useGeneratedKeys<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     INSERT INTO $<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}(</span><span style="color:#960050;background-color:#1e0010">#</span>foreach<span style="color:#f92672">(</span>$column in $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">otherColumn</span><span style="color:#f92672">)</span>$<span style="color:#f92672">!</span>column<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>$velocityHasNext<span style="color:#f92672">),</span> <span style="color:#960050;background-color:#1e0010">#</span>end<span style="color:#960050;background-color:#1e0010">#</span>end<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>     VALUES 
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;</span>foreach collection <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;$!tool.firstLowerCase($!{tableInfo.name})List&#34;</span> item <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;$!tool.firstLowerCase($!{tableInfo.name})&#34;</span> index <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;index&#34;</span> separator<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;,&#34;</span> <span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">(</span><span style="color:#960050;background-color:#1e0010">#</span>foreach<span style="color:#f92672">(</span>$column in $tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">otherColumn</span><span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}).</span><span style="color:#a6e22e">$</span><span style="color:#f92672">!{</span>column<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}}</span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>$velocityHasNext<span style="color:#f92672">),</span> <span style="color:#960050;background-color:#1e0010">#</span>end<span style="color:#960050;background-color:#1e0010">#</span>end<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/</span>foreach<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>insert<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>根据主键批量查询<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>select id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;batchQueryByIdList&#34;</span> resultMap<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$!{tableInfo.name}Map&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     SELECT
+</span></span><span style="display:flex;"><span>       <span style="color:#960050;background-color:#1e0010">#</span>allSqlColumn<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>       
+</span></span><span style="display:flex;"><span>     FROM $<span style="color:#f92672">!</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>     WHERE $<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>     IN
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;</span>foreach collection <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;$!tool.firstLowerCase($!{tableInfo.name})IdList&#34;</span> item <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;$!tool.firstLowerCase($!{tableInfo.name})Id&#34;</span> index <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;index&#34;</span> open <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;(&#34;</span> close <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;)&#34;</span> separator <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>Id<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/</span>foreach<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>select<span style="color:#f92672">&gt;</span> 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span>根据主键批量删除<span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>delete id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;batchDeleteByIdList&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     DELETE FROM $<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>     WHERE $<span style="color:#f92672">!</span>pk<span style="color:#f92672">.</span><span style="color:#a6e22e">obj</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>     IN
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;</span>foreach collection <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;$!tool.firstLowerCase($!{tableInfo.name})IdList&#34;</span> item <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;$!tool.firstLowerCase($!{tableInfo.name})Id&#34;</span> index <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;index&#34;</span> open <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;(&#34;</span> close <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;)&#34;</span> separator <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#f92672">{</span>$<span style="color:#f92672">!</span>tool<span style="color:#f92672">.</span><span style="color:#a6e22e">firstLowerCase</span><span style="color:#f92672">(</span>$<span style="color:#f92672">!{</span>tableInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">})</span>Id<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/</span>foreach<span style="color:#f92672">&gt;</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/</span>delete<span style="color:#f92672">&gt;</span> 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;!--</span><span style="color:#960050;background-color:#1e0010">——————————————————————————————————————————————————————————————————————————————————————————</span><span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/</span>mapper<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

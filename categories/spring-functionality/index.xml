@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring-functionality on gngpp</title>
+    <link>https://example.org/categories/spring-functionality/</link>
+    <description>Recent content in Spring-functionality on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/categories/spring-functionality/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>1.factory-method 和 factory-bean的实现原理</title>
+      <link>https://example.org/posts/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</guid>
+      <description>##factory-method 和 factory-bean的实现
+在讨论实现原理之前，得先清楚怎么用，这两个东西.
+假设目前有两个类 ServiceFactory 和 Service 我们就可以指定 factory-method 和 factory-bean 给 Service
+&amp;lt;bean id=&amp;#34;Service&amp;#34; class=&amp;#34;org.springframework.beans.factory.FactoryBeanTests$Service&amp;#34; factory-bean=&amp;#34;ServiceFactoryBean&amp;#34; factory-method=&amp;#34;getObject&amp;#34;&amp;gt;&amp;lt;/bean&amp;gt; 	&amp;lt;bean id=&amp;#34;ServiceFactoryBean&amp;#34; class=&amp;#34;org.springframework.beans.factory.FactoryBeanTests$ServiceFactoryBean&amp;#34; &amp;gt;&amp;lt;/bean&amp;gt; 上述的意思就是，当我们getBean Service 的时候，会从 ServiceFactory的 getObject 方法中获取 Service
+所以应该会分成两个过程 ：
+ 先获取 ServiceFactory 实例 调用ServiceFactory的 getObject  实际上获取从ServiceFactory中获取 Service，就相当于把 ServiceFactory当成是 FactoryBean ，只是这样做的话可以允许程序员自定义自己的factory-method罢了，因为 FactoryBean的话就要继承接口，工厂方法也就被定下来了。
+ 原理部分
+因为这一小节只是详解 factory-method 和 factory-bean 的原理部分，所以源码只会截取一部分，若想要完整，那就到 beans 文件夹中查看详解部分.
+protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 创建bean 实例 * [1] 判断类是不是 public * [2] 判断是否提供了工厂方法，若有，则调用 {@link #instantiateUsingFactoryMethod} * [3] 判断是否提供了构造函数，若有，则调用 {@link #autowireConstructor} * [4] 两者都不提供，则直接调用默认构造函数 {@link #instantiateBean} *------------------------------------------------------------------------------------------------------------*/  	// 确保class已经被解析 	Class&amp;lt;?</description>
+    </item>
+    
+    <item>
+      <title>2.注解@Qualifier和@Value的实现</title>
+      <link>https://example.org/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3qualifier%E5%92%8Cvalue%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+      <description>前言 @Qualifier用于注解在属性、方法、参数，指定用于修复依赖的 bean
+QualifierAnnotationAutowireCandidateResolver用于支持 @Qualifier和 @Value注解
+这得分两种情形，否则会出意外的BUG出现 :
+ 以byType 方式装配 使用注解 Autowried 装配  当以byType 方式装配的时候，@Qualifier 要写在setter 方法或者参数上
+当以@Autowried注解装配，则写在 属性 上
+因为byType 是以 setter 方法进行依赖修复的
+@Autowried 是以属性的方式进行依赖修复
+下面看源码一目了然
+protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) { 	// Note 根据类型来自动装配 	// Note 那就必然涉及到类型的转换  	// [1] 先new 一个类型转转换器 	TypeConverter converter = getCustomTypeConverter(); 	if (converter == null) { 	// 如果没有就用Wrapper内置的类型转换，支持基础类型 	converter = bw; 	}  	// [2] 遍历属性和装配了 	Set&amp;lt;String&amp;gt; autowiredBeanNames = new LinkedHashSet&amp;lt;&amp;gt;(4);  	// NOTE 在这里排除一些不满足装配条件的属性 	// NOTE 使用 &amp;lt;property name=&amp;#34;impl1&amp;#34; ref=&amp;#34;BEAN1&amp;#34;/&amp;gt; ref属性引用的bean，这个是不会被装配的 	// NOTE CGLIB 定义的属性也不会被装配 	// NOTE 简单类型是不会被装配 	// TODO 之所以使用 ref是因为接触循环依赖？目前还不清楚 	String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw); 	for (String propertyName : propertyNames) { 	try {  	// Note 第一步肯定是获取属性的描述符 	PropertyDescriptor pd = bw.</description>
+    </item>
+    
+    <item>
+      <title>3.@Autowired注解实现的原理</title>
+      <link>https://example.org/posts/spring_analysis/beans/functionality/3.autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/beans/functionality/3.autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/</guid>
+      <description>前言 @Autowired 注解的实现原理
+第二小节说了，byType是根据 method 和methodParm 来装配的
+在这里 @Autowried 是根据 field来进行装配的
+AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired  注解装配
+spring 也支持 JSR330 的 Inject 注解
+先看这个 processor 初始化部分
+@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&amp;lt;?&amp;gt; beanType, String beanName) {  // [1] 预处理，准备注解数据，这个在new instance 后调用  // 调用之后才是 填充bean依赖数据  InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);  metadata.checkConfigMembers(beanDefinition); } 继续跟进
+private InjectionMetadata findAutowiringMetadata(String beanName, Class&amp;lt;?&amp;gt; clazz, @Nullable PropertyValues pvs) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why?</description>
+    </item>
+    
+  </channel>
+</rss>

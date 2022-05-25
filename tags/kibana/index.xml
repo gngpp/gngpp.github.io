@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kibana on gngpp</title>
+    <link>https://example.org/tags/kibana/</link>
+    <description>Recent content in kibana on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/tags/kibana/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Elasticsearch利用kibana进行可视化操作</title>
+      <link>https://example.org/posts/elasticsearch/%E5%88%A9%E7%94%A8kibana%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E6%93%8D%E4%BD%9C/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/elasticsearch/%E5%88%A9%E7%94%A8kibana%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E6%93%8D%E4%BD%9C/</guid>
+      <description>利用kibana进行可视化操作 基本命令   查看elasticsearch的状态
+GET /_cat/health?v
+  查看elasticsearch的索引
+GET /_cat/indices?v
+  添加索引
+PUT indexName
+  删除索引
+DELETE indexName
+  对文档进行CRUD操作   添加document
+// 最后面跟的是id PUT /school/_doc/1 {  &amp;#34;name&amp;#34; : &amp;#34;xuf&amp;#34;,  &amp;#34;age&amp;#34; : &amp;#34;2&amp;#34; }   查询document
+GET /school/_doc/1   更新document
+POST /school/_update/1/ {  &amp;#34;doc&amp;#34;:{  &amp;#34;name&amp;#34; : &amp;#34;modify1&amp;#34;  } }   删除document
+DELETE /school/_doc/1   使用脚本更新值</description>
+    </item>
+    
+  </channel>
+</rss>

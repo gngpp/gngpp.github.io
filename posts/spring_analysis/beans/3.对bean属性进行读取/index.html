@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>3.对Bean属性进行读取 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="3.对Bean属性进行读取"/>
+<meta name="twitter:description" content="###前言
+  根据token获取该属性的 Instance
+在上面 解析中，我们已经拿到了token ，我们知道 token 里面包含了属性名和 keys ，接下来就能通过属性名拿到属性值了
+ Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException {  String propertyName = tokens.canonicalName;  String actualName = tokens.actualName;  // [1] 直接获取 handler,handler用于访问属性  PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
+protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) {  // [1] 实现很简单，直接从缓存获取属性描述符  PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName);  return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器"/>
+
+    <meta property="og:title" content="3.对Bean属性进行读取" />
+<meta property="og:description" content="###前言
+  根据token获取该属性的 Instance
+在上面 解析中，我们已经拿到了token ，我们知道 token 里面包含了属性名和 keys ，接下来就能通过属性名拿到属性值了
+ Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException {  String propertyName = tokens.canonicalName;  String actualName = tokens.actualName;  // [1] 直接获取 handler,handler用于访问属性  PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
+protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) {  // [1] 实现很简单，直接从缓存获取属性描述符  PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName);  return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/spring_analysis/beans/3.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E8%AF%BB%E5%8F%96/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">3.对Bean属性进行读取</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/spring-bean/">Spring-Bean</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>###前言</p>
+<ol>
+<li>
+<p>根据<code>token</code>获取该属性的 <code>Instance</code></p>
+<p>在上面 解析中，我们已经拿到了<code>token</code> ，我们知道 <code>token</code> 里面包含了<code>属性名</code>和 <code>keys</code> ，接下来就能通过<code>属性名</code>拿到<code>属性值了</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span> Object value <span style="color:#f92672">=</span> getPropertyValue<span style="color:#f92672">(</span>tokens<span style="color:#f92672">);</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">getPropertyValue</span><span style="color:#f92672">(</span>PropertyTokenHolder tokens<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   String propertyName <span style="color:#f92672">=</span> tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">canonicalName</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   String actualName <span style="color:#f92672">=</span> tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">actualName</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// [1] 直接获取 handler,handler用于访问属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   PropertyHandler ph <span style="color:#f92672">=</span> getLocalPropertyHandler<span style="color:#f92672">(</span>actualName<span style="color:#f92672">);</span>
+</span></span></code></pre></div><p>上面提到过，<code>PropertyHandler</code> 是用于访问属性的，职责分离嘛，所以再拿到<code>token</code> 后，就可以获取 <code>Handler</code>了。这个方法的实现是在<code>BeanWrapperImpl#getLocalPropertyHandler</code>中实现的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> BeanPropertyHandler <span style="color:#a6e22e">getLocalPropertyHandler</span><span style="color:#f92672">(</span>String propertyName<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// [1] 实现很简单，直接从缓存获取属性描述符
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   PropertyDescriptor pd <span style="color:#f92672">=</span> getCachedIntrospectionResults<span style="color:#f92672">().</span><span style="color:#a6e22e">getPropertyDescriptor</span><span style="color:#f92672">(</span>propertyName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>pd <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">new</span> BeanPropertyHandler<span style="color:#f92672">(</span>pd<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>善用缓存～:happy:  ，还记得 <code>getCachedIntrospectionResults</code> 这个方法么，从<code>缓存</code>或者从<code>线程上下文类加载器</code></p>
+<p>拿到 <code>BeanInfo</code>，现在我们需要到 <code>BeanInfo -&gt; PropertyDescriptor</code></p>
+<p>最后我们就拿到了 <code>Handler</code>，这个<code>Handler</code>的实现类是 <code>BeanPropertyHandler</code></p>
+<p>回到上面的方法，现在已经有了 <code>Handler</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">getPropertyValue</span><span style="color:#f92672">(</span>PropertyTokenHolder tokens<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   String propertyName <span style="color:#f92672">=</span> tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">canonicalName</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   String actualName <span style="color:#f92672">=</span> tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">actualName</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// [1] 直接获取 handler,handler用于访问属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   PropertyHandler ph <span style="color:#f92672">=</span> getLocalPropertyHandler<span style="color:#f92672">(</span>actualName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// 属性是否存在或者不可读
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ph <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span>ph<span style="color:#f92672">.</span><span style="color:#a6e22e">isReadable</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NotReadablePropertyException<span style="color:#f92672">(</span>getRootClass<span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nestedPath</span> <span style="color:#f92672">+</span> propertyName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// [2] 直接调用 propertyHandle#getValue 获取属性值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      Object value <span style="color:#f92672">=</span> ph<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+</span></span></code></pre></div><p>跟 <code>#getValue</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getValue</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// [1] 从属性描述符中获取 Method
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">final</span> Method readMethod <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">pd</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getReadMethod</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// [2] 清除方法权限，然后直接调用get方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">getSecurityManager</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      AccessController<span style="color:#f92672">.</span><span style="color:#a6e22e">doPrivileged</span><span style="color:#f92672">((</span>PrivilegedAction<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;)</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         ReflectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">makeAccessible</span><span style="color:#f92672">(</span>readMethod<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">return</span> AccessController<span style="color:#f92672">.</span><span style="color:#a6e22e">doPrivileged</span><span style="color:#f92672">((</span>PrivilegedExceptionAction<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;)</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>               readMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>getWrappedInstance<span style="color:#f92672">(),</span> <span style="color:#f92672">(</span>Object<span style="color:#f92672">[])</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">),</span> acc<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>PrivilegedActionException pae<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">throw</span> pae<span style="color:#f92672">.</span><span style="color:#a6e22e">getException</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      ReflectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">makeAccessible</span><span style="color:#f92672">(</span>readMethod<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> readMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>getWrappedInstance<span style="color:#f92672">(),</span> <span style="color:#f92672">(</span>Object<span style="color:#f92672">[])</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>熟悉吧，从 <code>PropertyDescriptor</code>拿到 <code>readMethod</code>，然后反射调用一下就 👌</p>
+<p>但这没有结束，因为还要处理 <code>keys</code>呢，继续追<code>getPropertyValue</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">getPropertyValue</span><span style="color:#f92672">(</span>PropertyTokenHolder tokens<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		String propertyName <span style="color:#f92672">=</span> tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">canonicalName</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		String actualName <span style="color:#f92672">=</span> tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">actualName</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [1] 直接获取 handler,handler用于访问属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		PropertyHandler ph <span style="color:#f92672">=</span> getLocalPropertyHandler<span style="color:#f92672">(</span>actualName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 属性是否存在或者不可读
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ph <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span>ph<span style="color:#f92672">.</span><span style="color:#a6e22e">isReadable</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NotReadablePropertyException<span style="color:#f92672">(</span>getRootClass<span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nestedPath</span> <span style="color:#f92672">+</span> propertyName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// [2] 直接调用 propertyHandle#getValue 获取属性值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Object value <span style="color:#f92672">=</span> ph<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// [3] 这里还是很熟悉，就是判断token是否存在，然后如果支持集合类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// 如果属性值为null，则new 一个集合给它
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// 如果不支持集合类型，那么 over~
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// [NOTICE] 它new出来的集合，它还是会调用 setDefaultValue 把值放进去
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// key are not-null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">keys</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// the AutoGrowNestedPaths enabled
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isAutoGrowNestedPaths<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// this value not null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						value <span style="color:#f92672">=</span> setDefaultValue<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> PropertyTokenHolder<span style="color:#f92672">(</span>tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">actualName</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullValueInNestedPathException<span style="color:#f92672">(</span>getRootClass<span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nestedPath</span> <span style="color:#f92672">+</span> propertyName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>								<span style="color:#e6db74">&#34;Cannot access indexed value of property referenced in indexed &#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>										<span style="color:#e6db74">&#34;property path &#39;&#34;</span> <span style="color:#f92672">+</span> propertyName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;: returned null&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				StringBuilder indexedPropertyName <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">(</span>tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">actualName</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// [4] 下面是重头戏，也就是处理集合类型的属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">keys</span><span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					String key <span style="color:#f92672">=</span> tokens<span style="color:#f92672">.</span><span style="color:#a6e22e">keys</span><span style="color:#f92672">[</span>i<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullValueInNestedPathException<span style="color:#f92672">(</span>getRootClass<span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nestedPath</span> <span style="color:#f92672">+</span> propertyName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>								<span style="color:#e6db74">&#34;Cannot access indexed value of property referenced in indexed &#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>										<span style="color:#e6db74">&#34;property path &#39;&#34;</span> <span style="color:#f92672">+</span> propertyName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;: returned null&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 类型是 Array
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">//growArrayIfNecessary 的作用是如果你的 index 越界它会帮你扩容, 贴心吧？
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">isArray</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// 扩容
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						value <span style="color:#f92672">=</span> growArrayIfNecessary<span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> index<span style="color:#f92672">,</span> indexedPropertyName<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// [NOTICE]返回索引的值 可能为 null，index 越界后会填充null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// 如果value是 集合类的数组，则不可能是null，会是一个新的集合
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// 如果是  BeanInstance[] 那就可能拿到null，如果index越界
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						value <span style="color:#f92672">=</span> Array<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 类型是 List
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#66d9ef">instanceof</span> List<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;)</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						growCollectionIfNecessary<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> index<span style="color:#f92672">,</span> indexedPropertyName<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(),</span> ph<span style="color:#f92672">,</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// list 和上面是一样的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						value <span style="color:#f92672">=</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 类型是 Set
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#66d9ef">instanceof</span> Set<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// Apply index to Iterator in case of a Set.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						Set<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> set <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Set<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;)</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>index <span style="color:#f92672">&lt;</span> 0 <span style="color:#f92672">||</span> index <span style="color:#f92672">&gt;=</span> set<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> InvalidPropertyException<span style="color:#f92672">(</span>getRootClass<span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nestedPath</span> <span style="color:#f92672">+</span> propertyName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>									<span style="color:#e6db74">&#34;Cannot get element with index &#34;</span> <span style="color:#f92672">+</span> index <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; from Set of size &#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>											set<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, accessed using property path &#39;&#34;</span> <span style="color:#f92672">+</span> propertyName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						Iterator<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span> set<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">();</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							Object elem <span style="color:#f92672">=</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">==</span> index<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>								value <span style="color:#f92672">=</span> elem<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>								<span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 类型是 Map
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#66d9ef">instanceof</span> Map<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						Map<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;)</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// 获取key的类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						Class<span style="color:#f92672">&lt;?&gt;</span> mapKeyType <span style="color:#f92672">=</span> ph<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvableType</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getNested</span><span style="color:#f92672">(</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">).</span><span style="color:#a6e22e">asMap</span><span style="color:#f92672">().</span><span style="color:#a6e22e">resolveGeneric</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// IMPORTANT: Do not pass full property name in here - property editors
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// must not kick in for map keys but rather only for map values.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						TypeDescriptor typeDescriptor <span style="color:#f92672">=</span> TypeDescriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>mapKeyType<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// 转换key 的类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						Object convertedMapKey <span style="color:#f92672">=</span> convertIfNecessary<span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> mapKeyType<span style="color:#f92672">,</span> typeDescriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// 直接从map中拿到数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// [NOTICE] map的情况比较特殊，它在这里不会检查，是否存在key，它不像那些自增长的集合
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// [NOTICE] 在外部处理 value为 null的 情况，因为数据类型可能是 map&lt;String,List[]&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// 因为我们不知道 下一个key是什么，因为这里不会传入所有的key，why
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// 当我们调用的是 setPropertyValue的时候，当我们传入的参数是 map[key][1]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// 我们就得先调用 getPropertyValue（&#34;map[key]&#34;），这个时候执行完这里，外面还有一个key 那就是 1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// 我们map#get后可能为 null，所以要在外部处理 map#get 为null 的情况，终于明白了 :good：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						value <span style="color:#f92672">=</span> map<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>convertedMapKey<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>indexedPropertyName<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>PROPERTY_KEY_PREFIX<span style="color:#f92672">).</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>key<span style="color:#f92672">).</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>PROPERTY_KEY_SUFFIX<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>上面可以看到，在获取属性值后，需要处理<code>keys</code>的问题，也就是要支持集合，可以看出 <code>spring</code> 支持</p>
+<ul>
+<li>Array</li>
+<li>List</li>
+<li>Set</li>
+<li>Map</li>
+</ul>
+<p>四种集合类型</p>
+<p>同时也支持集合扩容，比如 List<!-- raw HTML omitted --> 可以自动扩容</p>
+</li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

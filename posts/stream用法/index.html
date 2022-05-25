@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Stream用法 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Stream用法"/>
+<meta name="twitter:description" content="Stream 如何工作 stream 包含中间和最终两种形式的操作
+  中间操作（intermediate operations)
+对于中间操作来说，其返回值还是一个stream，因此可以通过链式调用将中间操作串联起来。
+中间操作又分为两种状态：
+  无状态 (Stateless)
+无状态操作：是指元素的处理不受之前元素的影响
+ unordered filter 过滤符合断言的元素 map 将元素映射为其它类型 mapToInt 将元素映射为 Integer 类型` mapToLong 将元素映射为 Long  mapToDouble 将元素映射为 Double flatMap 用于将N维列表，压缩成一维列表, 一个 flatMap只能降一个维度（可多次调用） flatMapToInt 和 flatMap一致，只是将元素转换为 Integer 类型输出 flatMapToLong 同上 flatMapToDouble 同上 peek 调试    有状态 (Stateful)
+有状态操作：是指该操作只有拿到所有元素之后才能继续下去
+ distinct 去重 sorted 排序 limit 返回前 n 个元素 skip 跳过/丢掉前 n 个元素      最终操作 (terminal operation)"/>
+
+    <meta property="og:title" content="Stream用法" />
+<meta property="og:description" content="Stream 如何工作 stream 包含中间和最终两种形式的操作
+  中间操作（intermediate operations)
+对于中间操作来说，其返回值还是一个stream，因此可以通过链式调用将中间操作串联起来。
+中间操作又分为两种状态：
+  无状态 (Stateless)
+无状态操作：是指元素的处理不受之前元素的影响
+ unordered filter 过滤符合断言的元素 map 将元素映射为其它类型 mapToInt 将元素映射为 Integer 类型` mapToLong 将元素映射为 Long  mapToDouble 将元素映射为 Double flatMap 用于将N维列表，压缩成一维列表, 一个 flatMap只能降一个维度（可多次调用） flatMapToInt 和 flatMap一致，只是将元素转换为 Integer 类型输出 flatMapToLong 同上 flatMapToDouble 同上 peek 调试    有状态 (Stateful)
+有状态操作：是指该操作只有拿到所有元素之后才能继续下去
+ distinct 去重 sorted 排序 limit 返回前 n 个元素 skip 跳过/丢掉前 n 个元素      最终操作 (terminal operation)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/stream%E7%94%A8%E6%B3%95/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Stream用法</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          3 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/stream/">Stream</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="stream-如何工作">Stream 如何工作</h2>
+<p>stream 包含中间和最终两种形式的操作</p>
+<ul>
+<li>
+<p>中间操作（intermediate operations)</p>
+<p>对于中间操作来说，其返回值还是一个<code>stream</code>，因此可以通过链式调用将中间操作串联起来。</p>
+<p>中间操作又分为两种状态：</p>
+<ol>
+<li>
+<p>无状态 (Stateless)</p>
+<p>无状态操作：是指元素的处理不受之前元素的影响</p>
+<ul>
+<li><code>unordered</code></li>
+<li><code>filter</code> 过滤符合断言的元素</li>
+<li><code>map</code> 将元素映射为其它类型</li>
+<li><code>mapToInt</code> 将元素映射为 <code>Integer</code> 类型`</li>
+<li><code>mapToLong</code> 将元素映射为 <code>Long </code></li>
+<li><code>mapToDouble</code> 将元素映射为 <code>Double</code></li>
+<li><code>flatMap</code> 用于将<code>N</code>维列表，压缩成一维列表, 一个 <code>flatMap</code>只能降一个维度（可多次调用）</li>
+<li><code>flatMapToInt</code> 和 <code>flatMap</code>一致，只是将元素转换为 <code>Integer</code> 类型输出</li>
+<li><code>flatMapToLong</code> 同上</li>
+<li><code>flatMapToDouble</code>  同上</li>
+<li><code>peek</code> 调试</li>
+</ul>
+</li>
+<li>
+<p>有状态 (Stateful)</p>
+<p>有状态操作：是指该操作只有拿到所有元素之后才能继续下去</p>
+<ul>
+<li><code>distinct</code> 去重</li>
+<li><code>sorted</code> 排序</li>
+<li><code>limit</code> 返回前 <code>n</code> 个元素</li>
+<li><code>skip</code> 跳过/丢掉前 <code>n</code> 个元素</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>最终操作  (terminal operation)</p>
+<p>对于最终操作来说，只能返回 <code>void</code> 或者一个非 <code>stream</code> 的结果</p>
+<p>最终操作又分为两种操作：</p>
+<ol>
+<li>
+<p>非短路操作</p>
+<p>非短路操作：是指必须处理所有元素才能得到最终结果</p>
+<ul>
+<li><code>forEach</code> 单线程的时候是<strong>顺序</strong>执行，多线程的时候是<strong>乱序</strong>执行</li>
+<li><code>forEachOrdered</code> 单线程和多线程都是<strong>顺序</strong>操作</li>
+<li><code>toArray 转换为数组</code></li>
+<li><code>reduce</code> 计算</li>
+<li><code>collect 收集器</code></li>
+<li><code>max</code> 根据比较条件查找最大元素</li>
+<li><code>min</code> 根据比较条件查找最小元素</li>
+<li><code>count</code> 计算元素个数</li>
+</ul>
+</li>
+<li>
+<p>短路操作</p>
+<p>短路操作：是指遇到某些符合条件的元素就可以得到最终结果</p>
+<ul>
+<li><code>anyMatch</code> 任意一个元素满足断言才返回 <code>true</code></li>
+<li><code>allMatch</code> 所有的元素都必须满足断言才返回 <code>true</code> ，流为空时返回 <code>true</code></li>
+<li><code>noneMatch</code> 所有的元素都不满足断言才返回 <code>true</code></li>
+<li><code>findFirst</code> 返回流中的第一个元素，或者空，返回类型为 <code>Optional</code></li>
+<li><code>findAny</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<ol>
+<li>
+<p>创建Stream</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 集合流
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Stream<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>Array<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">,</span>3<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 整数流，用于代替 for 循环
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>IntStream<span style="color:#f92672">.</span><span style="color:#a6e22e">range</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>100<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 100<span style="color:#f92672">;</span> i<span style="color:#f92672">++);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 直接调用集合的 stream
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>Set<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ... 在下面列出 
+</span></span></span></code></pre></div><ul>
+<li>Collection.stream</li>
+<li>Collection.parallelStream</li>
+<li>java.io.BufferedReader.lines</li>
+<li>java.util.stream.IntStream</li>
+<li>Random.ints</li>
+<li>BitSet.Stream</li>
+<li>java.util.Spliterator</li>
+</ul>
+<p>你还可以自己生成流，只需要提供 <code>Supplier</code> 数据提供者即可</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Supplier<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> studentSupplier <span style="color:#f92672">=</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">new</span> Student<span style="color:#f92672">()};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 调用 Steam.generate 即可生成属于自己的流
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Stream<span style="color:#f92672">.</span><span style="color:#a6e22e">generate</span><span style="color:#f92672">(</span>studentSupplier<span style="color:#f92672">).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span>
+</span></span></code></pre></div></li>
+<li>
+<p>流复用</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 当我们调用 collect 最终操作后流就被关闭了，如果还继续调用流则报异常
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 例如下面例子
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">final</span> Stream<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> stream <span style="color:#f92672">=</span> students<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span> isMatched <span style="color:#f92672">=</span> stream<span style="color:#f92672">.</span><span style="color:#a6e22e">anyMatch</span><span style="color:#f92672">((</span>stu<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> stu<span style="color:#f92672">.</span><span style="color:#a6e22e">getSex</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;男&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 这个时候流已经关闭, 报异常
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>stream<span style="color:#f92672">.</span><span style="color:#a6e22e">anyMatch</span><span style="color:#f92672">((</span>stu<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> stu<span style="color:#f92672">.</span><span style="color:#a6e22e">getSex</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;男&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 复用流很简单，就是用一个 Supplier 提供流就行了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Supplier<span style="color:#f92672">&lt;</span>Stream<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;&gt;</span> streamSupplier <span style="color:#f92672">=</span> students<span style="color:#f92672">::</span>stream<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>streamSupplier<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">().</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>streamSupplier<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">().</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>forEach</code>用法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 其参数是一个消费者，通常可以这么用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>forEach<span style="color:#f92672">(</span>Comsumer<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> comsumer<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>forEach<span style="color:#f92672">((</span>value<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 处理value，无返回值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 用于数组遍历
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">,</span>3<span style="color:#f92672">).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">,</span>3<span style="color:#f92672">).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">((</span>v<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>v<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 配合 IntStream 就是一个 for循环
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>IntStream<span style="color:#f92672">.</span><span style="color:#a6e22e">range</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>100<span style="color:#f92672">).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>map/mapToInt/mapToLong</code> 映射对象</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 当我们从数据库查询出一个 pojo列表时，我们想取出其中的某个属性的值，或者利用此值去生成某些值，并且将这些值组成一个链表，可以用 map 方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String age<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//setter / getter...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 存在一个已经有数据的list（偷懒不加数据）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> studentList<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 将一个 Student 对象 映射成 String 类型的对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 并且利用收集器收集成为List
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> nameList <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>Student<span style="color:#f92672">::</span>getName<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 我们也可以利用其中的一个字段映射成为其它对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 在这里将 student 中的两个字段合并成字符串返回
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> otherObject <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">((</span>v<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> v<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> v<span style="color:#f92672">.</span><span style="color:#a6e22e">getAge</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">})</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 同理 mapToInt/mapToLong 也一样
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> ageList <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">mapToInt</span><span style="color:#f92672">(</span>Student<span style="color:#f92672">::</span>getAge<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>flatMap / flatMapToInt / flatMapToLong /flatMapToDouble</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 当有一个二维List，你需要将其转为一维的时候，可以用此方法映射
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// flatMap只需要返回一个 steam对象即可
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;&gt;</span> list<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> ls <span style="color:#f92672">=</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">flatMap</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">::</span>stream<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collector<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 一个实在的例子
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClassRoom</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> studentList<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 一个班级列表，并且每个班级里都有一个学生列表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>ClassRoom<span style="color:#f92672">&gt;</span> classRoomList<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 如果我们要获取所有学生对象, 就可以用到flatMap
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> studentList <span style="color:#f92672">=</span> classRoomList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">flatMap</span><span style="color:#f92672">((</span>room<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> room<span style="color:#f92672">.</span><span style="color:#a6e22e">getStudentList</span><span style="color:#f92672">().</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">})</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// flatMapToInt ... 同理  
+</span></span></span></code></pre></div></li>
+<li>
+<p><code>filter</code> 过滤数据</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 这个功能不用讲都知道什么意思了，就是用来过滤数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// filter 中返回 true，那就允许这个数据通过，否则将其过滤掉
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 例如获取年龄大于 10 的学生
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> studentList<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> filtedStudentList <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">((</span>stu<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> stu<span style="color:#f92672">.</span><span style="color:#a6e22e">getAge</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 10<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">})</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>anyMatch / allMatch / noneMatch</code> 判断元素是否满足条件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// anyMatch, 任意一个元素满足条件则返回 true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> studentList<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 判断学生列表中是否存在张三这个学生，若存在返回 true 否则 返回 false
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">boolean</span> isExits <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">anyMatch</span><span style="color:#f92672">((</span>stu<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> stu<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;张三&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// allMatch, 所有元素必须满足条件才返回 true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 判断所有学生的名字是否都为非空，若都为非空则返回 true 否则 返回 false
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">boolean</span> isEmpty <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">allMatch</span><span style="color:#f92672">((</span>stu<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">!</span>stu<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// noneMatch 和上面那个相反，所有元素都不能满足条件才返回 true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 判断所有学生的名字是否都为非空，若都为非空返回 true 否则 返回 false
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">boolean</span> isEmpty <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">noneMatch</span><span style="color:#f92672">((</span>stu<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> stu<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">});</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>max / min / average / sum / count</code> 各种信息统计</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// max 用于求最大值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 求所有学生的最大年龄
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>Student<span style="color:#f92672">::</span>getAge<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// min 用于求最小值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// average 用于求平均值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// sum 用于求和
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// count 求数量
+</span></span></span></code></pre></div></li>
+<li>
+<p><code>distinct</code> 去重</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 用于去重数据，如果是对象你必须重写 hashCode 和 equals 方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">distinct</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>sorted</code> 排序</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 这个和我们常用的 Collections.sort 差不都，也是提供一个比较器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">.</span><span style="color:#a6e22e">sorted</span><span style="color:#f92672">((</span>s1<span style="color:#f92672">,</span> s2<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> s1<span style="color:#f92672">.</span><span style="color:#a6e22e">getAge</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> s2<span style="color:#f92672">.</span><span style="color:#a6e22e">getAge</span><span style="color:#f92672">())</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div><ol start="11">
+<li><code>collect</code> 收集</li>
+</ol>
+<p><code>collect</code>负责将流中的元素进行收集，收集方式有很多，<code>jdk</code> 定义了许多收集器</p>
+<ul>
+<li>
+<p><code>Collectors.toList</code> 将流中元素收集为 <code>List</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>Collectors.toSet </code> 将流中元素收集为 <code>Set</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Set<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;</span> set <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toSet</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>Collectors.toMap</code> 将流中元素收集为 <code>Map</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// map 复杂一点
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 将 student 收集为 map ： id -&gt; age
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Map<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">,</span>String<span style="color:#f92672">&gt;</span> mapping <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toMap</span><span style="color:#f92672">(</span>Student<span style="color:#f92672">::</span>getId<span style="color:#f92672">),</span>Student<span style="color:#f92672">::</span>getAge<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 两个Function接口，分别指定 map 的 key 和 value
+</span></span></span></code></pre></div></li>
+<li>
+<p><code>Collectors.groupingBy</code> 将流中元素按照条件分组</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 这个接口蛮常用的，对于数据库中查询出来的集合，很适合用于分组，比如按ID分组
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Map<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">,</span>Student<span style="color:#f92672">&gt;</span> mapping <span style="color:#f92672">=</span> studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">groupingBy</span><span style="color:#f92672">(</span>Student<span style="color:#f92672">::</span>getId<span style="color:#f92672">));</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>Collectors.partitioningBy</code> 将流中元素按照条件分区</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 所谓分区就是根据所给条件，将数据分为满足条件和不满足条件两个部分
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 下面例子将学生信息按照性别分组
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Student<span style="color:#f92672">&gt;&gt;</span> partitionBySex <span style="color:#f92672">=</span> students<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">partitioningBy</span><span style="color:#f92672">((</span>stu<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> stu<span style="color:#f92672">.</span><span style="color:#a6e22e">getSex</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;男&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 性别为男
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>partitionBySex<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 性别为女
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>partitionBySex<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>Collectors.mapping</code> 将流中元素映射为其它元素</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 第一个参数是 Function 接口，第二个参数是 Collector 收集器接口
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 和 map 不一样的是 第二个参数支持 收集器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 如果第一个参数 返回的是 一个 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 算了不讲了 根本不会用 ，下次吧
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">mapping</span><span style="color:#f92672">())</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>Collectors.joining</code> 将流中元素连接起来</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 用于将元素连接起来，并且 提供 开始前缀 分隔符 结束后缀
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 比如我要将所有的学生名字连接成这种字符 [name1,name2,name3]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">joining</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;[&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">));</span>
+</span></span></code></pre></div></li>
+</ul>
+<ol start="12">
+<li>
+<p><code>limit</code> 截取流中元素，根据<code>limit</code>定义的长度</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 截取流中100个元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">limit</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>skip</code> 跳过流中的元素，根据<code>skip</code> 定义的个数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 跳过流中的100个元素，直接从第101个元素开始处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">skip</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>peek</code> 调试</p>
+<p>用于调试每一个步骤的元素内容</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>studentList<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">peek</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">)</span> <span style="color:#75715e">// 这时候流中的元素是 student 类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>Student<span style="color:#f92672">::</span>getName<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">peek</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">)</span> <span style="color:#75715e">// 这时候流中元素是 string 类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 功能仅仅是用来调试
+</span></span></span></code></pre></div></li>
+<li>
+<p><code>reduce</code> 计算</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 暂时不写
+</span></span></span></code></pre></div></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

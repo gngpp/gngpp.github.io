@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>CRUD一些常用工具 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CRUD一些常用工具"/>
+<meta name="twitter:description" content="Objects常用场景
+ 重写hashCode 时，使用 Objects.hash(Object ...) 计算所有对象 HashCode 使用 Objects.requireNonNull(Object) 代替if(Object == null) throw new NullPointerException()    集合和字符串判空常用方法
+ CollectionUtils.isEmpty 这是spring提供的工具类 StringUtils.isEmpty 这是 spring提供的工具类    Optional常用场景
+Optinal 简单用法
+// 若value为null则抛出异常 Optional&lt;Object&gt; optional = Optional.of(Object);  // value可以为null Optional&lt;Object&gt; optional = Optional.ofNullable(Object);  // 操作值，若值不为null optional.ifPresent(Consumer&lt;T&gt; concumer); optinal.ifPresent(System.out::print);   处理允许为 null 的返回值
+Optional&lt;Object&gt; result = Optional.ofNullable(Value); result.ifPresent((value) -&gt; {  // do something if value not null });  // 等价于 if(value !"/>
+
+    <meta property="og:title" content="CRUD一些常用工具" />
+<meta property="og:description" content="Objects常用场景
+ 重写hashCode 时，使用 Objects.hash(Object ...) 计算所有对象 HashCode 使用 Objects.requireNonNull(Object) 代替if(Object == null) throw new NullPointerException()    集合和字符串判空常用方法
+ CollectionUtils.isEmpty 这是spring提供的工具类 StringUtils.isEmpty 这是 spring提供的工具类    Optional常用场景
+Optinal 简单用法
+// 若value为null则抛出异常 Optional&lt;Object&gt; optional = Optional.of(Object);  // value可以为null Optional&lt;Object&gt; optional = Optional.ofNullable(Object);  // 操作值，若值不为null optional.ifPresent(Consumer&lt;T&gt; concumer); optinal.ifPresent(System.out::print);   处理允许为 null 的返回值
+Optional&lt;Object&gt; result = Optional.ofNullable(Value); result.ifPresent((value) -&gt; {  // do something if value not null });  // 等价于 if(value !" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/crud%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:38:18+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:38:18+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">CRUD一些常用工具</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/crud/">CRUD</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <ol>
+<li>
+<p>Objects常用场景</p>
+<ul>
+<li>重写<code>hashCode</code> 时，使用 <code>Objects.hash(Object ...)</code> 计算所有对象 <code>HashCode</code></li>
+<li>使用 <code>Objects.requireNonNull(Object)</code> 代替<code>if(Object == null) throw new NullPointerException()</code></li>
+</ul>
+</li>
+<li>
+<p>集合和字符串判空常用方法</p>
+<ul>
+<li><code>CollectionUtils.isEmpty</code> 这是<code>spring</code>提供的工具类</li>
+<li><code>StringUtils.isEmpty</code> 这是 <code>spring</code>提供的工具类</li>
+</ul>
+</li>
+<li>
+<p>Optional常用场景</p>
+<p>Optinal 简单用法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 若value为null则抛出异常
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Optional<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> optional <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>Object<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// value可以为null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Optional<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> optional <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ofNullable</span><span style="color:#f92672">(</span>Object<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 操作值，若值不为null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ifPresent</span><span style="color:#f92672">(</span>Consumer<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> concumer<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>optinal<span style="color:#f92672">.</span><span style="color:#a6e22e">ifPresent</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>print<span style="color:#f92672">);</span>
+</span></span></code></pre></div><ul>
+<li>
+<p>处理允许为 <code>null</code> 的返回值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Optional<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ofNullable</span><span style="color:#f92672">(</span>Value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">ifPresent</span><span style="color:#f92672">((</span>value<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// do something if value not null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// do something
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>处理不允许为<code>null</code>的返回值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Optional<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>Value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">ifPresent</span><span style="color:#f92672">((</span>value<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// do something if value not null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// do something
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用默认值代替<code>null</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 方式一
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Optional<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ofNullable</span><span style="color:#f92672">(</span>Value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>Object value <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">orElse</span><span style="color:#f92672">(</span>defaultValue<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 方式二，使用 lamdba
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Optional<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ofNullable</span><span style="color:#f92672">(</span>Value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>Object value <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">orElseGet</span><span style="color:#f92672">(()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> defaultValue<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Object value <span style="color:#f92672">=</span> result <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">?</span> defaultValue <span style="color:#f92672">:</span> result<span style="color:#f92672">;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用自定义异常对于 <code>null</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Optional<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ofNullable</span><span style="color:#f92672">(</span>Value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>Object value <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">orElseThrow</span><span style="color:#f92672">(()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">new</span> ResourceNotFoundException<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>result <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>  result <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ResourceNotFoundException<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>过滤值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Optional<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ofNullable</span><span style="color:#f92672">(</span>100<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">((</span>value<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> value <span style="color:#f92672">!=</span> 100<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}).</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">((</span>value<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> value <span style="color:#f92672">!=</span> 200<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}).</span><span style="color:#a6e22e">ifPresent</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>print<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Integer value <span style="color:#f92672">=</span> 300<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> value <span style="color:#f92672">!=</span> 100 <span style="color:#f92672">&amp;&amp;</span> value <span style="color:#f92672">!=</span> 200<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>使用 <code>map</code> 将 值重新映射为 <code>Optional</code>类型</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProcessHandle</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> Integer id<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> String path<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 获取 handle 中的id，将其映射为 Optional类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Optional<span style="color:#f92672">&lt;</span>ProcessHandle<span style="color:#f92672">&gt;</span> handle <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ofNullable</span><span style="color:#f92672">(</span>value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>Integer id <span style="color:#f92672">=</span> handle<span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>ProcessHandle<span style="color:#f92672">::</span>getId<span style="color:#f92672">).</span><span style="color:#a6e22e">orElse</span><span style="color:#f92672">(-</span>1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Integer id <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>value<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>Optional</code> 注意事项</p>
+<ul>
+<li>容器类型不应该使用 <code>Optinal</code></li>
+<li>容器类型不应该是 <code>基本类型</code></li>
+<li>不要使用 <code>Optional</code> 作为集合中的元素和键映射</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>使用<code>Mapstruct</code>简化后端中<code>BO</code>转<code>VO</code>的操作</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> DataResult<span style="color:#f92672">&lt;</span>FooBo<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">fooController</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@RequestBody</span> FooVO fooVO<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 通常需要这样操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  FooDTO fooDto <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FooDTO<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  fooDto<span style="color:#f92672">.</span><span style="color:#a6e22e">setxxx</span><span style="color:#f92672">(</span>fooVO<span style="color:#f92672">.</span><span style="color:#a6e22e">getxxx</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  FooBo bo <span style="color:#f92672">=</span> dao<span style="color:#f92672">.</span><span style="color:#a6e22e">query</span><span style="color:#f92672">(</span>fooDto<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> bo<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 充斥着许多 set / get 取值赋值的代码，大大降低了代码可读性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 这个时候用Mapstruct 就可以大大简化代码
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Mappers<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>Foo<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">).</span><span style="color:#a6e22e">voToDto</span><span style="color:#f92672">(</span>fooVO<span style="color:#f92672">);</span>
+</span></span></code></pre></div></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

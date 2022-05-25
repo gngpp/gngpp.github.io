@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring Boot on gngpp</title>
+    <link>https://example.org/categories/spring-boot/</link>
+    <description>Recent content in Spring Boot on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Aug 2021 11:34:30 +0000</lastBuildDate><atom:link href="https://example.org/categories/spring-boot/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spring Boot使用Swagger2</title>
+      <link>https://example.org/posts/springboot/%E4%BD%BF%E7%94%A8swagger2/</link>
+      <pubDate>Mon, 02 Aug 2021 11:34:30 +0000</pubDate>
+      
+      <guid>https://example.org/posts/springboot/%E4%BD%BF%E7%94%A8swagger2/</guid>
+      <description>1.使用Swagger2需要进行配置 (配置运行后-&amp;gt;http://localhost:8080/swagger-ui.html)
+创建配置Swagger配置类
+@Configuration @EnableSwagger2 public class SwaggerConfig{    //创建bean交给spring管理  @Bean  public Docket createRestApi(){  return new Docket(DocumentationType.SWAGGER_2)  .apiInfo(apiInfo()) //构建api文档的详细信息  .select()  .apis(RequestHandlerSelectors.basePackage(Api.class)) //这里选择被Api注解的类  .paths(PathSelectors.any())  }   //构建api文档详细信息  private ApiInfo apiInfo(){  return new ApiInfoBuilder  .title(&amp;#34;设置文档标题&amp;#34;)  .description(&amp;#34;设置接口描述&amp;#34;)  .contact(&amp;#34;设置联系方式&amp;#34;)  .version(&amp;#34;设置版本&amp;#34;)  .build(); //构建  }  } 2.Swagger2注解的使用 实体类注解：@ApiModel (用于类上注解，用于参数用实体类接收) 方法注解：@ApiModelProperty (用于类方法的注解，对model属性进行说明或者对数据对修改)
+控制器类注解：@Api (注解用于类上，表示标识这个类是 swagger 的资源) 方法注解：@ApiOperation ( 注解用于方法，表示一个 http 请求的操作) 参数注解：@Param (注解用于参数上，用来标明参数信息)</description>
+    </item>
+    
+    <item>
+      <title>Spring Boot数据源</title>
+      <link>https://example.org/posts/springboot/%E6%95%B0%E6%8D%AE%E6%BA%90/</link>
+      <pubDate>Mon, 02 Aug 2021 11:33:21 +0000</pubDate>
+      
+      <guid>https://example.org/posts/springboot/%E6%95%B0%E6%8D%AE%E6%BA%90/</guid>
+      <description>spring boot 配置 druid数据源 druid有许多优点，所以用druid当数据源比较合适，在网上有一个druid的自定配置项目
+https://github.com/drtrang/druid-spring-boot 1. 首先在pom文件中引入依赖项  &amp;lt;dependency&amp;gt;  &amp;lt;groupId&amp;gt;com.github.drtrang&amp;lt;/groupId&amp;gt;  &amp;lt;artifactId&amp;gt;druid-spring-boot2-starter&amp;lt;/artifactId&amp;gt;  &amp;lt;version&amp;gt;1.1.10&amp;lt;/version&amp;gt;  &amp;lt;/dependency&amp;gt;  &amp;lt;dependency&amp;gt;  &amp;lt;groupId&amp;gt;com.github.drtrang&amp;lt;/groupId&amp;gt;  &amp;lt;artifactId&amp;gt;druid-spring-boot2-actuator-starter&amp;lt;/artifactId&amp;gt;  &amp;lt;version&amp;gt;1.1.10&amp;lt;/version&amp;gt;  &amp;lt;/dependency&amp;gt;  &amp;lt;dependency&amp;gt;  &amp;lt;groupId&amp;gt;mysql&amp;lt;/groupId&amp;gt;  &amp;lt;artifactId&amp;gt;mysql-connector-java&amp;lt;/artifactId&amp;gt;  &amp;lt;/dependency&amp;gt; 2. 最后在application.yaml配置 spring:  datasource:  # 使用阿里的Druid连接池  type: com.alibaba.druid.pool.DruidDataSource  driver-class-name: com.mysql.cj.jdbc.Driver  # 填写你数据库的url、登录名、密码和数据库名  url: jdbc:mysql://localhost:3306/test?useSSL=false&amp;amp;characterEncoding=utf8  username: root  password: 123456789  druid:  # 连接池的配置信息  # 初始化大小，最小，最大  initial-size: 5  min-idle: 5  maxActive: 20  # 配置获取连接等待超时的时间  maxWait: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒  timeBetweenEvictionRunsMillis: 60000  # 配置一个连接在池中最小生存的时间，单位是毫秒  minEvictableIdleTimeMillis: 300000  validationQuery: SELECT 1  testWhileIdle: true  testOnBorrow: false  testOnReturn: false  # 打开PSCache，并且指定每个连接上PSCache的大小  poolPreparedStatements: true  maxPoolPreparedStatementPerConnectionSize: 20  # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，&amp;#39;wall&amp;#39;用于防火墙  filters: stat,wall,slf4j  # 通过connectProperties属性来打开mergeSql功能；慢SQL记录  connectionProperties: druid.</description>
+    </item>
+    
+    <item>
+      <title>Spring Boot 日志配置</title>
+      <link>https://example.org/posts/springboot/%E6%97%A5%E5%BF%97/</link>
+      <pubDate>Mon, 02 Aug 2021 11:31:49 +0000</pubDate>
+      
+      <guid>https://example.org/posts/springboot/%E6%97%A5%E5%BF%97/</guid>
+      <description>spring boot 日志配置 POM文件引入依赖
+&amp;lt;dependency&amp;gt;  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;  &amp;lt;artifactId&amp;gt;spring-boot-starter&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; 1.修改日志输出级别 debug: true trace: true  debug 模式会将INFO 、ERROR、WARN 信息给输出 trace 级别会更详细，能囊括springboot的全部log输出  还可以设置其它的日志系统
+logging:  level:  root: warn 2.使用彩色日志编码输出 spring:  output:  ansi:  enabled: always 3. 传统方式配置logback 新建文件conf/logback-prod.xml
+&amp;lt;configuration&amp;gt;  &amp;lt;!-- 控制台打印日志的相关配置 --&amp;gt;  &amp;lt;appender name=&amp;#34;STDOUT&amp;#34; class=&amp;#34;ch.qos.logback.core.ConsoleAppender&amp;#34;&amp;gt;  &amp;lt;!-- 日志格式 --&amp;gt;  &amp;lt;encoder&amp;gt;  &amp;lt;pattern&amp;gt;%d{yyyy-MM-dd HH:mm:ss} %highlight(%-4relative) [%thread] %highlight(%-5level) %logger{35} - %msg %n&amp;lt;/pattern&amp;gt;  &amp;lt;/encoder&amp;gt;  &amp;lt;/appender&amp;gt;   &amp;lt;appender name=&amp;#34;FILE&amp;#34; class=&amp;#34;ch.</description>
+    </item>
+    
+    <item>
+      <title>Spring Boot配置使用</title>
+      <link>https://example.org/posts/springboot/%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Mon, 02 Aug 2021 11:29:51 +0000</pubDate>
+      
+      <guid>https://example.org/posts/springboot/%E9%85%8D%E7%BD%AE/</guid>
+      <description>spring boot 外部配置 1.使用配置bean的属性 bean的定义:
+@ConfigurationProperties(prefix=&amp;#34;bean&amp;#34;) @Component public class TestBean {  private String name;  private Integer age;  private List&amp;lt;Integer&amp;gt; list;  private Map&amp;lt;String,Integer&amp;gt; mapper;  // setter &amp;amp; getter ... 必须要提供setter 和 getter } yml文件:
+bean:  age: 1  name: inject property  利用 @ConfigurationPropertyes 注解可以将yml中的数据对象注入到bean里面，其中prefix 为数据对象的名称  集合类型的属性配置 首先是list
+bean:  age: 1  name: inject property  list:  - 1  - 2  - 3  用 - 来作为集合中的每一个数据  最后是map</description>
+    </item>
+    
+  </channel>
+</rss>

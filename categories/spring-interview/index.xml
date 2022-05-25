@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring-Interview on gngpp</title>
+    <link>https://example.org/categories/spring-interview/</link>
+    <description>Recent content in Spring-Interview on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Aug 2021 11:39:34 +0000</lastBuildDate><atom:link href="https://example.org/categories/spring-interview/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>源码级理解 BeanFactory 和 FactoryBean的区别</title>
+      <link>https://example.org/posts/spring_analysis/interview/%E6%BA%90%E7%A0%81%E7%BA%A7%E7%90%86%E8%A7%A3-beanfactory-%E5%92%8C-factorybean%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
+      <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
+      
+      <guid>https://example.org/posts/spring_analysis/interview/%E6%BA%90%E7%A0%81%E7%BA%A7%E7%90%86%E8%A7%A3-beanfactory-%E5%92%8C-factorybean%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
+      <description>1. BeanFactory BeanFactory 是一个接口，其定义了一个 容器 所具备的接口
+ getBean containsBean isSingleton isPrototype isTypeMatch getType  意味着 BeanFactory 实现了 Dependent Injection，比较常见的用法
+DefaultListableBeanFactory factory = new DefaultListableBeanFactory(); 	new XmlBeanDefinitionReader(factory).loadBeanDefinitions(WITH_AUTOWIRING_CONTEXT); final Object bean = factory.getBean(&amp;#34;TestFactoryBean&amp;#34;); 这个工厂的源码解析在上一层目录 beans中，在这不多讨论。
+2. FactoryBean 其实BeanFactory 没什么好讨论的，这个接口基本贯穿了整个beans 组件，唯一比较容易搞混的就是FactoryBean
+先概览一下其接口:
+public interface FactoryBean&amp;lt;T&amp;gt; { 	String OBJECT_TYPE_ATTRIBUTE = &amp;#34;factoryBeanObjectType&amp;#34;;  	@Nullable 	T getObject() throws Exception;  	@Nullable 	Class&amp;lt;?&amp;gt; getObjectType();  	default boolean isSingleton() { 	return true; 	} } 这玩意和我们用的什么 sqlSessionFactory、LoggerFactory 都有着相同的思想，就是一个用于生产对象的工厂类。</description>
+    </item>
+    
+  </channel>
+</rss>

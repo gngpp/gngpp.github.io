@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>9.自动装配Instance // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="9.自动装配Instance"/>
+<meta name="twitter:description" content="前言 我们已经完成了创建 Instance 的分析，接下来就应该是自动装配，只有装配完 Bean 才能被使用，在这里可能会看到 spring是如何解决 循环依赖的
+protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) 	throws BeanCreationException {  	/**------------------------------------------------------------------------------------------------------------ * [DESC] 负责创建Bean * [1] 如果是singleton对象，现在缓存中移除 * [2] 如果之前没有创建过singleton，则调用 {@link #createBeanInstance} 创建 * [3] 将单例添加到factory中，预先暴露bean，这可以支持spring去解决 singleton循环依赖问题 * [4] 调用 {@link #populateBean} 填充依赖属性 * [5] 调用 {@link #initializeBean} 初始化bean * [6] 如果Bean定义了Dependent-on 那就修复 依赖 *------------------------------------------------------------------------------------------------------------*/  	// 创建出来的实例是需要包装起来，然后才能修复依赖 	BeanWrapper instanceWrapper = null;  	// Note [1] 单例对象需要从缓存中移除 	// 如果之前没有创建过，那接下来就创建实例 	if (mbd."/>
+
+    <meta property="og:title" content="9.自动装配Instance" />
+<meta property="og:description" content="前言 我们已经完成了创建 Instance 的分析，接下来就应该是自动装配，只有装配完 Bean 才能被使用，在这里可能会看到 spring是如何解决 循环依赖的
+protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) 	throws BeanCreationException {  	/**------------------------------------------------------------------------------------------------------------ * [DESC] 负责创建Bean * [1] 如果是singleton对象，现在缓存中移除 * [2] 如果之前没有创建过singleton，则调用 {@link #createBeanInstance} 创建 * [3] 将单例添加到factory中，预先暴露bean，这可以支持spring去解决 singleton循环依赖问题 * [4] 调用 {@link #populateBean} 填充依赖属性 * [5] 调用 {@link #initializeBean} 初始化bean * [6] 如果Bean定义了Dependent-on 那就修复 依赖 *------------------------------------------------------------------------------------------------------------*/  	// 创建出来的实例是需要包装起来，然后才能修复依赖 	BeanWrapper instanceWrapper = null;  	// Note [1] 单例对象需要从缓存中移除 	// 如果之前没有创建过，那接下来就创建实例 	if (mbd." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/spring_analysis/beans/9.%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8Dinstance/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">9.自动装配Instance</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          9 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/spring-bean/">Spring-Bean</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h3 id="前言">前言</h3>
+<p>我们已经完成了创建 <code>Instance</code> 的分析，接下来就应该是自动装配，只有装配完 <code>Bean</code> 才能被使用，在这里可能会看到 <code>spring</code>是如何解决 <code>循环依赖的</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">doCreateBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String beanName<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> RootBeanDefinition mbd<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> <span style="color:#a6e22e">@Nullable</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throws</span> BeanCreationException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 负责创建Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 如果是singleton对象，现在缓存中移除
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [2] 如果之前没有创建过singleton，则调用 {@link #createBeanInstance} 创建
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [3] 将单例添加到factory中，预先暴露bean，这可以支持spring去解决 singleton循环依赖问题
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [4] 调用 {@link #populateBean} 填充依赖属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [5] 调用 {@link #initializeBean} 初始化bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [6] 如果Bean定义了Dependent-on 那就修复 依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *------------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 创建出来的实例是需要包装起来，然后才能修复依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		BeanWrapper instanceWrapper <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Note [1] 单例对象需要从缓存中移除
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 如果之前没有创建过，那接下来就创建实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isSingleton</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			instanceWrapper <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">factoryBeanInstanceCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>instanceWrapper <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note step in 创建实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			instanceWrapper <span style="color:#f92672">=</span> createBeanInstance<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 获取包装类中的实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">final</span> Object bean <span style="color:#f92672">=</span> instanceWrapper<span style="color:#f92672">.</span><span style="color:#a6e22e">getWrappedInstance</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		Class<span style="color:#f92672">&lt;?&gt;</span> beanType <span style="color:#f92672">=</span> instanceWrapper<span style="color:#f92672">.</span><span style="color:#a6e22e">getWrappedClass</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>beanType <span style="color:#f92672">!=</span> NullBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">resolvedTargetType</span> <span style="color:#f92672">=</span> beanType<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE 调用 MergedBeanDefinitionPostProcessor 处理器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTE 此时 Bean Instance 已经被创建出来
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 允许修改被合并的bean定义
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">postProcessingLock</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">postProcessed</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					applyMergedBeanDefinitionPostProcessors<span style="color:#f92672">(</span>mbd<span style="color:#f92672">,</span> beanType<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#e6db74">&#34;Post-processing of merged bean definition failed&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">postProcessed</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTICE
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTE 这里解决单例模式下的循环依赖，就是在Singleton未初始化完毕的时候就直接将其丢进工厂
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTE 然后再填充依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 例如：ClassA 依赖 ClassB，先new ClassA，然后放入工厂
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 然后填充 ClassA，发现依赖于ClassB 然后 new ClassB，因为ClassB依赖ClassA，并且ClassA已经被创建只是没有初始化并且存在工厂中
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 所以这时候就能从工厂拿到ClassA来填充ClassB，从而ClassB完整创建，然后填充到ClassA，这就解决了循环依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">boolean</span> earlySingletonExposure <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isSingleton</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">allowCircularReferences</span> <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>				isSingletonCurrentlyInCreation<span style="color:#f92672">(</span>beanName<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>earlySingletonExposure<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isTraceEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Eagerly caching bean &#39;&#34;</span> <span style="color:#f92672">+</span> beanName <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#e6db74">&#34;&#39; to allow for resolving potential circular references&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// NOTE Bean未被填充，提前丢进工厂，只限于Singleton
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			addSingletonFactory<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> getEarlyBeanReference<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> bean<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Note 初始化Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Object exposedObject <span style="color:#f92672">=</span> bean<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 填充Bean，也就是填充BeanProperty
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// Note 传入的参数有Wrapper也就是包装类，用于修改属性和获取属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// Note step in 填充Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			populateBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> instanceWrapper<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note step in 初始化bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			exposedObject <span style="color:#f92672">=</span> initializeBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> exposedObject<span style="color:#f92672">,</span> mbd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ex <span style="color:#66d9ef">instanceof</span> BeanCreationException <span style="color:#f92672">&amp;&amp;</span> beanName<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(((</span>BeanCreationException<span style="color:#f92672">)</span> ex<span style="color:#f92672">).</span><span style="color:#a6e22e">getBeanName</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">throw</span> <span style="color:#f92672">(</span>BeanCreationException<span style="color:#f92672">)</span> ex<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>						mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Initialization of bean failed&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Note 当单例是循环引用，且到这已经被填充完了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// Note 则注入dependent bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>earlySingletonExposure<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 先获取一下填充完的实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Object earlySingletonReference <span style="color:#f92672">=</span> getSingleton<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>earlySingletonReference <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>exposedObject <span style="color:#f92672">==</span> bean<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					exposedObject <span style="color:#f92672">=</span> earlySingletonReference<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">allowRawInjectionDespiteWrapping</span> <span style="color:#f92672">&amp;&amp;</span> hasDependentBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 注入dependent bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					String<span style="color:#f92672">[]</span> dependentBeans <span style="color:#f92672">=</span> getDependentBeans<span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> actualDependentBeans <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashSet<span style="color:#f92672">&lt;&gt;(</span>dependentBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String dependentBean <span style="color:#f92672">:</span> dependentBeans<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>removeSingletonIfCreatedForTypeCheckOnly<span style="color:#f92672">(</span>dependentBean<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							actualDependentBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>dependentBean<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>actualDependentBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Register bean as disposable.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 一次性注册Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			registerDisposableBeanIfNecessary<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> bean<span style="color:#f92672">,</span> mbd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BeanDefinitionValidationException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>					mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Invalid destruction signature&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> exposedObject<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这部分代码是紧接着<code>createInstance</code> 的，创建完 <code>Instance</code>后就是直接丢入工厂，这就解决了循环依赖，此时<code>Instance</code> 还没填充就直接丢进工厂。然后调用 <code>populateBean(beanName, mbd, instanceWrapper);</code> 自动装配。</p>
+<p>我们继续。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">populateBean</span><span style="color:#f92672">(</span>String beanName<span style="color:#f92672">,</span> RootBeanDefinition mbd<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> BeanWrapper bw<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [1] bean必须存在属性，否则抛出异常
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>bw <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 没有属性你还populate 毛啊 ～
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">hasPropertyValues</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>						mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Cannot apply property values to null instance&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Skip property population phase for null instance.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Give any InstantiationAwareBeanPostProcessors the opportunity to modify the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// state of the bean before properties are set. This can be used, for example,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// to support styles of field injection.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">boolean</span> continueWithPropertyPopulation <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [2] NOTE 调用InstantiationAwareBeanPostProcessor#postProcessAfterInstantiation处理器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTE 此时正准备装配属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isSynthetic</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> hasInstantiationAwareBeanPostProcessors<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>BeanPostProcessor bp <span style="color:#f92672">:</span> getBeanPostProcessors<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>bp <span style="color:#66d9ef">instanceof</span> InstantiationAwareBeanPostProcessor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					InstantiationAwareBeanPostProcessor ibp <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>InstantiationAwareBeanPostProcessor<span style="color:#f92672">)</span> bp<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>ibp<span style="color:#f92672">.</span><span style="color:#a6e22e">postProcessAfterInstantiation</span><span style="color:#f92672">(</span>bw<span style="color:#f92672">.</span><span style="color:#a6e22e">getWrappedInstance</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						continueWithPropertyPopulation <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>continueWithPropertyPopulation<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [3] 获取属性值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		PropertyValues pvs <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">hasPropertyValues</span><span style="color:#f92672">()</span> <span style="color:#f92672">?</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyValues</span><span style="color:#f92672">()</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [4] 根据自动填充模式来填充
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">int</span> resolvedAutowireMode <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvedAutowireMode</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>resolvedAutowireMode <span style="color:#f92672">==</span> AUTOWIRE_BY_NAME <span style="color:#f92672">||</span> resolvedAutowireMode <span style="color:#f92672">==</span> AUTOWIRE_BY_TYPE<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			MutablePropertyValues newPvs <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MutablePropertyValues<span style="color:#f92672">(</span>pvs<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Add property values based on autowire by name if applicable.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>resolvedAutowireMode <span style="color:#f92672">==</span> AUTOWIRE_BY_NAME<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				autowireByName<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> bw<span style="color:#f92672">,</span> newPvs<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Add property values based on autowire by type if applicable.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>resolvedAutowireMode <span style="color:#f92672">==</span> AUTOWIRE_BY_TYPE<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// NOTE 这个需要进去 （比较复杂）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				autowireByType<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> bw<span style="color:#f92672">,</span> newPvs<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			pvs <span style="color:#f92672">=</span> newPvs<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>自动装配之前，我们必须要拿到需要装配的类型，然后才能装配，在装配之前先调用</p>
+<p><code>InstantiationAwareBeanPostProcessor#postProcessAfterInstantiation</code> 处理器</p>
+<p>然后看第三步：先获取<code>beanDefinition</code> 定义的属性的信息，也就是属性信息</p>
+<p>第四步：就是根据装配模式来确定装配的方式，有两种，<code>byType</code>和 <code>byName</code>，那为什么没看到 <code>byConstruct</code>呢？是因为这只是装配 <code>bean</code> 需要的信息而已，也就是根据类型装配或者根据名称装配，<code>BeanFactory</code> 也就只提供这两种类型的<code>getBean</code>，至于 <code>byConstruct</code> 那个应该是注解完成的事情，留个悬念 <code>@Autowired</code></p>
+<p>接下来先看 <code>byName</code>是怎么实现的，实际上不用想，直接 <code>getBean</code> &hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">autowireByName</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>			String beanName<span style="color:#f92672">,</span> AbstractBeanDefinition mbd<span style="color:#f92672">,</span> BeanWrapper bw<span style="color:#f92672">,</span> MutablePropertyValues pvs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		String<span style="color:#f92672">[]</span> propertyNames <span style="color:#f92672">=</span> unsatisfiedNonSimpleProperties<span style="color:#f92672">(</span>mbd<span style="color:#f92672">,</span> bw<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String propertyName <span style="color:#f92672">:</span> propertyNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>containsBean<span style="color:#f92672">(</span>propertyName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				Object bean <span style="color:#f92672">=</span> getBean<span style="color:#f92672">(</span>propertyName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				pvs<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>propertyName<span style="color:#f92672">,</span> bean<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				registerDependentBean<span style="color:#f92672">(</span>propertyName<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>没毛病.. 遍历属性然后直接根据属性名称装配，这种方式是最效率的。</p>
+<p>继续看 <code>byType</code> ，这个比较复杂，跟进</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">autowireByType</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>      String beanName<span style="color:#f92672">,</span> AbstractBeanDefinition mbd<span style="color:#f92672">,</span> BeanWrapper bw<span style="color:#f92672">,</span> MutablePropertyValues pvs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Note 根据类型来自动装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">// Note 那就必然涉及到类型的转换
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// [1] 先new 一个类型转转换器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   TypeConverter converter <span style="color:#f92672">=</span> getCustomTypeConverter<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>converter <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// 如果没有就用Wrapper内置的类型转换，支持基础类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      converter <span style="color:#f92672">=</span> bw<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// [2] 遍历属性和装配了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> autowiredBeanNames <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashSet<span style="color:#f92672">&lt;&gt;(</span>4<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// NOTE 在这里排除一些不满足装配条件的属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">// NOTE 使用 &lt;property name=&#34;impl1&#34; ref=&#34;BEAN1&#34;/&gt; ref属性引用的bean，这个是不会被装配的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">// NOTE CGLIB 定义的属性也不会被装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">// NOTE ingnoreInterface 也不会被装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// NOTE 简单类型不会被装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">// TODO 之所以使用 ref是因为接触循环依赖？目前还不清楚
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   String<span style="color:#f92672">[]</span> propertyNames <span style="color:#f92672">=</span> unsatisfiedNonSimpleProperties<span style="color:#f92672">(</span>mbd<span style="color:#f92672">,</span> bw<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String propertyName <span style="color:#f92672">:</span> propertyNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>         <span style="color:#75715e">// Note 第一步肯定是获取属性的描述符
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>         PropertyDescriptor pd <span style="color:#f92672">=</span> bw<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyDescriptor</span><span style="color:#f92672">(</span>propertyName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#75715e">// Don&#39;t try autowiring by type for type Object: never makes sense,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>         <span style="color:#75715e">// even if it technically is a unsatisfied, non-simple property.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>         <span style="color:#75715e">// Note 类型是 Object 就不装配，显然Object类型这没法装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>         <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Object<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">!=</span> pd<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyType</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 获取Get方法参数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            MethodParameter methodParam <span style="color:#f92672">=</span> BeanUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getWriteMethodParameter</span><span style="color:#f92672">(</span>pd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Do not allow eager init for type matching in case of a prioritized post-processor.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">boolean</span> eager <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>PriorityOrdered<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isInstance</span><span style="color:#f92672">(</span>bw<span style="color:#f92672">.</span><span style="color:#a6e22e">getWrappedInstance</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 确认Get方法的依赖？ TODO：进去看看
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            DependencyDescriptor desc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AutowireByTypeDependencyDescriptor<span style="color:#f92672">(</span>methodParam<span style="color:#f92672">,</span> eager<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 解析Get方法的参数依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// NOTE 解析依赖，关键的地方了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">/**@see DefaultListableBeanFactory#resolveDependency*/</span>
+</span></span><span style="display:flex;"><span>            Object autowiredArgument <span style="color:#f92672">=</span> resolveDependency<span style="color:#f92672">(</span>desc<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> autowiredBeanNames<span style="color:#f92672">,</span> converter<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 保存依赖属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>autowiredArgument <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>               pvs<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>propertyName<span style="color:#f92672">,</span> autowiredArgument<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String autowiredBeanName <span style="color:#f92672">:</span> autowiredBeanNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>              
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// NOTE 这里有个小细节
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">// NOTE 当已经拿到了这个Bean依赖的其它Bean，那就把这些依赖的Bean丢进 dependentBean里面，
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">// NOTE 这相当于 我们使用 depends-on 标签，这样的话，这些依赖的 Bean就会在 该Bean初始化前初始化
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>               registerDependentBean<span style="color:#f92672">(</span>autowiredBeanName<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isTraceEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                  logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Autowiring by type from bean name &#39;&#34;</span> <span style="color:#f92672">+</span> beanName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39; via property &#39;&#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                        propertyName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39; to bean named &#39;&#34;</span> <span style="color:#f92672">+</span> autowiredBeanName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            autowiredBeanNames<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BeansException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> UnsatisfiedDependencyException<span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span> propertyName<span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>根据类型装配，首先就得获取需要装配的属性信息，然后通过 <code>getBean</code> 就能修复依赖，虽然是这样说，但实际却很复杂。</p>
+<p>先看下它怎么实现：</p>
+<ul>
+<li>调用 <code>unsatisfiedNonSimpleProperties</code> 过滤一些不用装配的属性，比如说 <code>简单类型</code>，<code>CGLIB</code> 生成的一些属性，<code>ref=&quot;bean&quot;</code> 引用的 <code>bean</code> 这些是不会被装配的，至于为什么，暂时还不知道，但后面它还是会装配的。但在 <code>byType</code> 这里不会装配，在这里它只会老老实实按照属性信息装配，至于为什么暂时不用管</li>
+<li>然后获取属性对应的<code>set</code> 方法，然后调用 <code>resolveDependency</code> 修复依赖，这个东西贯穿所有依赖修复的核心。支持很多种类型的修复</li>
+<li>最后将修复好的依赖属性值 保存起来</li>
+<li>顺便把依赖的<code>bean</code>丢进 <code>dependentBean</code> 里面，让它们提前加载</li>
+</ul>
+<p>接着看 <code>resolveDependency</code> 这个是修复依赖的核心</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">resolveDependency</span><span style="color:#f92672">(</span>DependencyDescriptor descriptor<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> String requestingBeanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">@Nullable</span> Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> autowiredBeanNames<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> TypeConverter typeConverter<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 初始化一下 set 方法的 参数信息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">initParameterNameDiscovery</span><span style="color:#f92672">(</span>getParameterNameDiscoverer<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Note 根据依赖的类型而进行不同的处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">==</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getDependencyType</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// NOTE Optional类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> createOptionalDependency<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">,</span> requestingBeanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ObjectFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">==</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getDependencyType</span><span style="color:#f92672">()</span> <span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>				ObjectProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">==</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getDependencyType</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note FactoryBean Provider 要么是工厂 要么是 提供者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DependencyObjectProvider<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">,</span> requestingBeanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>javaxInjectProviderClass <span style="color:#f92672">==</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getDependencyType</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note Jsr330 标准的工厂
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Jsr330Factory<span style="color:#f92672">().</span><span style="color:#a6e22e">createDependencyProvider</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">,</span> requestingBeanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 否则就是 基本的属性类型 或者 对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Object result <span style="color:#f92672">=</span> getAutowireCandidateResolver<span style="color:#f92672">().</span><span style="color:#a6e22e">getLazyResolutionProxyIfNecessary</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>					descriptor<span style="color:#f92672">,</span> requestingBeanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>result <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Note step in
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				result <span style="color:#f92672">=</span> doResolveDependency<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">,</span> requestingBeanName<span style="color:#f92672">,</span> autowiredBeanNames<span style="color:#f92672">,</span> typeConverter<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>可以看到自动装配支持很多种类型：</p>
+<ul>
+<li>Optional 类型</li>
+<li>ObjectFactory 和 ObjectProvider</li>
+<li>JSR330工厂</li>
+<li>一般类型和对象</li>
+</ul>
+<p>最后一种比较重要，先看最后一种：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">doResolveDependency</span><span style="color:#f92672">(</span>DependencyDescriptor descriptor<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> String beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">@Nullable</span> Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> autowiredBeanNames<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> TypeConverter typeConverter<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTICE JDK8 的 CDI ，值得和 spring 的 DI进行比较 都是进行依赖注入的东西
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// NOTICE JSR365 CDI 与此关联的还有 JSR299 webBean管理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		InjectionPoint previousInjectionPoint <span style="color:#f92672">=</span> ConstructorResolver<span style="color:#f92672">.</span><span style="color:#a6e22e">setCurrentInjectionPoint</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			Object shortcut <span style="color:#f92672">=</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveShortcut</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>shortcut <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> shortcut<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Class<span style="color:#f92672">&lt;?&gt;</span> type <span style="color:#f92672">=</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getDependencyType</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * NOTE 获取建议的值 {@link QualifierAnnotationAutowireCandidateResolver} 这个支持 {@link Value} 注解提供建议值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * NOTE factory 是 {@link SimpleAutowireCandidateResolver} 这个是不支持提供建议值的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * NOTE 如果需要启动注解，就需要添加注册装配处理器 {@link AutowiredAnnotationBeanPostProcessor}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 * NOTE 上述这些东西是用来支持  JSR330 依赖注入注解的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			 */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			Object value <span style="color:#f92672">=</span> getAutowireCandidateResolver<span style="color:#f92672">().</span><span style="color:#a6e22e">getSuggestedValue</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#66d9ef">instanceof</span> String<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// NOTE 如果注解带的值是字符串类型，这里可以扩展成支持 property 的字符串，也就是需要解析字符串
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">// NOTE 比如 ${name.val} 之类的 环境变量表达式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					String strVal <span style="color:#f92672">=</span> resolveEmbeddedValue<span style="color:#f92672">((</span>String<span style="color:#f92672">)</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					BeanDefinition bd <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>beanName <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> containsBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">)</span> <span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>							getMergedBeanDefinition<span style="color:#f92672">(</span>beanName<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// NOTE 解析 Bean定义表达式，这个是在 Context才支持的，beans包不支持这个
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					value <span style="color:#f92672">=</span> evaluateBeanDefinitionString<span style="color:#f92672">(</span>strVal<span style="color:#f92672">,</span> bd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// NOTE 类型转换
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				TypeConverter converter <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>typeConverter <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> typeConverter <span style="color:#f92672">:</span> getTypeConverter<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">return</span> converter<span style="color:#f92672">.</span><span style="color:#a6e22e">convertIfNecessary</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getTypeDescriptor</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>UnsupportedOperationException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// A custom TypeConverter which does not support TypeDescriptor resolution...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getField</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>							converter<span style="color:#f92672">.</span><span style="color:#a6e22e">convertIfNecessary</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getField</span><span style="color:#f92672">())</span> <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>							converter<span style="color:#f92672">.</span><span style="color:#a6e22e">convertIfNecessary</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethodParameter</span><span style="color:#f92672">()));</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 处理 集合 和 映射数据结构
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Object multipleBeans <span style="color:#f92672">=</span> resolveMultipleBeans<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> autowiredBeanNames<span style="color:#f92672">,</span> typeConverter<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>multipleBeans <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> multipleBeans<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 匹配该 type 的Class
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTICE 在这里用于确定此属性所需要的bean名称，因为 根据类型来装配是不可靠的，因为一个类型的bean可能有多个
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTICE 所以在这里 spring 提供了 @Qualifier(&#34;personA&#34;) 注解来限定装配哪一个名称的bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTICE 如果你用xml 就可以用 ref 来引用id，或者 qualifier ，TODO 这个我没用过 哈哈
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> matchingBeans <span style="color:#f92672">=</span> findAutowireCandidates<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchingBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isRequired<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					raiseNoMatchingBeanFound<span style="color:#f92672">(</span>type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvableType</span><span style="color:#f92672">(),</span> descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			String autowiredBeanName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			Object instanceCandidate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// NOTE 在这里匹配 使用 @Qualifier 指定的 bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchingBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				autowiredBeanName <span style="color:#f92672">=</span> determineAutowireCandidate<span style="color:#f92672">(</span>matchingBeans<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>autowiredBeanName <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isRequired<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">)</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span>indicatesMultipleBeans<span style="color:#f92672">(</span>type<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#66d9ef">return</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveNotUnique</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvableType</span><span style="color:#f92672">(),</span> matchingBeans<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#75715e">// In case of an optional Collection/Map, silently ignore a non-unique case:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// possibly it was meant to be an empty collection of multiple regular beans
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#75715e">// (before 4.3 in particular when we didn&#39;t even look for collection beans).
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>						<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				instanceCandidate <span style="color:#f92672">=</span> matchingBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>autowiredBeanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// We have exactly one match.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> entry <span style="color:#f92672">=</span> matchingBeans<span style="color:#f92672">.</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">().</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">().</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				autowiredBeanName <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				instanceCandidate <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>autowiredBeanNames <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				autowiredBeanNames<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>autowiredBeanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 在这里实例化装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>instanceCandidate <span style="color:#66d9ef">instanceof</span> Class<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// NOTE 这里的装配也就只是调用 Factory#GetBean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				instanceCandidate <span style="color:#f92672">=</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveCandidate</span><span style="color:#f92672">(</span>autowiredBeanName<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			Object result <span style="color:#f92672">=</span> instanceCandidate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>result <span style="color:#66d9ef">instanceof</span> NullBean<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isRequired<span style="color:#f92672">(</span>descriptor<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					raiseNoMatchingBeanFound<span style="color:#f92672">(</span>type<span style="color:#f92672">,</span> descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvableType</span><span style="color:#f92672">(),</span> descriptor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				result <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>ClassUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableValue</span><span style="color:#f92672">(</span>type<span style="color:#f92672">,</span> result<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanNotOfRequiredTypeException<span style="color:#f92672">(</span>autowiredBeanName<span style="color:#f92672">,</span> type<span style="color:#f92672">,</span> instanceCandidate<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			ConstructorResolver<span style="color:#f92672">.</span><span style="color:#a6e22e">setCurrentInjectionPoint</span><span style="color:#f92672">(</span>previousInjectionPoint<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>从上面可以看出，这里支持了许多 <code>JSR</code>标准，到最后其还是使用 <code>getBean</code> 来修复依赖，如果支持<code>注解处理器</code>，那么就需要解析 <code>@Value</code> 指向的数据，然后进行转换</p>
+<p><code>resolveMultipleBeans</code> 这个用于装配集合类型的数据</p>
+<hr>
+<p>装配方式分为 <code>byName</code> 和 <code>byType</code> 其中 <code>byType</code>比较重要</p>
+<p>但其不支持 <code>ref</code>属性引用的 <code>bean</code>，这个时候我们已经拿到修复后的依赖的值，在最后还需要将这个值应用到<code>Instance</code> 上，实际上也就是赋值，在这里它就可以处理，<code>ref</code>引用的<code>bean</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">applyPropertyValues</span><span style="color:#f92672">(</span>String beanName<span style="color:#f92672">,</span> BeanDefinition mbd<span style="color:#f92672">,</span> BeanWrapper bw<span style="color:#f92672">,</span> PropertyValues pvs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>pvs<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">getSecurityManager</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> bw <span style="color:#66d9ef">instanceof</span> BeanWrapperImpl<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">((</span>BeanWrapperImpl<span style="color:#f92672">)</span> bw<span style="color:#f92672">).</span><span style="color:#a6e22e">setSecurityContext</span><span style="color:#f92672">(</span>getAccessControlContext<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		MutablePropertyValues mpvs <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		List<span style="color:#f92672">&lt;</span>PropertyValue<span style="color:#f92672">&gt;</span> original<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE 如果类型是 MutablePropertyValues 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>pvs <span style="color:#66d9ef">instanceof</span> MutablePropertyValues<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			mpvs <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>MutablePropertyValues<span style="color:#f92672">)</span> pvs<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// NOTE 属性值已经被转换，就直接 set就行了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mpvs<span style="color:#f92672">.</span><span style="color:#a6e22e">isConverted</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Shortcut: use the pre-converted values as-is.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					bw<span style="color:#f92672">.</span><span style="color:#a6e22e">setPropertyValues</span><span style="color:#f92672">(</span>mpvs<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BeansException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>							mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Error setting property values&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			original <span style="color:#f92672">=</span> mpvs<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyValueList</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			original <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>pvs<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyValues</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE 下面开始转换任务
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		TypeConverter converter <span style="color:#f92672">=</span> getCustomTypeConverter<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>converter <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			converter <span style="color:#f92672">=</span> bw<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		BeanDefinitionValueResolver valueResolver <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BeanDefinitionValueResolver<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> converter<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Create a deep copy, resolving any references for values.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		List<span style="color:#f92672">&lt;</span>PropertyValue<span style="color:#f92672">&gt;</span> deepCopy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>original<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">boolean</span> resolveNecessary <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE 这里采用 deepcopy 进行 转换
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>PropertyValue pv <span style="color:#f92672">:</span> original<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>pv<span style="color:#f92672">.</span><span style="color:#a6e22e">isConverted</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				deepCopy<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>pv<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				String propertyName <span style="color:#f92672">=</span> pv<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				Object originalValue <span style="color:#f92672">=</span> pv<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>originalValue <span style="color:#f92672">==</span> AutowiredPropertyMarker<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					Method writeMethod <span style="color:#f92672">=</span> bw<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyDescriptor</span><span style="color:#f92672">(</span>propertyName<span style="color:#f92672">).</span><span style="color:#a6e22e">getWriteMethod</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>writeMethod <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Autowire marker for property without write method: &#34;</span> <span style="color:#f92672">+</span> pv<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					originalValue <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DependencyDescriptor<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MethodParameter<span style="color:#f92672">(</span>writeMethod<span style="color:#f92672">,</span> 0<span style="color:#f92672">),</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// NOTE 解析值，在里面支持 ref 属性引用的bean解析
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				Object resolvedValue <span style="color:#f92672">=</span> valueResolver<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveValueIfNecessary</span><span style="color:#f92672">(</span>pv<span style="color:#f92672">,</span> originalValue<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				Object convertedValue <span style="color:#f92672">=</span> resolvedValue<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">boolean</span> convertible <span style="color:#f92672">=</span> bw<span style="color:#f92672">.</span><span style="color:#a6e22e">isWritableProperty</span><span style="color:#f92672">(</span>propertyName<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">!</span>PropertyAccessorUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isNestedOrIndexedProperty</span><span style="color:#f92672">(</span>propertyName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// NOTE 转换值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>convertible<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					convertedValue <span style="color:#f92672">=</span> convertForProperty<span style="color:#f92672">(</span>resolvedValue<span style="color:#f92672">,</span> propertyName<span style="color:#f92672">,</span> bw<span style="color:#f92672">,</span> converter<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Possibly store converted value in merged bean definition,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#75715e">// in order to avoid re-conversion for every created bean instance.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// NOTE 缓存已经转换的值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>resolvedValue <span style="color:#f92672">==</span> originalValue<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>convertible<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						pv<span style="color:#f92672">.</span><span style="color:#a6e22e">setConvertedValue</span><span style="color:#f92672">(</span>convertedValue<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					deepCopy<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>pv<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>convertible <span style="color:#f92672">&amp;&amp;</span> originalValue <span style="color:#66d9ef">instanceof</span> TypedStringValue <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">!((</span>TypedStringValue<span style="color:#f92672">)</span> originalValue<span style="color:#f92672">).</span><span style="color:#a6e22e">isDynamic</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">!(</span>convertedValue <span style="color:#66d9ef">instanceof</span> Collection <span style="color:#f92672">||</span> ObjectUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isArray</span><span style="color:#f92672">(</span>convertedValue<span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					pv<span style="color:#f92672">.</span><span style="color:#a6e22e">setConvertedValue</span><span style="color:#f92672">(</span>convertedValue<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					deepCopy<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>pv<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					resolveNecessary <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					deepCopy<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> PropertyValue<span style="color:#f92672">(</span>pv<span style="color:#f92672">,</span> convertedValue<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mpvs <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>resolveNecessary<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			mpvs<span style="color:#f92672">.</span><span style="color:#a6e22e">setConverted</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE 设置 深拷贝的值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			bw<span style="color:#f92672">.</span><span style="color:#a6e22e">setPropertyValues</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MutablePropertyValues<span style="color:#f92672">(</span>deepCopy<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BeansException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>					mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Error setting property values&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span> valueResolver<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveValueIfNecessary</span> 
+</span></span></code></pre></div><p>这个是核心</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">resolveValueIfNecessary</span><span style="color:#f92672">(</span>Object argName<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// We must check each value to see whether it requires a runtime reference
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// to another bean to be resolved.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// NOTE ref引用的bean修复
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#66d9ef">instanceof</span> RuntimeBeanReference<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			RuntimeBeanReference ref <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>RuntimeBeanReference<span style="color:#f92672">)</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> resolveReference<span style="color:#f92672">(</span>argName<span style="color:#f92672">,</span> ref<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>其中 <code>RuntimeBeanReference</code> 就是 使用 <code>ref</code>属性后，生成的描述对象，在最后才会被解析</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>6.创建BeanInstance-概览 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="6.创建BeanInstance-概览"/>
+<meta name="twitter:description" content="前言 spring 对 bean 的操作可以分为以下三个步骤：
+ 创建 Instance 填充 Instance 初始化 Bean  所以在这里先从最基本的开始，创建 Instance
+首先 bean 的类型可以分为两种，仅讨论 beans 包下 的 BeanFactory ：
+ singleton prototype  先讨论 doGetBean 也就是 梦开始的地方
+protected &lt;T&gt; T doGetBean(final String name, @Nullable final Class&lt;T&gt; requiredType, 	@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException{  	/**------------------------------------------------------------------------------------------------------------- * 调用者：{@link #getBean(String)} ... * * [DESC] 获取指定的Bean * [1] 先从Singleton缓存中查找，若不存在遍历其父工厂递归getBean * [2] 调用{@link AbstractAutowireCapableBeanFactory#createBean(String, RootBeanDefinition, Object[])} 创建实例 *-------------------------------------------------------------------------------------------------------------*/   	// 获取真实的bean名字，类似 &amp;BeanName 就会被解析为 BeanName就是去掉 &amp; 这个符号 	// 然后从别名中获取真实名字 	// [TODO] 这里去掉了 &amp; 并不影响后面处理 FactoryBean，FactoryBean是需要根据 &amp; 这个字符来判断的，在这里去掉并不影响 	final String beanName = transformedBeanName(name); 	Object bean;  	// [1] 优先从单例缓存中查找 	Object sharedInstance = getSingleton(beanName); 	if (sharedInstance !"/>
+
+    <meta property="og:title" content="6.创建BeanInstance-概览" />
+<meta property="og:description" content="前言 spring 对 bean 的操作可以分为以下三个步骤：
+ 创建 Instance 填充 Instance 初始化 Bean  所以在这里先从最基本的开始，创建 Instance
+首先 bean 的类型可以分为两种，仅讨论 beans 包下 的 BeanFactory ：
+ singleton prototype  先讨论 doGetBean 也就是 梦开始的地方
+protected &lt;T&gt; T doGetBean(final String name, @Nullable final Class&lt;T&gt; requiredType, 	@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException{  	/**------------------------------------------------------------------------------------------------------------- * 调用者：{@link #getBean(String)} ... * * [DESC] 获取指定的Bean * [1] 先从Singleton缓存中查找，若不存在遍历其父工厂递归getBean * [2] 调用{@link AbstractAutowireCapableBeanFactory#createBean(String, RootBeanDefinition, Object[])} 创建实例 *-------------------------------------------------------------------------------------------------------------*/   	// 获取真实的bean名字，类似 &amp;BeanName 就会被解析为 BeanName就是去掉 &amp; 这个符号 	// 然后从别名中获取真实名字 	// [TODO] 这里去掉了 &amp; 并不影响后面处理 FactoryBean，FactoryBean是需要根据 &amp; 这个字符来判断的，在这里去掉并不影响 	final String beanName = transformedBeanName(name); 	Object bean;  	// [1] 优先从单例缓存中查找 	Object sharedInstance = getSingleton(beanName); 	if (sharedInstance !" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/spring_analysis/beans/6.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A6%82%E8%A7%88/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">6.创建BeanInstance-概览</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/spring-bean/">Spring-Bean</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h3 id="前言">前言</h3>
+<p><code>spring</code> 对 <code>bean</code> 的操作可以分为以下三个步骤：</p>
+<ul>
+<li>创建 Instance</li>
+<li>填充 Instance</li>
+<li>初始化 Bean</li>
+</ul>
+<p>所以在这里先从最基本的开始，创建 <code>Instance</code></p>
+<p>首先 <code>bean</code> 的类型可以分为两种，仅讨论 <code>beans 包下 的 BeanFactory</code> ：</p>
+<ul>
+<li>singleton</li>
+<li>prototype</li>
+</ul>
+<p>先讨论 <code>doGetBean</code> 也就是 梦开始的地方</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">doGetBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String name<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> <span style="color:#66d9ef">final</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> requiredType<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">@Nullable</span> <span style="color:#66d9ef">final</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> typeCheckOnly<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**-------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * 调用者：{@link #getBean(String)} ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 获取指定的Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 先从Singleton缓存中查找，若不存在遍历其父工厂递归getBean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [2] 调用{@link AbstractAutowireCapableBeanFactory#createBean(String, RootBeanDefinition, Object[])} 创建实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *-------------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 获取真实的bean名字，类似 &amp;BeanName 就会被解析为 BeanName就是去掉 &amp; 这个符号
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 然后从别名中获取真实名字
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// [TODO] 这里去掉了 &amp; 并不影响后面处理 FactoryBean，FactoryBean是需要根据 &amp; 这个字符来判断的，在这里去掉并不影响
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">final</span> String beanName <span style="color:#f92672">=</span> transformedBeanName<span style="color:#f92672">(</span>name<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		Object bean<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [1] 优先从单例缓存中查找
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Object sharedInstance <span style="color:#f92672">=</span> getSingleton<span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sharedInstance <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> args <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isTraceEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 判断bean是否正在创建
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isSingletonCurrentlyInCreation<span style="color:#f92672">(</span>beanName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Returning eagerly cached instance of singleton bean &#39;&#34;</span> <span style="color:#f92672">+</span> beanName <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#e6db74">&#34;&#39; that is not fully initialized yet - a consequence of a circular reference&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Returning cached instance of singleton bean &#39;&#34;</span> <span style="color:#f92672">+</span> beanName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// [NOTE] 这里之所以要从BeanInstance中获取Object，是因为Bean可能是FactoryBean利用工厂生产出Object
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			bean <span style="color:#f92672">=</span> getObjectForBeanInstance<span style="color:#f92672">(</span>sharedInstance<span style="color:#f92672">,</span> name<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 若当前名字的bean已经创建了，则肯定失败
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isPrototypeCurrentlyInCreation<span style="color:#f92672">(</span>beanName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCurrentlyInCreationException<span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// [2] 判断其是否已经存在于现在这个工厂
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			BeanFactory parentBeanFactory <span style="color:#f92672">=</span> getParentBeanFactory<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>parentBeanFactory <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>containsBeanDefinition<span style="color:#f92672">(</span>beanName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 不存在则，继续从父工厂获取
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#75715e">// 我就说这是一个链表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#75715e">// [NOTE] 因为每一个Factory 都有一个 Parent对象，所以这就构成了一个单向链表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#75715e">// [NOTE] 所以下面就用递归就完事了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				String nameToLookup <span style="color:#f92672">=</span> originalBeanName<span style="color:#f92672">(</span>name<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>parentBeanFactory <span style="color:#66d9ef">instanceof</span> AbstractBeanFactory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">return</span> <span style="color:#f92672">((</span>AbstractBeanFactory<span style="color:#f92672">)</span> parentBeanFactory<span style="color:#f92672">).</span><span style="color:#a6e22e">doGetBean</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>							nameToLookup<span style="color:#f92672">,</span> requiredType<span style="color:#f92672">,</span> args<span style="color:#f92672">,</span> typeCheckOnly<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>args <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Delegation to parent with explicit args.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>T<span style="color:#f92672">)</span> parentBeanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>nameToLookup<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>requiredType <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// No args -&gt; delegate to standard getBean method.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">return</span> parentBeanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>nameToLookup<span style="color:#f92672">,</span> requiredType<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>T<span style="color:#f92672">)</span> parentBeanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>nameToLookup<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 标记Bean已经被创建或者准备被创建
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>typeCheckOnly<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				markBeanAsCreated<span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// [3] 拿到合并后的BeanDefinition
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">final</span> RootBeanDefinition mbd <span style="color:#f92672">=</span> getMergedLocalBeanDefinition<span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 检查Bean是不是Abstract
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				checkMergedBeanDefinition<span style="color:#f92672">(</span>mbd<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// [4] 直接把根结点的依赖bean拷贝过来
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#75715e">// [NOTE] 使用 depends-on标签可以使，执行的depends bean可以在 此bean创建之前创建
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				String<span style="color:#f92672">[]</span> dependsOn <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getDependsOn</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>dependsOn <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String dep <span style="color:#f92672">:</span> dependsOn<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isDependent<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> dep<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>									<span style="color:#e6db74">&#34;Circular depends-on relationship between &#39;&#34;</span> <span style="color:#f92672">+</span> beanName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39; and &#39;&#34;</span> <span style="color:#f92672">+</span> dep <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						registerDependentBean<span style="color:#f92672">(</span>dep<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#75715e">// NOTE 如果此bean存在 depends ，则先实例这些depends bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>							getBean<span style="color:#f92672">(</span>dep<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>NoSuchBeanDefinitionException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>									<span style="color:#e6db74">&#34;&#39;&#34;</span> <span style="color:#f92672">+</span> beanName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39; depends on missing bean &#39;&#34;</span> <span style="color:#f92672">+</span> dep <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// [5] 创建bean实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isSingleton</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					sharedInstance <span style="color:#f92672">=</span> getSingleton<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#75715e">// [6] 创建Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>							<span style="color:#75715e">/** {@link AbstractAutowireCapableBeanFactory#createBean(String, RootBeanDefinition, Object[])}*/</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#66d9ef">return</span> createBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 在这里判断是不是FactoryBean 如果是则调用其 getObject 方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					bean <span style="color:#f92672">=</span> getObjectForBeanInstance<span style="color:#f92672">(</span>sharedInstance<span style="color:#f92672">,</span> name<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// [6] 判断是否为原型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isPrototype</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 如果为原型则需要创建Instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					Object prototypeInstance <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						beforePrototypeCreation<span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						prototypeInstance <span style="color:#f92672">=</span> createBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						afterPrototypeCreation<span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>					bean <span style="color:#f92672">=</span> getObjectForBeanInstance<span style="color:#f92672">(</span>prototypeInstance<span style="color:#f92672">,</span> name<span style="color:#f92672">,</span> beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>T<span style="color:#f92672">)</span> bean<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>还是熟悉的感觉，在这个开头你看到的只能是一堆的检查和初始化工作，真正的创建 <code>Instance</code> 在后面，</p>
+<ul>
+<li>单例对象和原型对象就差了一个缓存，o f course 这没什么奇怪的</li>
+<li>可以细看一下 <code>BeanFactory</code> 的设计，它就是一个单链表 <code>parent</code> 因为它有这个字段</li>
+<li>然后 处理 depends-on 标签，也就是将这个标签内的 bean 先创建出来</li>
+<li>然后调用 <code>createBean</code>进行真正的创建 bean</li>
+<li>最后调用 <code>getObjectForBeanInstance</code> 处理 <code>FactoryBean</code> 的情况</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">createBean</span><span style="color:#f92672">(</span>String beanName<span style="color:#f92672">,</span> RootBeanDefinition mbd<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throws</span> BeanCreationException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**-------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * 调用者：{@link AbstractBeanFactory#doGetBean(String, Class, Object[], boolean)}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 负责创建一个完整的Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 判断Bean是不是需要重写方法，若需要则校验
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [2] 实际调用 {@link #doCreateBean(String, RootBeanDefinition, Object[])} 创建Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *-------------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isTraceEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Creating instance of bean &#39;&#34;</span> <span style="color:#f92672">+</span> beanName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		RootBeanDefinition mbdToUse <span style="color:#f92672">=</span> mbd<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Make sure bean class is actually resolved at this point, and
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// clone the bean definition in case of a dynamically resolved Class
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// which cannot be stored in the shared merged bean definition.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Class<span style="color:#f92672">&lt;?&gt;</span> resolvedClass <span style="color:#f92672">=</span> resolveBeanClass<span style="color:#f92672">(</span>mbd<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>resolvedClass <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">hasBeanClass</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getBeanClassName</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			mbdToUse <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RootBeanDefinition<span style="color:#f92672">(</span>mbd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			mbdToUse<span style="color:#f92672">.</span><span style="color:#a6e22e">setBeanClass</span><span style="color:#f92672">(</span>resolvedClass<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Prepare method overrides.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// [1] 如果Bean需要重写方法,则进行预处理 校验
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			mbdToUse<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareMethodOverrides</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BeanDefinitionValidationException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanDefinitionStoreException<span style="color:#f92672">(</span>mbdToUse<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span>
+</span></span><span style="display:flex;"><span>					beanName<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Validation of method overrides failed&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTE 在这里调用 InstantiationAwareBeanPostProcessor 处理器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// NOTE 此时bean还没被创建
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// BeanPostProcessor#postProcessAfterInitialization
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			Object bean <span style="color:#f92672">=</span> resolveBeforeInstantiation<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbdToUse<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>bean <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> bean<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>mbdToUse<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#e6db74">&#34;BeanPostProcessor before instantiation of bean failed&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [3] 真正的创建Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			Object beanInstance <span style="color:#f92672">=</span> doCreateBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbdToUse<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> beanInstance<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>合并 <code>BeanDefinition</code> 那部分不用管，总结下</p>
+<ul>
+<li>
+<p>处理 <code>Merge Definition</code></p>
+</li>
+<li>
+<p><code>resolveBeforeInstantiation</code></p>
+<blockquote>
+<p>这里它会调用 <code>InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation</code> 处理器</p>
+<p>如果此处理返回了 <code>Instance</code> 则会调用 <code>BeanPostProcessor#postProcessAfterInitialization</code> 处理器</p>
+<p>注意：这里可能是 <code>AOP</code> 代理的地方，暂时没确定，因为这不属于 <code>BeanFactory</code> 的范围</p>
+</blockquote>
+</li>
+<li>
+<p>doCreateBean 创建 Instance</p>
+</li>
+</ul>
+<p>继续深入</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">doCreateBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String beanName<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> RootBeanDefinition mbd<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> <span style="color:#a6e22e">@Nullable</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throws</span> BeanCreationException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 负责创建Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 如果是singleton对象，现在缓存中移除
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [2] 如果之前没有创建过singleton，则调用 {@link #createBeanInstance} 创建
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [3] 将单例添加到factory中，预先暴露bean，这可以支持spring去解决 singleton循环依赖问题
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [4] 调用 {@link #populateBean} 填充依赖属性
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [5] 调用 {@link #initializeBean} 初始化bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [6] 如果Bean定义了Dependent-on 那就修复 依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *------------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 创建出来的实例是需要包装起来，然后才能修复依赖
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		BeanWrapper instanceWrapper <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Note [1] 单例对象需要从缓存中移除
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 如果之前没有创建过，那接下来就创建实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isSingleton</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			instanceWrapper <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">factoryBeanInstanceCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>instanceWrapper <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note step in 创建实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			instanceWrapper <span style="color:#f92672">=</span> createBeanInstance<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>继续跟</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> BeanWrapper <span style="color:#a6e22e">createBeanInstance</span><span style="color:#f92672">(</span>String beanName<span style="color:#f92672">,</span> RootBeanDefinition mbd<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 创建bean 实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 判断类是不是 public
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [2] 判断是否提供了工厂方法，若有，则调用 {@link #instantiateUsingFactoryMethod}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [3] 判断是否提供了构造函数，若有，则调用 {@link #autowireConstructor}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [4] 两者都不提供，则直接调用默认构造函数 {@link #instantiateBean}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *------------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 确保class已经被解析
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Class<span style="color:#f92672">&lt;?&gt;</span> beanClass <span style="color:#f92672">=</span> resolveBeanClass<span style="color:#f92672">(</span>mbd<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 判断Class是不是公开的，有没有访问权限
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>beanClass <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>Modifier<span style="color:#f92672">.</span><span style="color:#a6e22e">isPublic</span><span style="color:#f92672">(</span>beanClass<span style="color:#f92672">.</span><span style="color:#a6e22e">getModifiers</span><span style="color:#f92672">())</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isNonPublicAccessAllowed</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#e6db74">&#34;Bean class isn&#39;t public, and non-public access not allowed: &#34;</span> <span style="color:#f92672">+</span> beanClass<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 获取 Instance 提供者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Supplier<span style="color:#f92672">&lt;?&gt;</span> instanceSupplier <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstanceSupplier</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>instanceSupplier <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 若存在Instance提供者，就直接调用提供者方法然后得到Instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// [TODO] 我还不知道能不能把一个工厂Bean 当作提供者,但在下面是可以指名这个Bean是一个FactoryBean然后调用工厂方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> obtainFromSupplier<span style="color:#f92672">(</span>instanceSupplier<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [DESC] 若提供了工厂方法，则调用工厂方法拿到Instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// factory-method=&#34;getXXX&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getFactoryMethodName</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 调用工厂方法实例化对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> instantiateUsingFactoryMethod<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Shortcut when re-creating the same bean...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">boolean</span> resolved <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 是否需要自动装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">boolean</span> autowireNecessary <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>args <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgumentLock</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 若存在构造函数解析器或者存在工厂方法存在
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#75715e">// 则说明其可以提供了可以解析构造函数的处理器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">resolvedConstructorOrFactoryMethod</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					resolved <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 提供构造函数解析
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					autowireNecessary <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgumentsResolved</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>resolved<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>autowireNecessary<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 如果提供了参数解析器，则自动装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">return</span> autowireConstructor<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// 不需要自动装配切提供了参数解析器，则直接调用无参的构造函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">return</span> instantiateBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 构造函数自动装配 ？
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 指定构造函数来自于BeanPost处理器?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// SmartInstantiationAwareBeanPostProcessor#determineCandidateConstructors
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Constructor<span style="color:#f92672">&lt;?&gt;[]</span> ctors <span style="color:#f92672">=</span> determineConstructorsFromBeanPostProcessors<span style="color:#f92672">(</span>beanClass<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ctors <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvedAutowireMode</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> AUTOWIRE_CONSTRUCTOR <span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>				mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">hasConstructorArgumentValues</span><span style="color:#f92672">()</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span>ObjectUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>args<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 自动装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> autowireConstructor<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> ctors<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Preferred constructors for default construction?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 获取首选的默认构造函数 ？
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		ctors <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getPreferredConstructors</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ctors <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 自动装配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> autowireConstructor<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> ctors<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 没有指定构造函数，则用无参方式 实例化对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">return</span> instantiateBean<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
+<li>策略一 : 使用 <code>instantiateUsingFactoryMethod</code> 调用其<code>factory-method</code> 或者 <code>factory-bean</code>创建 <code>Instance</code></li>
+<li>策略二：使用 <code>autowireConstructor</code> 利用 <code>Bean</code> 的构造函数创建 <code>Instance</code></li>
+<li>策略三：使用 <code>instantiateBean</code> 利用 <code>Bean</code>的默认构造函数创建 <code>Instance</code></li>
+</ul>
+<p>第一种已经在 <code>functionality</code>文件夹中单独抽出来了，只讨论 下面两种策略，会另起一个小节</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

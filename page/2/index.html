@@ -1,268 +1,311 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>gngpp</title><meta name="keywords" content="Rust,Golang,Java"><meta name="author" content="gngpp"><meta name="copyright" content="gngpp"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="兴趣使然的程序员">
-<meta property="og:type" content="website">
-<meta property="og:title" content="gngpp">
-<meta property="og:url" content="https://crytalline.github.io/page/2/index.html">
-<meta property="og:site_name" content="gngpp">
-<meta property="og:description" content="兴趣使然的程序员">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://crytalline.github.io/img/avatar.png">
-<meta property="article:author" content="gngpp">
-<meta property="article:tag" content="Rust,Golang,Java">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://crytalline.github.io/img/avatar.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://crytalline.github.io/page/2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
-  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: true,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'gngpp',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2022-05-21 12:23:22'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="兴趣使然" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
-  
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
-  
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="gngpp"/>
+<meta name="twitter:description" content="兴趣使然"/>
+
+    <meta property="og:title" content="gngpp" />
+<meta property="og:description" content="兴趣使然" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://example.org/" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article>
+    <h1>gngpp</h1>
+    <ul class="posts-list">
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/docker/docker-compose%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">docker-compose基本使用</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Nov 8, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/ci-cd/gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">Gradle Dependencies Cache CI/CD场景</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Nov 5, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            2 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/bug/%E9%97%AE%E9%A2%98/">踩坑</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Oct 27, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/config/debian%E5%AE%89%E8%A3%85code-server/">Debian安装code-server</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Sep 14, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/bug/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%E9%81%87%E5%88%B0%E9%BB%98%E8%AE%A4ansi-x3-4-1968%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/">项目打包Docker镜像遇到默认ANSI-X3-4-1968编码的坑</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Aug 16, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/config/gradle%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85jar%E6%8F%92%E4%BB%B6%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">Gradle项目打包Jar插件简单使用</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Aug 5, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/hexo/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E6%96%B0%E7%89%88%E6%9C%ACnext%E4%B8%BB%E9%A2%98%E4%B8%8D%E6%94%AF%E6%8C%81auto-excerpt%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/">解决Hexo博客新版本Next主题不支持auto_excerpt配置问题</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Aug 2, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">Hexo主题nexT显示错误解决</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Aug 2, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/">Linux后台运行hexo</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Aug 2, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+        <li class="posts-list-item">
+          <a class="posts-list-item-title" href="https://example.org/posts/%E9%A1%B9%E7%9B%AE%E6%B3%A8%E6%84%8F%E7%82%B9/">DB程序员 项目注意点</a>
+          <span class="posts-list-item-description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+            Aug 2, 2021
+            -
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+            1 min read
+          </span>
+        </li>
+      
+    </ul>
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">73</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">20</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 导航</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">gngpp</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 导航</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">gngpp</h1><div id="site_social_icons"><a class="social-icon" href="https://github.com/zf1976" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:verticle@foxmail" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/02/04/PVE/PVE%E3%80%81%E4%BD%BF%E7%94%A8hostapd%E5%88%9B%E5%BB%BA%E6%97%A0%E7%BA%BFAP/" title="PVE、使用hostapd创建无线AP">PVE、使用hostapd创建无线AP</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-02-04T05:36:56.000Z" title="发表于 2022-02-04 13:36:56">2022-02-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/PVE/">PVE</a></span></div><div class="content">hostapd介绍
-  Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
-它能做什么？
 
-创建一个AP
-在同一张卡上创建多个AP（如果卡支持，通常最多8个）
-在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中
-在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运
-
-它不能做什么?
-
-在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道
-创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP
-为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器
-为 AP 本身分配 IP，这不是 hostapd 的工作
-
-IP、DHCP 和路由
-  Hostap ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/02/02/PVE/PVE%E3%80%81Docker%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/" title="PVE、Docker macvlan网心云多开方案">PVE、Docker macvlan网心云多开方案</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-02-02T09:54:00.000Z" title="发表于 2022-02-02 17:54:00">2022-02-02</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/PVE/">PVE</a></span></div><div class="content">前言
-  最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。
-
-Docker跑网心云目前玩过的几种方式
-  网心云Docker目前只支持host跟macvlan两种网络模式
-
-使用host网络模式（Windows、macOS不支持）
-
-  缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。
-
-使用macvlan网络模式
-
-macvlan支持的两种模式，但是需要牺 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/02/02/PVE/LXC%E5%AE%B9%E5%99%A8%E6%8C%82%E8%BD%BD%E7%9B%AE%E5%BD%95/" title="LXC容器挂载目录">LXC容器挂载目录</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-02-02T05:34:22.000Z" title="发表于 2022-02-02 13:34:22">2022-02-02</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/PVE/">PVE</a></span></div><div class="content">前言
-  笔者在PVE中跑LXC容器，用来挂网心云，涉及到磁盘分配目录大小。
-  LXC容器要挂载磁盘在PVE Web控制台操作起来相当麻烦，必须要先创建存储区，而且文件是使用存raw格式的镜像做存储磁盘。
-  并且LXC容器不存在和VM一样的硬盘直通，使用方式更多的像Docker，所以理解磁盘挂在的方式可以用Docker的方式来理解。
-
-比如 把PVE宿主机/dev/sda分区磁盘挂在宿主/mnt/wd/wxcloud目录下，那么LXC容器中挂载方式为：
-
-1pct set &lt;lxc id&gt; -mp1 /mnt/wd/wxcloud,mp=/root/wxcloud
-  左侧/mnt/wd/wxcloud为宿主机目录路径，则右边/root/wxcloud为LXC容器目录路径
-
-更多详细操作请参考： 文档
-
-</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/01/30/PVE/PVE%E5%8D%95%E8%87%82%E8%BD%AF%E8%B7%AF%E7%94%B1ikuai%E5%A4%9A%E6%8B%A8%E5%AE%B6%E5%BA%AD%E7%BB%84%E7%BD%91/" title="PVE单臂软路由ikuai多拨家庭组网">PVE单臂软路由ikuai多拨家庭组网</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-01-30T16:55:42.000Z" title="发表于 2022-01-31 00:55:42">2022-01-31</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/PVE/">PVE</a></span></div><div class="content">介绍
-
-具体PVE、ikuai虚拟机怎么安装，这里就不过多赘述了，相信网上都有教程。
-笔者家庭组网：PVE单网口主机安装ikuai软路由虚拟机单线多拨，外带一个物理交换机（无网管功能）。
-
-PVE配置ikuai软路由网口
-
-配置vmbr0虚拟网桥
-
-
-vmbr0是pve默认创建的，这里使用软路由网关192.168.3.1（软路由需要改LAN地址，默认是192.168.1.1），并且绑定网卡和设置静态ip：192.168.3.2作为访问pve的ip。
-
-
-若没有安装软路由，或者软路由崩了的情况下。用将客户机网线插到单臂网口，或者单臂网口连的交换机端口上，设置静态ip（192.168.3.1/24网段内）进行访问pve。
-
-
-
-分配ikuai网卡
-
-
-在安装前ikuai路由前分配两个虚拟网卡eth0、eth1，并且都接到vmbr0虚拟网桥。
-
-
-
-ikuai绑定WAN、LAN口
-
-
-安装完ikuai后，此时外部192.168.3.1/24段的网络设备是无法访问ikuai路由的。只能从
-pve的web控制台访问ikuai虚拟机，选择-设置网卡绑定
+<ul class="pagination">
+  
+  <li class="page-item">
+    <a class="page-link" href="/">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-arrow-left">
+  <title>arrow-left</title>
+  <line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline>
+</svg>
+    </a>
+  </li>
+  
+  
+  <li class="page-item">
+    <a class="page-link" href="/">
+      1
+    </a>
+  </li>
+  
+  <li class="page-item active">
+    <a class="page-link" href="/page/2/">
+      2
+    </a>
+  </li>
+  
+  <li class="page-item">
+    <a class="page-link" href="/page/3/">
+      3
+    </a>
+  </li>
+  
+  <li class="page-item">
+    <a class="page-link" href="/page/4/">
+      4
+    </a>
+  </li>
+  
+  <li class="page-item">
+    <a class="page-link" href="/page/5/">
+      5
+    </a>
+  </li>
+  
+  <li class="page-item">
+    <a class="page-link" href="/page/6/">
+      6
+    </a>
+  </li>
+  
+  <li class="page-item">
+    <a class="page-link" href="/page/7/">
+      7
+    </a>
+  </li>
+  
+  <li class="page-item">
+    <a class="page-link" href="/page/8/">
+      8
+    </a>
+  </li>
+  
+  
+  <li class="page-item">
+    <a class="page-link" href="/page/3/">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-arrow-right">
+  <title>arrow-right</title>
+  <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+    </a>
+  </li>
+  
+</ul>
 
 
 
-ikuai设置LAN口ip
+  </article>
 
-
-修改L ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/01/26/PVE/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABHG2543C1%E5%85%89%E7%8C%AB/" title="破解烽火HG2543C1光猫">破解烽火HG2543C1光猫</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-01-26T03:55:42.000Z" title="发表于 2022-01-26 11:55:42">2022-01-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/PVE/">PVE</a></span></div><div class="content">前言
-
-笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。
-为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
-
-破解烽火HG2543C1光猫
-
-打开光猫telnet功能
-
-
-别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
-
-
-打开后会有telnet开启提示字样
-
-
-
-telnet登录连接到光猫获取telecomadmin
-
-
-登录用户名默认root，就是超级管理员。
-
-
-telnet命令登录：telnet 192.168.1.1
-
-
-登录密码：默认的光猫Wi-Fi密码跟默认的useradmin密码，光猫背面就可以看到了
-
-
-查看telecomadmin密码：cat /flash/cfg/agentconf/factory.conf
-
-
-
-查看宽带账号和密码：cat /flash/cfg/app_conf/pppoe/chap-secrets
-
-
-
-使用telecomadmin账号登录管理后台
-
-
-那么经过上面 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/#content-inner">15</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">gngpp</div><div class="author-info__description">兴趣使然的程序员</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">73</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">20</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zf1976"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zf1976" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:verticle@foxmail" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/04/25/mds_stores/" title="macOS关闭mds_stores进程">macOS关闭mds_stores进程</a><time datetime="2022-04-25T03:39:34.000Z" title="发表于 2022-04-25 11:39:34">2022-04-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/29/%E9%85%8D%E7%BD%AE/Linux%E8%AE%BE%E7%BD%AEOpenWrt%20%E7%BD%91%E6%98%93%E4%BA%91%E8%A7%A3%E9%94%81/" title="Linux发行版设置OpenWrt网易云音乐解锁参数">Linux发行版设置OpenWrt网易云音乐解锁参数</a><time datetime="2022-03-29T16:38:29.000Z" title="发表于 2022-03-30 00:38:29">2022-03-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/02/14/PVE/PVE%E4%BD%BF%E7%94%A8WIFI%E7%BD%91%E5%8D%A1%E8%81%94%E7%BD%91/" title="PVE使用Wi-Fi网卡联网">PVE使用Wi-Fi网卡联网</a><time datetime="2022-02-14T16:55:42.000Z" title="发表于 2022-02-15 00:55:42">2022-02-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/02/10/PVE/PVE%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89HTTPS%E8%AF%81%E4%B9%A6/" title="PVE使用自定义HTTPS证书">PVE使用自定义HTTPS证书</a><time datetime="2022-02-10T13:05:31.000Z" title="发表于 2022-02-10 21:05:31">2022-02-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/02/08/docker/Docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/" title="Docker创建网络错误提示">Docker创建网络错误提示</a><time datetime="2022-02-08T13:04:22.000Z" title="发表于 2022-02-08 21:04:22">2022-02-08</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CI-CD/"><span class="card-category-list-name">CI/CD</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CRUD/"><span class="card-category-list-name">CRUD</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Docker/"><span class="card-category-list-name">Docker</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Elasticsearch/"><span class="card-category-list-name">Elasticsearch</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Hexo/"><span class="card-category-list-name">Hexo</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Nginx/"><span class="card-category-list-name">Nginx</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/PVE/"><span class="card-category-list-name">PVE</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/ReentrantLock/"><span class="card-category-list-name">ReentrantLock</span><span class="card-category-list-count">1</span></a></li>
-            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/CRUD/" style="font-size: 1.1em; color: #999">CRUD</a> <a href="/tags/DB/" style="font-size: 1.1em; color: #999">DB</a> <a href="/tags/Docker/" style="font-size: 1.37em; color: #99a4b2">Docker</a> <a href="/tags/Docker-Build/" style="font-size: 1.1em; color: #999">Docker Build</a> <a href="/tags/Drone-ci/" style="font-size: 1.1em; color: #999">Drone-ci</a> <a href="/tags/EasyCode/" style="font-size: 1.43em; color: #99a6b9">EasyCode</a> <a href="/tags/Elasticsearch/" style="font-size: 1.17em; color: #999c9f">Elasticsearch</a> <a href="/tags/Gradle/" style="font-size: 1.23em; color: #999ea6">Gradle</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/LXC/" style="font-size: 1.1em; color: #999">LXC</a> <a href="/tags/Linux/" style="font-size: 1.1em; color: #999">Linux</a> <a href="/tags/MySQL/" style="font-size: 1.17em; color: #999c9f">MySQL</a> <a href="/tags/Nginx/" style="font-size: 1.3em; color: #99a1ac">Nginx</a> <a href="/tags/ReentrantLock/" style="font-size: 1.1em; color: #999">ReentrantLock</a> <a href="/tags/Spring/" style="font-size: 1.1em; color: #999">Spring</a> <a href="/tags/Spring-Boot/" style="font-size: 1.3em; color: #99a1ac">Spring Boot</a> <a href="/tags/Spring-Gateway/" style="font-size: 1.1em; color: #999">Spring Gateway</a> <a href="/tags/Spring-Security/" style="font-size: 1.1em; color: #999">Spring Security</a> <a href="/tags/Spring-Bean/" style="font-size: 1.5em; color: #99a9bf">Spring-Bean</a> <a href="/tags/Spring-Core/" style="font-size: 1.37em; color: #99a4b2">Spring-Core</a> <a href="/tags/Stream/" style="font-size: 1.1em; color: #999">Stream</a> <a href="/tags/Vim/" style="font-size: 1.1em; color: #999">Vim</a> <a href="/tags/Wi-Fi/" style="font-size: 1.1em; color: #999">Wi-Fi</a> <a href="/tags/docker-compose/" style="font-size: 1.1em; color: #999">docker-compose</a> <a href="/tags/docker%E3%80%81network/" style="font-size: 1.1em; color: #999">docker、network</a> <a href="/tags/hostapd/" style="font-size: 1.1em; color: #999">hostapd</a> <a href="/tags/https/" style="font-size: 1.1em; color: #999">https</a> <a href="/tags/ikuai/" style="font-size: 1.1em; color: #999">ikuai</a> <a href="/tags/linux/" style="font-size: 1.1em; color: #999">linux</a> <a href="/tags/macOS/" style="font-size: 1.1em; color: #999">macOS</a> <a href="/tags/nexT/" style="font-size: 1.1em; color: #999">nexT</a> <a href="/tags/%E7%83%BD%E7%81%ABHG2543C1%E5%85%89%E7%8C%AB/" style="font-size: 1.1em; color: #999">烽火HG2543C1光猫</a> <a href="/tags/%E7%BD%91%E5%BF%83%E4%BA%91%E3%80%81docker/" style="font-size: 1.1em; color: #999">网心云、docker</a> <a href="/tags/%E9%85%8D%E7%BD%AE/" style="font-size: 1.1em; color: #999">配置</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/04/"><span class="card-archive-list-date">四月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/03/"><span class="card-archive-list-date">三月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/02/"><span class="card-archive-list-date">二月 2022</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/01/"><span class="card-archive-list-date">一月 2022</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/11/"><span class="card-archive-list-date">十一月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/10/"><span class="card-archive-list-date">十月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/09/"><span class="card-archive-list-date">九月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/08/"><span class="card-archive-list-date">八月 2021</span><span class="card-archive-list-count">46</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">73</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">49.3k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-05-21T04:23:22.284Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By gngpp</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+    </main>
+  </body>
+</html>

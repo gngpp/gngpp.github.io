@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>1.factory-method 和 factory-bean的实现原理 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="1.factory-method 和 factory-bean的实现原理"/>
+<meta name="twitter:description" content="##factory-method 和 factory-bean的实现
+在讨论实现原理之前，得先清楚怎么用，这两个东西.
+假设目前有两个类 ServiceFactory 和 Service 我们就可以指定 factory-method 和 factory-bean 给 Service
+&lt;bean id=&#34;Service&#34; class=&#34;org.springframework.beans.factory.FactoryBeanTests$Service&#34; factory-bean=&#34;ServiceFactoryBean&#34; factory-method=&#34;getObject&#34;&gt;&lt;/bean&gt; 	&lt;bean id=&#34;ServiceFactoryBean&#34; class=&#34;org.springframework.beans.factory.FactoryBeanTests$ServiceFactoryBean&#34; &gt;&lt;/bean&gt; 上述的意思就是，当我们getBean Service 的时候，会从 ServiceFactory的 getObject 方法中获取 Service
+所以应该会分成两个过程 ：
+ 先获取 ServiceFactory 实例 调用ServiceFactory的 getObject  实际上获取从ServiceFactory中获取 Service，就相当于把 ServiceFactory当成是 FactoryBean ，只是这样做的话可以允许程序员自定义自己的factory-method罢了，因为 FactoryBean的话就要继承接口，工厂方法也就被定下来了。
+ 原理部分
+因为这一小节只是详解 factory-method 和 factory-bean 的原理部分，所以源码只会截取一部分，若想要完整，那就到 beans 文件夹中查看详解部分.
+protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 创建bean 实例 * [1] 判断类是不是 public * [2] 判断是否提供了工厂方法，若有，则调用 {@link #instantiateUsingFactoryMethod} * [3] 判断是否提供了构造函数，若有，则调用 {@link #autowireConstructor} * [4] 两者都不提供，则直接调用默认构造函数 {@link #instantiateBean} *------------------------------------------------------------------------------------------------------------*/  	// 确保class已经被解析 	Class&lt;?"/>
+
+    <meta property="og:title" content="1.factory-method 和 factory-bean的实现原理" />
+<meta property="og:description" content="##factory-method 和 factory-bean的实现
+在讨论实现原理之前，得先清楚怎么用，这两个东西.
+假设目前有两个类 ServiceFactory 和 Service 我们就可以指定 factory-method 和 factory-bean 给 Service
+&lt;bean id=&#34;Service&#34; class=&#34;org.springframework.beans.factory.FactoryBeanTests$Service&#34; factory-bean=&#34;ServiceFactoryBean&#34; factory-method=&#34;getObject&#34;&gt;&lt;/bean&gt; 	&lt;bean id=&#34;ServiceFactoryBean&#34; class=&#34;org.springframework.beans.factory.FactoryBeanTests$ServiceFactoryBean&#34; &gt;&lt;/bean&gt; 上述的意思就是，当我们getBean Service 的时候，会从 ServiceFactory的 getObject 方法中获取 Service
+所以应该会分成两个过程 ：
+ 先获取 ServiceFactory 实例 调用ServiceFactory的 getObject  实际上获取从ServiceFactory中获取 Service，就相当于把 ServiceFactory当成是 FactoryBean ，只是这样做的话可以允许程序员自定义自己的factory-method罢了，因为 FactoryBean的话就要继承接口，工厂方法也就被定下来了。
+ 原理部分
+因为这一小节只是详解 factory-method 和 factory-bean 的原理部分，所以源码只会截取一部分，若想要完整，那就到 beans 文件夹中查看详解部分.
+protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 创建bean 实例 * [1] 判断类是不是 public * [2] 判断是否提供了工厂方法，若有，则调用 {@link #instantiateUsingFactoryMethod} * [3] 判断是否提供了构造函数，若有，则调用 {@link #autowireConstructor} * [4] 两者都不提供，则直接调用默认构造函数 {@link #instantiateBean} *------------------------------------------------------------------------------------------------------------*/  	// 确保class已经被解析 	Class&lt;?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />
+<meta property="article:modified_time" content="2021-08-02T11:39:34+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">1.factory-method 和 factory-bean的实现原理</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          3 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/spring-bean/">Spring-Bean</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>##factory-method 和 factory-bean的实现</p>
+<p>在讨论实现原理之前，得先清楚怎么用，这两个东西.</p>
+<p>假设目前有两个类 <code>ServiceFactory</code> 和 <code>Service</code> 我们就可以指定 <code>factory-method</code> 和 <code>factory-bean</code> 给 <code>Service</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Service&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.beans.factory.FactoryBeanTests$Service&#34;</span> <span style="color:#a6e22e">factory-bean=</span><span style="color:#e6db74">&#34;ServiceFactoryBean&#34;</span> <span style="color:#a6e22e">factory-method=</span><span style="color:#e6db74">&#34;getObject&#34;</span><span style="color:#f92672">&gt;&lt;/bean&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;ServiceFactoryBean&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.beans.factory.FactoryBeanTests$ServiceFactoryBean&#34;</span> <span style="color:#f92672">&gt;&lt;/bean&gt;</span>
+</span></span></code></pre></div><p>上述的意思就是，当我们<code>getBean</code> <code>Service</code> 的时候，会从 <code>ServiceFactory</code>的 <code>getObject</code> 方法中获取 <code>Service</code></p>
+<p>所以应该会分成两个过程 ：</p>
+<ul>
+<li>先获取 <code>ServiceFactory</code> 实例</li>
+<li>调用<code>ServiceFactory</code>的  <code>getObject</code></li>
+</ul>
+<p>实际上获取从<code>ServiceFactory</code>中获取 <code>Service</code>，就相当于把 <code>ServiceFactory</code>当成是 <code>FactoryBean</code> ，只是这样做的话可以允许程序员自定义自己的<code>factory-method</code>罢了，因为 <code>FactoryBean</code>的话就要继承接口，工厂方法也就被定下来了。</p>
+<hr>
+<p><strong>原理部分</strong></p>
+<p>因为这一小节只是详解 <code>factory-method</code> 和 <code>factory-bean</code> 的原理部分，所以源码只会截取一部分，若想要完整，那就到 <code>beans</code> 文件夹中查看详解部分.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> BeanWrapper <span style="color:#a6e22e">createBeanInstance</span><span style="color:#f92672">(</span>String beanName<span style="color:#f92672">,</span> RootBeanDefinition mbd<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 创建bean 实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 判断类是不是 public
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [2] 判断是否提供了工厂方法，若有，则调用 {@link #instantiateUsingFactoryMethod}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [3] 判断是否提供了构造函数，若有，则调用 {@link #autowireConstructor}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [4] 两者都不提供，则直接调用默认构造函数 {@link #instantiateBean}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *------------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 确保class已经被解析
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Class<span style="color:#f92672">&lt;?&gt;</span> beanClass <span style="color:#f92672">=</span> resolveBeanClass<span style="color:#f92672">(</span>mbd<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 判断Class是不是公开的，有没有访问权限
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>beanClass <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>Modifier<span style="color:#f92672">.</span><span style="color:#a6e22e">isPublic</span><span style="color:#f92672">(</span>beanClass<span style="color:#f92672">.</span><span style="color:#a6e22e">getModifiers</span><span style="color:#f92672">())</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isNonPublicAccessAllowed</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanCreationException<span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#e6db74">&#34;Bean class isn&#39;t public, and non-public access not allowed: &#34;</span> <span style="color:#f92672">+</span> beanClass<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 获取 Instance 提供者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Supplier<span style="color:#f92672">&lt;?&gt;</span> instanceSupplier <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstanceSupplier</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>instanceSupplier <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 若存在Instance提供者，就直接调用提供者方法然后得到Instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// [TODO] 我还不知道能不能把一个工厂Bean 当作提供者,但在下面是可以指名这个Bean是一个FactoryBean然后调用工厂方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> obtainFromSupplier<span style="color:#f92672">(</span>instanceSupplier<span style="color:#f92672">,</span> beanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [DESC] 若提供了工厂方法，则调用工厂方法拿到Instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// factory-method=&#34;getXXX&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getFactoryMethodName</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 调用工厂方法实例化对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> instantiateUsingFactoryMethod<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这个方法是用于创建 <code>beanInstance</code> 的，前面部分都是校验用的，核心看最后那一句,  当我们在定义 <code>bean</code>的时候 <code>factory-method</code> 的时候，就是成立那个条件，然后执行 <code>instantiateUsingFactoryMethod</code> ,step in</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> BeanWrapper <span style="color:#a6e22e">instantiateUsingFactoryMethod</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>			String beanName<span style="color:#f92672">,</span> RootBeanDefinition mbd<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object<span style="color:#f92672">[]</span> explicitArgs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">/**------------------------------------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [DESC] 用工厂方法实例化Bean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [1] 在bean定义，若使用属性 factory-method= 来指定工厂方法，则方法必须为 static, 然后解析工厂工厂方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * 若方法只有一个参数，并且方法没有参数，则直接调用{@link #instantiate(String, RootBeanDefinition, Object, Method, Object[])}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * 其内部直接调用工厂方法获取 Instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [2] 如果对一个bean 指定了 factory-bean 和 factory-method，则说明该bean的 instance交给 指定的factory-bean来实例化,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * 和上面差不多的，只是上面这个它自身bean就是工厂，自身就提供了工厂方法，现在这种情况是委托一个factory负责实例化
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 * [3] TODO 多factory 和 多参数 有待研究
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		 *------------------------------------------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		BeanWrapperImpl bw <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BeanWrapperImpl<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initBeanWrapper</span><span style="color:#f92672">(</span>bw<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		Object factoryBean<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		Class<span style="color:#f92672">&lt;?&gt;</span> factoryClass<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">boolean</span> isStatic<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [1] 若指定了 factory-bean=
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 则根据 factory-bean 提供的工厂类，调用getBean拿到FactoryBean Instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		String factoryBeanName <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getFactoryBeanName</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>factoryBeanName <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>factoryBeanName<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>beanName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanDefinitionStoreException<span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#e6db74">&#34;factory-bean reference points back to the same bean definition&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 拿到 Factorybean instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			factoryBean <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>factoryBeanName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isSingleton</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">containsSingleton</span><span style="color:#f92672">(</span>beanName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ImplicitlyAppearedSingletonException<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			factoryClass <span style="color:#f92672">=</span> factoryBean<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			isStatic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// [2] 这里没指定 factory-bean，只指定了 factory-method，则该方法必须为 静态方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">hasBeanClass</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanDefinitionStoreException<span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> beanName<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#e6db74">&#34;bean definition declares neither a bean class nor a factory-bean reference&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// 静态方法不需要instance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			factoryBean <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			factoryClass <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getBeanClass</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>			isStatic <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [2] 解析FactoryBean的参数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		Method factoryMethodToUse <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		ArgumentsHolder argsHolderToUse <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		Object<span style="color:#f92672">[]</span> argsToUse <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [3] 尝试从缓存中拿到 factory method 和 args
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>explicitArgs <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			argsToUse <span style="color:#f92672">=</span> explicitArgs<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			Object<span style="color:#f92672">[]</span> argsToResolve <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgumentLock</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				factoryMethodToUse <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Method<span style="color:#f92672">)</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">resolvedConstructorOrFactoryMethod</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>factoryMethodToUse <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgumentsResolved</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Found a cached factory method...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					argsToUse <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">resolvedConstructorArguments</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>argsToUse <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						argsToResolve <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">preparedConstructorArguments</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>argsToResolve <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				argsToUse <span style="color:#f92672">=</span> resolvePreparedArguments<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> bw<span style="color:#f92672">,</span> factoryMethodToUse<span style="color:#f92672">,</span> argsToResolve<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// [3] 从缓存中找不到那就只能解析了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>factoryMethodToUse <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> argsToUse <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Need to determine the factory method...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#75715e">// Try all methods with this name to see if they match the given arguments.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			factoryClass <span style="color:#f92672">=</span> ClassUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserClass</span><span style="color:#f92672">(</span>factoryClass<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			List<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;</span> candidateList <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 从缓存数据中，判断这个工厂是不是只有一个工厂
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isFactoryMethodUnique</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>factoryMethodToUse <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 从缓存中直接获取已经解析好的工厂方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					factoryMethodToUse <span style="color:#f92672">=</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResolvedFactoryMethod</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>factoryMethodToUse <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// 转换为list
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					candidateList <span style="color:#f92672">=</span> Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">singletonList</span><span style="color:#f92672">(</span>factoryMethodToUse<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 直接遍历类中的所有方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>candidateList <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				candidateList <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>				Method<span style="color:#f92672">[]</span> rawCandidates <span style="color:#f92672">=</span> getCandidateMethods<span style="color:#f92672">(</span>factoryClass<span style="color:#f92672">,</span> mbd<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Method candidate <span style="color:#f92672">:</span> rawCandidates<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note 方法一定要是静态方法，并且是工厂方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#75715e">// Note: isFactoryMethod 负责对 factory-method指定的值比较
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Modifier<span style="color:#f92672">.</span><span style="color:#a6e22e">isStatic</span><span style="color:#f92672">(</span>candidate<span style="color:#f92672">.</span><span style="color:#a6e22e">getModifiers</span><span style="color:#f92672">())</span> <span style="color:#f92672">==</span> isStatic <span style="color:#f92672">&amp;&amp;</span> mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">isFactoryMethod</span><span style="color:#f92672">(</span>candidate<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						candidateList<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>candidate<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 一个工厂方法，并且无参数,这种应该是最常用的吧
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>candidateList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 1 <span style="color:#f92672">&amp;&amp;</span> explicitArgs <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">hasConstructorArgumentValues</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				Method uniqueCandidate <span style="color:#f92672">=</span> candidateList<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Note 缓存已经解析的数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>uniqueCandidate<span style="color:#f92672">.</span><span style="color:#a6e22e">getParameterCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>					mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">factoryMethodToIntrospect</span> <span style="color:#f92672">=</span> uniqueCandidate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span>mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgumentLock</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>						mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">resolvedConstructorOrFactoryMethod</span> <span style="color:#f92672">=</span> uniqueCandidate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgumentsResolved</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>						mbd<span style="color:#f92672">.</span><span style="color:#a6e22e">resolvedConstructorArguments</span> <span style="color:#f92672">=</span> EMPTY_ARGS<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">// Note 在这里直接调用工厂方法就完事了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					bw<span style="color:#f92672">.</span><span style="color:#a6e22e">setBeanInstance</span><span style="color:#f92672">(</span>instantiate<span style="color:#f92672">(</span>beanName<span style="color:#f92672">,</span> mbd<span style="color:#f92672">,</span> factoryBean<span style="color:#f92672">,</span> uniqueCandidate<span style="color:#f92672">,</span> EMPTY_ARGS<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">return</span> bw<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Note 如果执行到这里，说明有多个工厂方法，或者工厂方法带参数
+</span></span></span></code></pre></div><ul>
+<li>在bean定义，若使用属性 factory-method= 来指定工厂方法，则方法必须为 static, 然后解析工厂方法，若方法只有一个，并且方法没有参数，则直接调用{@link #instantiate(String, RootBeanDefinition, Object, Method, Object[])}，其内部直接调用工厂方法获取 Instance</li>
+<li>如果对一个bean 指定了 factory-bean 和 factory-method，则说明该bean的 instance交给 指定的factory-bean来实例化, 和上面差不多的，只是上面这个它自身bean就是工厂，自身就提供了工厂方法，现在这种情况是委托一个factory负责实例化</li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

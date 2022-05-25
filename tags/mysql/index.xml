@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MySQL on gngpp</title>
+    <link>https://example.org/tags/mysql/</link>
+    <description>Recent content in MySQL on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 18 Mar 2021 15:47:55 +0000</lastBuildDate><atom:link href="https://example.org/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL策略备份SQL文件（逻辑备份）</title>
+      <link>https://example.org/posts/config/mysql%E7%AD%96%E7%95%A5%E5%A4%87%E4%BB%BD/</link>
+      <pubDate>Thu, 18 Mar 2021 15:47:55 +0000</pubDate>
+      
+      <guid>https://example.org/posts/config/mysql%E7%AD%96%E7%95%A5%E5%A4%87%E4%BB%BD/</guid>
+      <description> 笔者用的是MySQL5.7版本，如果是在macOS or Linux 配置策略文件用户名密码
+ vim编辑文件： sudo vim /etc/my.cnf 新增内容： [client] user=your_username password=your_password :wq退出 终端输入：mysqldump --defaults-extra-file=/etc/my.cnf your_database &amp;gt; /your_path  注：macOS or Linux 可以使用man page查询相关命令 如：man &amp;ndash;defaults-extra-file
+ </description>
+    </item>
+    
+    <item>
+      <title>MySQL修改密码</title>
+      <link>https://example.org/posts/config/mysql%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/</link>
+      <pubDate>Thu, 18 Mar 2021 15:09:02 +0000</pubDate>
+      
+      <guid>https://example.org/posts/config/mysql%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/</guid>
+      <description>MySQL5.7版本  查看当前版本密码策略
+ SHOW VARIABLES LIKE &amp;#39;validate_password%&amp;#39;; +--------------------------------------+--------+ | Variable_name | Value | +--------------------------------------+--------+ | validate_password_check_user_name | OFF | | validate_password_dictionary_file | | | validate_password_length | 8 | | validate_password_mixed_case_count | 1 | | validate_password_number_count | 1 | | validate_password_policy | MEDIUM | | validate_password_special_char_count | 1 | +--------------------------------------+--------+  密码策略级别(简单密码可以按需求设置)
+ set global validate_password_policy=LOW; set global validate_password_policy=6;  修改密码
+ use mysql; update user set authentication_string = password(&amp;#39;your_password&amp;#39;) where User=&amp;#39;root&amp;#39;;  刷新权限</description>
+    </item>
+    
+  </channel>
+</rss>

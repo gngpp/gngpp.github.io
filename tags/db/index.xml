@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DB on gngpp</title>
+    <link>https://example.org/tags/db/</link>
+    <description>Recent content in DB on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Aug 2021 11:41:35 +0000</lastBuildDate><atom:link href="https://example.org/tags/db/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DB程序员 项目注意点</title>
+      <link>https://example.org/posts/%E9%A1%B9%E7%9B%AE%E6%B3%A8%E6%84%8F%E7%82%B9/</link>
+      <pubDate>Mon, 02 Aug 2021 11:41:35 +0000</pubDate>
+      
+      <guid>https://example.org/posts/%E9%A1%B9%E7%9B%AE%E6%B3%A8%E6%84%8F%E7%82%B9/</guid>
+      <description> 禁止在循环中查询数据库，应当采用批量查询方式 如果为数据量比较大的表，直接用分页查询插件 表中某些字段为可空的情况下，查出来的数据一定要判空  </description>
+    </item>
+    
+  </channel>
+</rss>

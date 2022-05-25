@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PVE on gngpp</title>
+    <link>https://example.org/categories/pve/</link>
+    <description>Recent content in PVE on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Feb 2022 00:55:42 +0000</lastBuildDate><atom:link href="https://example.org/categories/pve/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE使用Wi-Fi网卡联网</title>
+      <link>https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8wifi%E7%BD%91%E5%8D%A1%E8%81%94%E7%BD%91/</link>
+      <pubDate>Tue, 15 Feb 2022 00:55:42 +0000</pubDate>
+      
+      <guid>https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8wifi%E7%BD%91%E5%8D%A1%E8%81%94%E7%BD%91/</guid>
+      <description> 打开终端 vim编辑文件/etc/network/interfaces  vim /etc/network/interfaces 添加以下内容   wlan0是网卡的标识名称，可以用ifconfig命令查看
+ allow-hotplug wlan0 auto wlan0 iface wlan0 inet dhcp wpa-conf /etc/wpa.conf 创建/etc/wpa.conf文件  touch /etc/wpa.conf 写入Wi-Fi连接配置  # 安装wpa_passphrase命令工具 apt-get install wpasupplicant # 写入配置 wpa_passphrase wifi名称 wifi密码 &amp;gt;&amp;gt; /etc/wpa.conf 启动网卡  ifup wlan0 </description>
+    </item>
+    
+    <item>
+      <title>PVE使用自定义HTTPS证书</title>
+      <link>https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89https%E8%AF%81%E4%B9%A6/</link>
+      <pubDate>Thu, 10 Feb 2022 21:05:31 +0000</pubDate>
+      
+      <guid>https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89https%E8%AF%81%E4%B9%A6/</guid>
+      <description>前言  PVE需要使用https来访问，默认使用的是自带的SSL自签证书浏览器是不认可的，所以会爆红访问提示不安全，这里笔者为大家提供配置免费证书的方法，让你的PVE访问变得安全，而且关键时只有配置证书了的PVE才能外网访问控制台。
+SSL证书申请  证书申请可以在：https://freessl.cn 申请   最方便是使用DNS验证(文件验证不支持域名带端口验证)，添加一个CNAME/TXT记录验证即可颁发证书，之后进入FreeSSL控制台下载证书，或者把证书保存到本地的KeyManager（https://keymanager.org支持多平台）后查看证书
+  查看PEM
+ PVE配置证书  上传自定义证书
+  如果是不小心把自带证书删掉了，或者自定义证书也没了，可以重启pveproxy服务，重新生成自带证书。
+ systemctl restart pveproxy </description>
+    </item>
+    
+    <item>
+      <title>PVE、使用hostapd创建无线AP</title>
+      <link>https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8hostapd%E5%88%9B%E5%BB%BA%E6%97%A0%E7%BA%BFap/</link>
+      <pubDate>Fri, 04 Feb 2022 13:36:56 +0000</pubDate>
+      
+      <guid>https://example.org/posts/pve/pve%E4%BD%BF%E7%94%A8hostapd%E5%88%9B%E5%BB%BA%E6%97%A0%E7%BA%BFap/</guid>
+      <description>hostapd介绍  Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
+它能做什么？  创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运  它不能做什么?  在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作  IP、DHCP 和路由  Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
+PVE（Debian）应用hostapd  使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
+ PVE安装hostapd apt install hostapd -y  查看默认配置文件路径 安装好hostapd，查看/etc/default/hostapd，默认DAEMON_CONF配置路径  cat /ect/default/hostapd  编辑默认配置文件 用vim编辑/etc/hostapd/hostapd.</description>
+    </item>
+    
+    <item>
+      <title>PVE、Docker-Macvlan网心云多开方案</title>
+      <link>https://example.org/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</link>
+      <pubDate>Wed, 02 Feb 2022 17:54:00 +0000</pubDate>
+      
+      <guid>https://example.org/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</guid>
+      <description>前言  最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。
+Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持host跟macvlan两种网络模式
+ 使用host网络模式（Windows、macOS不支持）   缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。
+ 使用macvlan网络模式  macvlan支持的两种模式，但是需要牺牲掉一个网卡(可以使用虚拟网卡或物理网卡，下面详细讲)。
+  Bridge模式：不创建子接口的情况下直接去桥接网卡，可以直接桥接到与宿主级的同网段。 VLAN Bridge模式：创建子接口去桥接物理接口。可划分多个VLAN。     这里只讨论Bridge模式。 macvlan跟PVE网络vmbr桥接很相似了，可以直接绑定物理或虚拟网卡，比如PVE中LXC容器内的虚拟网卡。同时也可以直接把网卡虚拟出子网卡。支持Bridge模式、VLAN Bridge模式模式，这里就不细说，请查看:Docker文档 ，我们主要使用桥接模式就可以了。
+ Bridge模式实际上就是绑定一个网卡进出口，PVE虚拟交换机也是一样。那么docker容器指定这个macvlan网络就可以成为网段内设备，网口线拉到路由所在交换机交给软路由去分流，亦或者直接桥接到宿主机内部虚拟机交换机的接到虚拟机路由也可以，多条宽带也是可以的。开启upnp就完事了。
+虚拟网卡、物理网卡，创建macvlan网络 物理网卡篇 docker network create -d macvlan --subnet=192.168.1.1/24 --gateway=192.168.1.1 -o parent=ensxxx macvlan_net  -d macvlan 指定网络驱动程序为macvlan &amp;ndash;subnet 指定一个子网段 &amp;ndash;gateway 路由网关 -o parent=ensxxx 绑定物理网卡 macvlan_net 自定义网络名称   物理网卡id怎么看？
+ # 查看网卡设备 ifconfig -a # 查看的是已启用的网卡设备 ifcofnig # 启用网卡，开机启用就不多说了，自行百度 ifconfig wlp4s0 up  下面可以看到我的无线Wi-Fi网卡识别为wlp4s0，这个就是物理网卡标识符  虚拟网卡篇  使用的PVE下的OVS Bride桥接虚拟网卡(依赖openvswitch-switch)，需要安装openvswitch-switch。</description>
+    </item>
+    
+    <item>
+      <title>LXC容器挂载目录</title>
+      <link>https://example.org/posts/pve/lxc%E5%AE%B9%E5%99%A8%E6%8C%82%E8%BD%BD%E7%9B%AE%E5%BD%95/</link>
+      <pubDate>Wed, 02 Feb 2022 13:34:22 +0000</pubDate>
+      
+      <guid>https://example.org/posts/pve/lxc%E5%AE%B9%E5%99%A8%E6%8C%82%E8%BD%BD%E7%9B%AE%E5%BD%95/</guid>
+      <description>前言  笔者在PVE中跑LXC容器，用来挂网心云，涉及到磁盘分配目录大小。 LXC容器要挂载磁盘在PVE Web控制台操作起来相当麻烦，必须要先创建存储区，而且文件是使用存raw格式的镜像做存储磁盘。 并且LXC容器不存在和VM一样的硬盘直通，使用方式更多的像Docker，所以理解磁盘挂在的方式可以用Docker的方式来理解。
+ 比如 把PVE宿主机/dev/sda分区磁盘挂在宿主/mnt/wd/wxcloud目录下，那么LXC容器中挂载方式为：  pct set &amp;lt;lxc id&amp;gt; -mp1 /mnt/wd/wxcloud,mp=/root/wxcloud  左侧/mnt/wd/wxcloud为宿主机目录路径，则右边/root/wxcloud为LXC容器目录路径
+ 更多详细操作请参考： 文档  </description>
+    </item>
+    
+    <item>
+      <title>PVE单臂软路由ikuai多拨家庭组网</title>
+      <link>https://example.org/posts/pve/pve%E5%8D%95%E8%87%82%E8%BD%AF%E8%B7%AF%E7%94%B1ikuai%E5%A4%9A%E6%8B%A8%E5%AE%B6%E5%BA%AD%E7%BB%84%E7%BD%91/</link>
+      <pubDate>Mon, 31 Jan 2022 00:55:42 +0000</pubDate>
+      
+      <guid>https://example.org/posts/pve/pve%E5%8D%95%E8%87%82%E8%BD%AF%E8%B7%AF%E7%94%B1ikuai%E5%A4%9A%E6%8B%A8%E5%AE%B6%E5%BA%AD%E7%BB%84%E7%BD%91/</guid>
+      <description>介绍  具体PVE、ikuai虚拟机怎么安装，这里就不过多赘述了，相信网上都有教程。 笔者家庭组网：PVE单网口主机安装ikuai软路由虚拟机单线多拨，外带一个物理交换机（无网管功能）。
+ PVE配置ikuai软路由网口  配置vmbr0虚拟网桥   vmbr0是pve默认创建的，这里使用软路由网关192.168.3.1（软路由需要改LAN地址，默认是192.168.1.1），并且绑定网卡和设置静态ip：192.168.3.2作为访问pve的ip。
+  若没有安装软路由，或者软路由崩了的情况下。用将客户机网线插到单臂网口，或者单臂网口连的交换机端口上，设置静态ip（192.168.3.1/24网段内）进行访问pve。
+  分配ikuai网卡   在安装前ikuai路由前分配两个虚拟网卡eth0、eth1，并且都接到vmbr0虚拟网桥。
+  ikuai绑定WAN、LAN口   安装完ikuai后，此时外部192.168.3.1/24段的网络设备是无法访问ikuai路由的。只能从 pve的web控制台访问ikuai虚拟机，选择-设置网卡绑定
+  ikuai设置LAN口ip   修改LAN默认ip地址，选择-设置LAN/WAN地址-设置LAN1地址，WAN口的暂时不用管。 LAN1修改为：192.168.3.1
+ </description>
+    </item>
+    
+    <item>
+      <title>破解烽火HG2543C1光猫</title>
+      <link>https://example.org/posts/pve/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABhg2543c1%E5%85%89%E7%8C%AB/</link>
+      <pubDate>Wed, 26 Jan 2022 11:55:42 +0000</pubDate>
+      
+      <guid>https://example.org/posts/pve/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABhg2543c1%E5%85%89%E7%8C%AB/</guid>
+      <description>前言  笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。 为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
+ 破解烽火HG2543C1光猫  打开光猫telnet功能   别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
+  打开后会有telnet开启提示字样
+  telnet登录连接到光猫获取telecomadmin   登录用户名默认root，就是超级管理员。
+  telnet命令登录：telnet 192.168.1.1
+  登录密码：默认的光猫Wi-Fi密码跟默认的useradmin密码，光猫背面就可以看到了
+  查看telecomadmin密码：cat /flash/cfg/agentconf/factory.conf
+  查看宽带账号和密码：cat /flash/cfg/app_conf/pppoe/chap-secrets
+  使用telecomadmin账号登录管理后台   那么经过上面的操作，已经得到telecomadmin的电信管理员密码了
+  浏览器访问：http://192.168.1.1:8080/cgi-bin/login.htm.cgi登录
+  打开网络-宽带设置-网络连接选项2_INTERNET_R_VID_41连接方式为桥接，具体见下图，不同猫一般都不一样，认准含有INTERNET字段就可以了
+  一定要记得选绑定桥接的LAN口
+ 华为路由TC7102的IPTV使用  光猫破解后，把千兆口连接到交换机上，使用软路由或者硬路由拨号（百兆口就不考虑了）。但是IPTV跟猫绑定了，目前IPTV走的硬路由器：华为路由TC7102拨号不支持IPTV流转发（支持功能，但是被绑定再猫上了，也懒得折腾修改什么。不知道电信师傅干了什么），必须要用猫拨号，路由下去开启IPTV桥接绑定LAN端口和VLAN-ID（接电视机顶盒或二级路由），不过可以通过IPTV线直接连接到交换机上，机顶盒就可以自动接入IPTV网络了。
+ 下面就是猫拨号情况下，一级路由设置，二级路由也是如此，同时二级路由可以上网（不同路由器一般不同）
+  LAN口就是连电视机的路由器或者电视，桥接路由下去一般不用开启IPTV了（具体看情况）。 如果不走猫拨号，路由器设置AP模式直接连到交换机上。比如TP的路由器，直接把wan口拔了，电视线跟交换机接的线都插到LAN口上。
+ 当然电视也可以直接插猫的iTV口，默认搞了桥接。如果猫拨号，并且路由器支持IPTV默认也是可以看电视。
+ 总结  路由器同样的IPTV设置情况下，由猫拨号，路由器开启IPTV桥接并绑定LAN口和VLAN-ID，下面接二级路由器连接电视跟上网正常。改猫桥接，路由器拨号，二级路由下面IPTV功能不生效。应该地区限制，必须要用光猫拨号或者直接（或接个交换机单线服用）连接光猫才能使用IPTV。
+ 更详细设置请看：华为路由IPTV文档
+ </description>
+    </item>
+    
+  </channel>
+</rss>

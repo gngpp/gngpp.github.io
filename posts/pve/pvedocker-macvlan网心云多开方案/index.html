@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>PVE、Docker-Macvlan网心云多开方案 // gngpp</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="gngpp" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://example.org/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PVE、Docker-Macvlan网心云多开方案"/>
+<meta name="twitter:description" content="前言  最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。
+Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持host跟macvlan两种网络模式
+ 使用host网络模式（Windows、macOS不支持）   缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。
+ 使用macvlan网络模式  macvlan支持的两种模式，但是需要牺牲掉一个网卡(可以使用虚拟网卡或物理网卡，下面详细讲)。
+  Bridge模式：不创建子接口的情况下直接去桥接网卡，可以直接桥接到与宿主级的同网段。 VLAN Bridge模式：创建子接口去桥接物理接口。可划分多个VLAN。     这里只讨论Bridge模式。 macvlan跟PVE网络vmbr桥接很相似了，可以直接绑定物理或虚拟网卡，比如PVE中LXC容器内的虚拟网卡。同时也可以直接把网卡虚拟出子网卡。支持Bridge模式、VLAN Bridge模式模式，这里就不细说，请查看:Docker文档 ，我们主要使用桥接模式就可以了。
+ Bridge模式实际上就是绑定一个网卡进出口，PVE虚拟交换机也是一样。那么docker容器指定这个macvlan网络就可以成为网段内设备，网口线拉到路由所在交换机交给软路由去分流，亦或者直接桥接到宿主机内部虚拟机交换机的接到虚拟机路由也可以，多条宽带也是可以的。开启upnp就完事了。
+虚拟网卡、物理网卡，创建macvlan网络 物理网卡篇 docker network create -d macvlan --subnet=192.168.1.1/24 --gateway=192.168.1.1 -o parent=ensxxx macvlan_net  -d macvlan 指定网络驱动程序为macvlan &ndash;subnet 指定一个子网段 &ndash;gateway 路由网关 -o parent=ensxxx 绑定物理网卡 macvlan_net 自定义网络名称   物理网卡id怎么看？
+ # 查看网卡设备 ifconfig -a # 查看的是已启用的网卡设备 ifcofnig # 启用网卡，开机启用就不多说了，自行百度 ifconfig wlp4s0 up  下面可以看到我的无线Wi-Fi网卡识别为wlp4s0，这个就是物理网卡标识符  虚拟网卡篇  使用的PVE下的OVS Bride桥接虚拟网卡(依赖openvswitch-switch)，需要安装openvswitch-switch。"/>
+
+    <meta property="og:title" content="PVE、Docker-Macvlan网心云多开方案" />
+<meta property="og:description" content="前言  最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。
+Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持host跟macvlan两种网络模式
+ 使用host网络模式（Windows、macOS不支持）   缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。
+ 使用macvlan网络模式  macvlan支持的两种模式，但是需要牺牲掉一个网卡(可以使用虚拟网卡或物理网卡，下面详细讲)。
+  Bridge模式：不创建子接口的情况下直接去桥接网卡，可以直接桥接到与宿主级的同网段。 VLAN Bridge模式：创建子接口去桥接物理接口。可划分多个VLAN。     这里只讨论Bridge模式。 macvlan跟PVE网络vmbr桥接很相似了，可以直接绑定物理或虚拟网卡，比如PVE中LXC容器内的虚拟网卡。同时也可以直接把网卡虚拟出子网卡。支持Bridge模式、VLAN Bridge模式模式，这里就不细说，请查看:Docker文档 ，我们主要使用桥接模式就可以了。
+ Bridge模式实际上就是绑定一个网卡进出口，PVE虚拟交换机也是一样。那么docker容器指定这个macvlan网络就可以成为网段内设备，网口线拉到路由所在交换机交给软路由去分流，亦或者直接桥接到宿主机内部虚拟机交换机的接到虚拟机路由也可以，多条宽带也是可以的。开启upnp就完事了。
+虚拟网卡、物理网卡，创建macvlan网络 物理网卡篇 docker network create -d macvlan --subnet=192.168.1.1/24 --gateway=192.168.1.1 -o parent=ensxxx macvlan_net  -d macvlan 指定网络驱动程序为macvlan &ndash;subnet 指定一个子网段 &ndash;gateway 路由网关 -o parent=ensxxx 绑定物理网卡 macvlan_net 自定义网络名称   物理网卡id怎么看？
+ # 查看网卡设备 ifconfig -a # 查看的是已启用的网卡设备 ifcofnig # 启用网卡，开机启用就不多说了，自行百度 ifconfig wlp4s0 up  下面可以看到我的无线Wi-Fi网卡识别为wlp4s0，这个就是物理网卡标识符  虚拟网卡篇  使用的PVE下的OVS Bride桥接虚拟网卡(依赖openvswitch-switch)，需要安装openvswitch-switch。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-02T17:54:00+00:00" />
+<meta property="article:modified_time" content="2022-02-02T17:54:00+00:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://example.org/"><img class="app-header-avatar" src="/avatar.png" alt="gngpp" /></a>
+      <h1>gngpp</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">Categories</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>兴趣使然</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gngpp" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">PVE、Docker-Macvlan网心云多开方案</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Feb 2, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://example.org/tags/docker/">Docker</a>
+              <a class="tag" href="https://example.org/tags/macvlan/">Macvlan</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h3 id="前言">前言</h3>
+<p>  最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。</p>
+<p><img src="/img/PVE%E3%80%81Docker-Macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/img.png" alt=""></p>
+<h3 id="docker跑网心云目前玩过的几种方式">Docker跑网心云目前玩过的几种方式</h3>
+<p>  网心云Docker目前只支持<code>host</code>跟<code>macvlan</code>两种网络模式</p>
+<ul>
+<li>使用host网络模式（Windows、macOS不支持）</li>
+</ul>
+<p>  缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。</p>
+<ul>
+<li>使用macvlan网络模式
+<blockquote>
+<p>macvlan支持的两种模式，但是需要牺牲掉一个网卡(可以使用虚拟网卡或物理网卡，下面详细讲)。</p>
+</blockquote>
+<ol>
+<li>Bridge模式：不创建子接口的情况下直接去桥接网卡，可以直接桥接到与宿主级的同网段。</li>
+<li>VLAN Bridge模式：创建子接口去桥接物理接口。可划分多个VLAN。</li>
+</ol>
+</li>
+</ul>
+<p>  这里只讨论<code>Bridge模式</code>。
+  macvlan跟PVE网络vmbr桥接很相似了，可以直接绑定物理或虚拟网卡，比如PVE中LXC容器内的虚拟网卡。同时也可以直接把网卡虚拟出子网卡。支持<code>Bridge模式</code>、<code>VLAN Bridge模式</code>模式，这里就不细说，请查看:<a href="https://docs.docker.com/network/macvlan/">Docker文档</a> ，我们主要使用桥接模式就可以了。</p>
+<p>  <code>Bridge模式</code>实际上就是绑定一个网卡进出口，PVE虚拟交换机也是一样。那么docker容器指定这个macvlan网络就可以成为网段内设备，网口线拉到路由所在交换机交给软路由去分流，亦或者直接桥接到宿主机内部虚拟机交换机的接到虚拟机路由也可以，多条宽带也是可以的。开启upnp就完事了。</p>
+<h2 id="虚拟网卡物理网卡创建macvlan网络">虚拟网卡、物理网卡，创建macvlan网络</h2>
+<h3 id="物理网卡篇">物理网卡篇</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>docker network create -d macvlan --subnet<span style="color:#f92672">=</span>192.168.1.1/24 --gateway<span style="color:#f92672">=</span>192.168.1.1 -o parent<span style="color:#f92672">=</span>ensxxx macvlan_net
+</span></span></code></pre></div><ul>
+<li>-d macvlan 指定网络驱动程序为macvlan</li>
+<li>&ndash;subnet 指定一个子网段</li>
+<li>&ndash;gateway 路由网关</li>
+<li>-o parent=ensxxx 绑定物理网卡</li>
+<li>macvlan_net 自定义网络名称</li>
+</ul>
+<blockquote>
+<p>物理网卡id怎么看？</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 查看网卡设备</span>
+</span></span><span style="display:flex;"><span>ifconfig -a
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看的是已启用的网卡设备</span>
+</span></span><span style="display:flex;"><span>ifcofnig 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 启用网卡，开机启用就不多说了，自行百度</span>
+</span></span><span style="display:flex;"><span>ifconfig wlp4s0 up
+</span></span></code></pre></div><ul>
+<li>下面可以看到我的无线Wi-Fi网卡识别为<code>wlp4s0</code>，这个就是物理网卡标识符</li>
+</ul>
+<p><img src="/img/PVE%E3%80%81Docker-Macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/img_1.png" alt=""></p>
+<h3 id="虚拟网卡篇">虚拟网卡篇</h3>
+<blockquote>
+<p>使用的PVE下的OVS Bride桥接虚拟网卡(依赖openvswitch-switch)，需要安装openvswitch-switch。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt update
+</span></span><span style="display:flex;"><span>sudo apt install openvswitch-switch
+</span></span></code></pre></div><ul>
+<li>创建OVS Bridge
+<img src="/img/PVE%E3%80%81Docker-Macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/1.png" alt=""></li>
+</ul>
+<blockquote>
+<p>上图创建了名为vmbr1的OVS Bridge虚拟交换机。</p>
+</blockquote>
+<ul>
+<li>创建OVS IntPort
+<img src="/img/PVE%E3%80%81Docker-Macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/2.png" alt=""></li>
+</ul>
+<blockquote>
+<p>上图中创建名为internal的OVS IntPort是绑定到名为vmbr1的OVS Bridge虚拟交换机中。</p>
+</blockquote>
+<ul>
+<li>创建macvlan</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>docker network create -d macvlan --subnet<span style="color:#f92672">=</span>192.168.1.1/24 --gateway<span style="color:#f92672">=</span>192.168.1.1 -o parent<span style="color:#f92672">=</span>internal macvlan_net
+</span></span></code></pre></div><ul>
+<li>-d macvlan 指定网络驱动程序为macvlan</li>
+<li>&ndash;subnet 指定一个子网段</li>
+<li>&ndash;gateway 路由网关</li>
+<li>-o parent=internal 绑定虚拟网卡网卡</li>
+<li>macvlan_net 自定义网络名称</li>
+</ul>
+<h2 id="总结">总结</h2>
+<blockquote>
+<p>虚拟网卡多开的好处是不需要牺牲掉一个物理网口，同时OVS Bridge也可以绑定物理网卡端口，可以支持多开的网心云网络连接到内部（虚拟机路由网络）或外部的路由网络。</p>
+</blockquote>
+<ol>
+<li>如果需要访问网心云容器，需要将桥接网络设置为与宿主级相同网络。</li>
+<li>单个网卡只能绑定一次（可以绑定虚拟网卡）。</li>
+<li>并且每个容器都有一个独立ip，也就是说可以多开网心云了</li>
+</ol>
+<ul>
+<li>通信测试</li>
+</ul>
+<p>  笔者使用的是pve搭建的ikuai路由虚拟机，lan口桥接到了vmbr1。</p>
+<p><img src="/img/PVE%E3%80%81Docker-Macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/3.png" alt=""></p>
+<p>  下面可以看到指定容器ip为 <code>192.168.1.100</code>,已经ping通网关。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>docker run -it --rm --net macvlan_net --ip<span style="color:#f92672">=</span>192.168.1.100 alpine ping 192.168.1.1
+</span></span></code></pre></div><p><img src="/img/PVE%E3%80%81Docker-Macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/img_2.png" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

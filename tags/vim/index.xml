@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim on gngpp</title>
+    <link>https://example.org/tags/vim/</link>
+    <description>Recent content in Vim on gngpp</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 May 2020 19:26:50 +0000</lastBuildDate><atom:link href="https://example.org/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Idea-vim 快捷键</title>
+      <link>https://example.org/posts/vim/idea-vim-%E5%BF%AB%E6%8D%B7%E9%94%AE/</link>
+      <pubDate>Sat, 02 May 2020 19:26:50 +0000</pubDate>
+      
+      <guid>https://example.org/posts/vim/idea-vim-%E5%BF%AB%E6%8D%B7%E9%94%AE/</guid>
+      <description>IDEAVIM 常用快捷键  跳转   ctrl-] 跳转到实现 ctrl-o 返回上一次编辑地方 ctrl-i 跳到上一个跳转到的地方, 用 上面的跳回来，用这个再跳过去   修改
+  c-i-w 修改整个句子
+  c-i-W 修改整行
+  c-i-( 修改整个括号里面的内容
+  c-i-&amp;quot; 修改双引号里面的内容
+  C 从当前光标的位置修改至行尾
+    复制
+ y-i-w 复制整个句子 y-i-W 复制整行，不包括换行符 yy 复制整行，包括换行符 y-i-( 复制括号里面的内容 y-i-&amp;quot; 复制双引号里面的内容 Y 复制整行，包括换行符    删除
+  d-i-w 删除整个句子
+  d-i-W 删除整行
+  d-i-( 删除整个括号里面的内容</description>
+    </item>
+    
+  </channel>
+</rss>
