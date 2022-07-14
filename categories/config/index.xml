@@ -13,9 +13,8 @@
       <pubDate>Wed, 30 Mar 2022 00:38:29 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/linux%E8%AE%BE%E7%BD%AEopenwrt-%E7%BD%91%E6%98%93%E4%BA%91%E8%A7%A3%E9%94%81/</guid>
-      <description> Linux 客户端 (1.2 版本以上需要自签证书 MITM，启动客户端需要增加 –ignore-certificate-errors 参数)
- sudo vi /usr/share/applications/netease-cloud-music.desktop  在Exec行末尾增加--ignore-certificate-errors参数
- </description>
+      <description>Linux 客户端 (1.2 版本以上需要自签证书 MITM，启动客户端需要增加 –ignore-certificate-errors 参数)
+sudo vi /usr/share/applications/netease-cloud-music.desktop 在Exec行末尾增加--ignore-certificate-errors参数</description>
     </item>
     
     <item>
@@ -24,7 +23,7 @@
       <pubDate>Tue, 14 Sep 2021 22:20:09 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/debian%E5%AE%89%E8%A3%85code-server/</guid>
-      <description> 拉取安装包 Release地址：https://github.com/cdr/code-server/releases  # 这里使用了加速镜像 curl -fOL https://github.91chifun.workers.dev/https://github.com//cdr/code-server/releases/download/v3.11.1/code-server_3.11.1_amd64.deb # 解压安装 sudo dpkg -i code-server_3.11.1_amd64.deb # 随系统启动 sudo systemctl enable --now code-server@$USER # 重启服务，我这里用户名是root systemctl restart code-server@root.service  编辑配置  # 默认配置路径~/.config/code-server/config.yaml #字段为绑定地址跟端口，IP:Port,其中允许任何IP访问，设置ip为0.0.0.0 bind-addr: 127.0.0.1:8080 # auth字段，password为密码认证，none为无认证 auth: password #password字段，密码 password: xxxx  详细文档：https://coder.com/docs/code-server/v3.11.1  </description>
+      <description> 拉取安装包 Release地址：https://github.com/cdr/code-server/releases # 这里使用了加速镜像 curl -fOL https://github.91chifun.workers.dev/https://github.com//cdr/code-server/releases/download/v3.11.1/code-server_3.11.1_amd64.deb # 解压安装 sudo dpkg -i code-server_3.11.1_amd64.deb # 随系统启动 sudo systemctl enable --now code-server@$USER # 重启服务，我这里用户名是root systemctl restart code-server@root.service 编辑配置 # 默认配置路径~/.config/code-server/config.yaml #字段为绑定地址跟端口，IP:Port,其中允许任何IP访问，设置ip为0.0.0.0 bind-addr: 127.0.0.1:8080 # auth字段，password为密码认证，none为无认证 auth: password #password字段，密码 password: xxxx 详细文档：https://coder.com/docs/code-server/v3.11.1 </description>
     </item>
     
     <item>
@@ -34,9 +33,9 @@
       
       <guid>https://blog.innas.cn/posts/config/gradle%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85jar%E6%8F%92%E4%BB%B6%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</guid>
       <description> 笔者在折腾自己的普通Java项目打包（并非Spring项目） 从6.x升级了Gradle7.0版本，下面这种打包方式似乎已经不支持了（暂时没研究api是否已经变化）
- jar { manifest { attributes( &amp;#34;Manifest-Version&amp;#34;: 1.0, &amp;#39;Main-Class&amp;#39;:&amp;#39;com.zf1976.ddns.Application&amp;#39; ) } from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } into(&amp;#39;assets&amp;#39;) { from &amp;#39;assets&amp;#39; } }  时间关系懒得折腾，经测试使用shadow插件能解决大部分Java项目打包   详细请移步Github：https://github.com/johnrengelman/shadow
+jar { manifest { attributes( &amp;#34;Manifest-Version&amp;#34;: 1.0, &amp;#39;Main-Class&amp;#39;:&amp;#39;com.zf1976.ddns.Application&amp;#39; ) } from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } into(&amp;#39;assets&amp;#39;) { from &amp;#39;assets&amp;#39; } } 时间关系懒得折腾，经测试使用shadow插件能解决大部分Java项目打包 详细请移步Github：https://github.com/johnrengelman/shadow
 配置跟上面方式差不多
- //打jar包需要的配置 jar { manifest { attributes( &amp;#34;Manifest-Version&amp;#34;: 1.0, &amp;#39;Main-Class&amp;#39;:&amp;#39;com.zf1976.ddns.Application&amp;#39; ) } } </description>
+//打jar包需要的配置 jar { manifest { attributes( &amp;#34;Manifest-Version&amp;#34;: 1.0, &amp;#39;Main-Class&amp;#39;:&amp;#39;com.zf1976.ddns.Application&amp;#39; ) } } </description>
     </item>
     
     <item>
@@ -45,9 +44,9 @@
       <pubDate>Fri, 26 Mar 2021 20:48:20 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/openj9-%E4%BC%98%E5%8C%96%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8Aidea-%E4%BD%BF%E7%94%A8openj9%E4%BD%9C%E4%B8%BAruntime/</guid>
-      <description>优化后叠buff  优化参数  -XX:+UseShenandoahGC -Xshareclasses:name=(随便整个) -Xquickstart -Xscmx512M  IDEA使用OpenJ9作为Runtime   下载Choose Runtime插件
- 切换OpenJ9作为Runtime
- 注：openj9下载地址：JDK Download  </description>
+      <description>优化后叠buff 优化参数 -XX:+UseShenandoahGC -Xshareclasses:name=(随便整个) -Xquickstart -Xscmx512M IDEA使用OpenJ9作为Runtime 下载Choose Runtime插件
+切换OpenJ9作为Runtime
+注：openj9下载地址：JDK Download </description>
     </item>
     
     <item>
@@ -56,9 +55,8 @@
       <pubDate>Thu, 18 Mar 2021 15:47:55 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/mysql%E7%AD%96%E7%95%A5%E5%A4%87%E4%BB%BD/</guid>
-      <description> 笔者用的是MySQL5.7版本，如果是在macOS or Linux 配置策略文件用户名密码
- vim编辑文件： sudo vim /etc/my.cnf 新增内容： [client] user=your_username password=your_password :wq退出 终端输入：mysqldump --defaults-extra-file=/etc/my.cnf your_database &amp;gt; /your_path  注：macOS or Linux 可以使用man page查询相关命令 如：man &amp;ndash;defaults-extra-file
- </description>
+      <description>笔者用的是MySQL5.7版本，如果是在macOS or Linux 配置策略文件用户名密码
+vim编辑文件： sudo vim /etc/my.cnf 新增内容： [client] user=your_username password=your_password :wq退出 终端输入：mysqldump --defaults-extra-file=/etc/my.cnf your_database &amp;gt; /your_path 注：macOS or Linux 可以使用man page查询相关命令 如：man &amp;ndash;defaults-extra-file</description>
     </item>
     
     <item>
@@ -67,10 +65,11 @@
       <pubDate>Thu, 18 Mar 2021 15:09:02 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/mysql%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/</guid>
-      <description>MySQL5.7版本  查看当前版本密码策略
- SHOW VARIABLES LIKE &amp;#39;validate_password%&amp;#39;; +--------------------------------------+--------+ | Variable_name | Value | +--------------------------------------+--------+ | validate_password_check_user_name | OFF | | validate_password_dictionary_file | | | validate_password_length | 8 | | validate_password_mixed_case_count | 1 | | validate_password_number_count | 1 | | validate_password_policy | MEDIUM | | validate_password_special_char_count | 1 | +--------------------------------------+--------+  密码策略级别(简单密码可以按需求设置)
- set global validate_password_policy=LOW; set global validate_password_policy=6;  修改密码
- use mysql; update user set authentication_string = password(&amp;#39;your_password&amp;#39;) where User=&amp;#39;root&amp;#39;;  刷新权限</description>
+      <description>MySQL5.7版本 查看当前版本密码策略
+SHOW VARIABLES LIKE &amp;#39;validate_password%&amp;#39;; +--------------------------------------+--------+ | Variable_name | Value | +--------------------------------------+--------+ | validate_password_check_user_name | OFF | | validate_password_dictionary_file | | | validate_password_length | 8 | | validate_password_mixed_case_count | 1 | | validate_password_number_count | 1 | | validate_password_policy | MEDIUM | | validate_password_special_char_count | 1 | +--------------------------------------+--------+ 密码策略级别(简单密码可以按需求设置)
+set global validate_password_policy=LOW; set global validate_password_policy=6; 修改密码
+use mysql; update user set authentication_string = password(&amp;#39;your_password&amp;#39;) where User=&amp;#39;root&amp;#39;; 刷新权限
+flush privileges; </description>
     </item>
     
     <item>

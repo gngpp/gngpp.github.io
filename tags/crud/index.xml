@@ -14,11 +14,11 @@
       
       <guid>https://blog.innas.cn/posts/crud%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
       <description>Objects常用场景
- 重写hashCode 时，使用 Objects.hash(Object ...) 计算所有对象 HashCode 使用 Objects.requireNonNull(Object) 代替if(Object == null) throw new NullPointerException()    集合和字符串判空常用方法
- CollectionUtils.isEmpty 这是spring提供的工具类 StringUtils.isEmpty 这是 spring提供的工具类    Optional常用场景
+重写hashCode 时，使用 Objects.hash(Object ...) 计算所有对象 HashCode 使用 Objects.requireNonNull(Object) 代替if(Object == null) throw new NullPointerException() 集合和字符串判空常用方法
+CollectionUtils.isEmpty 这是spring提供的工具类 StringUtils.isEmpty 这是 spring提供的工具类 Optional常用场景
 Optinal 简单用法
-// 若value为null则抛出异常 Optional&amp;lt;Object&amp;gt; optional = Optional.of(Object);  // value可以为null Optional&amp;lt;Object&amp;gt; optional = Optional.ofNullable(Object);  // 操作值，若值不为null optional.ifPresent(Consumer&amp;lt;T&amp;gt; concumer); optinal.ifPresent(System.out::print);   处理允许为 null 的返回值
-Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPresent((value) -&amp;gt; {  // do something if value not null });  // 等价于 if(value !</description>
+// 若value为null则抛出异常 Optional&amp;lt;Object&amp;gt; optional = Optional.of(Object); // value可以为null Optional&amp;lt;Object&amp;gt; optional = Optional.ofNullable(Object); // 操作值，若值不为null optional.ifPresent(Consumer&amp;lt;T&amp;gt; concumer); optinal.ifPresent(System.out::print); 处理允许为 null 的返回值
+Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPresent((value) -&amp;gt; { // do something if value not null }); // 等价于 if(value != null){ // do something } 处理不允许为null的返回值</description>
     </item>
     
   </channel>

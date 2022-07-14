@@ -4,7 +4,7 @@
     <title>3.@Autowired注解实现的原理 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -16,21 +16,21 @@
 <meta name="twitter:description" content="前言 @Autowired 注解的实现原理
 第二小节说了，byType是根据 method 和methodParm 来装配的
 在这里 @Autowried 是根据 field来进行装配的
-AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired  注解装配
+AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired 注解装配
 spring 也支持 JSR330 的 Inject 注解
 先看这个 processor 初始化部分
-@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&lt;?&gt; beanType, String beanName) {  // [1] 预处理，准备注解数据，这个在new instance 后调用  // 调用之后才是 填充bean依赖数据  InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);  metadata.checkConfigMembers(beanDefinition); } 继续跟进
-private InjectionMetadata findAutowiringMetadata(String beanName, Class&lt;?&gt; clazz, @Nullable PropertyValues pvs) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why?"/>
+@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&lt;?&gt; beanType, String beanName) { // [1] 预处理，准备注解数据，这个在new instance 后调用 // 调用之后才是 填充bean依赖数据 InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null); metadata.checkConfigMembers(beanDefinition); } 继续跟进
+private InjectionMetadata findAutowiringMetadata(String beanName, Class&lt;?&gt; clazz, @Nullable PropertyValues pvs) { /**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why? i don&#39;t know * [1] 第一步从缓存中搜索，没有就调用 {@link #buildAutowiringMetadata(Class)} 来生成注解数据 *-----------------------------------------------------------------------------------------------------------*/ // Fall back to class name as cache key, for backwards compatibility with custom callers."/>
 
     <meta property="og:title" content="3.@Autowired注解实现的原理" />
 <meta property="og:description" content="前言 @Autowired 注解的实现原理
 第二小节说了，byType是根据 method 和methodParm 来装配的
 在这里 @Autowried 是根据 field来进行装配的
-AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired  注解装配
+AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired 注解装配
 spring 也支持 JSR330 的 Inject 注解
 先看这个 processor 初始化部分
-@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&lt;?&gt; beanType, String beanName) {  // [1] 预处理，准备注解数据，这个在new instance 后调用  // 调用之后才是 填充bean依赖数据  InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);  metadata.checkConfigMembers(beanDefinition); } 继续跟进
-private InjectionMetadata findAutowiringMetadata(String beanName, Class&lt;?&gt; clazz, @Nullable PropertyValues pvs) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why?" />
+@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&lt;?&gt; beanType, String beanName) { // [1] 预处理，准备注解数据，这个在new instance 后调用 // 调用之后才是 填充bean依赖数据 InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null); metadata.checkConfigMembers(beanDefinition); } 继续跟进
+private InjectionMetadata findAutowiringMetadata(String beanName, Class&lt;?&gt; clazz, @Nullable PropertyValues pvs) { /**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why? i don&#39;t know * [1] 第一步从缓存中搜索，没有就调用 {@link #buildAutowiringMetadata(Class)} 来生成注解数据 *-----------------------------------------------------------------------------------------------------------*/ // Fall back to class name as cache key, for backwards compatibility with custom callers." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/spring_analysis/beans/functionality/3.autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />

@@ -13,7 +13,7 @@
       <pubDate>Mon, 02 Aug 2021 21:07:01 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/hexo/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E6%96%B0%E7%89%88%E6%9C%ACnext%E4%B8%BB%E9%A2%98%E4%B8%8D%E6%94%AF%E6%8C%81auto-excerpt%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</guid>
-      <description> 使用npm安装hexo-excerpt  npm install hexo-excerpt --save  在站点配置文件中添加  excerpt: depth: 5 excerpt_excludes: [] more_excludes: [] hideWholePostExcerpts: true </description>
+      <description> 使用npm安装hexo-excerpt npm install hexo-excerpt --save 在站点配置文件中添加 excerpt: depth: 5 excerpt_excludes: [] more_excludes: [] hideWholePostExcerpts: true </description>
     </item>
     
   </channel>

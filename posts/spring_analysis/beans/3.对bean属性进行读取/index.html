@@ -4,7 +4,7 @@
     <title>3.对Bean属性进行读取 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -14,17 +14,19 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="3.对Bean属性进行读取"/>
 <meta name="twitter:description" content="###前言
-  根据token获取该属性的 Instance
+根据token获取该属性的 Instance
 在上面 解析中，我们已经拿到了token ，我们知道 token 里面包含了属性名和 keys ，接下来就能通过属性名拿到属性值了
- Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException {  String propertyName = tokens.canonicalName;  String actualName = tokens.actualName;  // [1] 直接获取 handler,handler用于访问属性  PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
-protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) {  // [1] 实现很简单，直接从缓存获取属性描述符  PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName);  return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器"/>
+Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException { String propertyName = tokens.canonicalName; String actualName = tokens.actualName; // [1] 直接获取 handler,handler用于访问属性 PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
+protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) { // [1] 实现很简单，直接从缓存获取属性描述符 PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName); return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器
+拿到 BeanInfo，现在我们需要到 BeanInfo -&gt; PropertyDescriptor"/>
 
     <meta property="og:title" content="3.对Bean属性进行读取" />
 <meta property="og:description" content="###前言
-  根据token获取该属性的 Instance
+根据token获取该属性的 Instance
 在上面 解析中，我们已经拿到了token ，我们知道 token 里面包含了属性名和 keys ，接下来就能通过属性名拿到属性值了
- Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException {  String propertyName = tokens.canonicalName;  String actualName = tokens.actualName;  // [1] 直接获取 handler,handler用于访问属性  PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
-protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) {  // [1] 实现很简单，直接从缓存获取属性描述符  PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName);  return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器" />
+Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException { String propertyName = tokens.canonicalName; String actualName = tokens.actualName; // [1] 直接获取 handler,handler用于访问属性 PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
+protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) { // [1] 实现很简单，直接从缓存获取属性描述符 PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName); return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器
+拿到 BeanInfo，现在我们需要到 BeanInfo -&gt; PropertyDescriptor" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/spring_analysis/beans/3.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E8%AF%BB%E5%8F%96/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />

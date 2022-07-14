@@ -4,7 +4,7 @@
     <title>Linux后台运行hexo // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -14,11 +14,11 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux后台运行hexo"/>
 <meta name="twitter:description" content=" hexo是一个非常高效的博客，但由于其设计特点，目的是为了转换为静态页面， 因此不必要一直在后台运行，但是我想随时随地写博客同步到github， 使用hexo admin编辑器，这就需要hexo一直在后台运行，于是在网上找到了pm2托管的方式。
-  安装pm2  npm install -g pm2  在博客根目录创建一个js脚本  $ vim hexo_run.js // js脚本文件 const { exec } = require(&#39;child_process&#39;) exec(&#39;hexo server -p &lt;IP端口，不使用则使用默认4000端口&gt;&#39;,(error, stdout, stderr) =&gt; { if(error){ console.log(&#39;exec error: ${error}&#39;) return } console.log(&#39;stdout: ${stdout}&#39;); console.log(&#39;stderr: ${stderr}&#39;); })  在博客根目录运行脚本  $ pm2 hexo_run.js "/>
+安装pm2 npm install -g pm2 在博客根目录创建一个js脚本 $ vim hexo_run.js // js脚本文件 const { exec } = require(&#39;child_process&#39;) exec(&#39;hexo server -p &lt;IP端口，不使用则使用默认4000端口&gt;&#39;,(error, stdout, stderr) =&gt; { if(error){ console.log(&#39;exec error: ${error}&#39;) return } console.log(&#39;stdout: ${stdout}&#39;); console.log(&#39;stderr: ${stderr}&#39;); }) 在博客根目录运行脚本 $ pm2 hexo_run.js "/>
 
     <meta property="og:title" content="Linux后台运行hexo" />
 <meta property="og:description" content=" hexo是一个非常高效的博客，但由于其设计特点，目的是为了转换为静态页面， 因此不必要一直在后台运行，但是我想随时随地写博客同步到github， 使用hexo admin编辑器，这就需要hexo一直在后台运行，于是在网上找到了pm2托管的方式。
-  安装pm2  npm install -g pm2  在博客根目录创建一个js脚本  $ vim hexo_run.js // js脚本文件 const { exec } = require(&#39;child_process&#39;) exec(&#39;hexo server -p &lt;IP端口，不使用则使用默认4000端口&gt;&#39;,(error, stdout, stderr) =&gt; { if(error){ console.log(&#39;exec error: ${error}&#39;) return } console.log(&#39;stdout: ${stdout}&#39;); console.log(&#39;stderr: ${stderr}&#39;); })  在博客根目录运行脚本  $ pm2 hexo_run.js " />
+安装pm2 npm install -g pm2 在博客根目录创建一个js脚本 $ vim hexo_run.js // js脚本文件 const { exec } = require(&#39;child_process&#39;) exec(&#39;hexo server -p &lt;IP端口，不使用则使用默认4000端口&gt;&#39;,(error, stdout, stderr) =&gt; { if(error){ console.log(&#39;exec error: ${error}&#39;) return } console.log(&#39;stdout: ${stdout}&#39;); console.log(&#39;stderr: ${stderr}&#39;); }) 在博客根目录运行脚本 $ pm2 hexo_run.js " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T12:44:38+00:00" />

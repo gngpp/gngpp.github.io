@@ -4,7 +4,7 @@
     <title>破解烽火HG2543C1光猫 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -13,44 +13,42 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="破解烽火HG2543C1光猫"/>
-<meta name="twitter:description" content="前言  笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。 为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
- 破解烽火HG2543C1光猫  打开光猫telnet功能   别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
-  打开后会有telnet开启提示字样
-  telnet登录连接到光猫获取telecomadmin   登录用户名默认root，就是超级管理员。
-  telnet命令登录：telnet 192.168.1.1
-  登录密码：默认的光猫Wi-Fi密码跟默认的useradmin密码，光猫背面就可以看到了
-  查看telecomadmin密码：cat /flash/cfg/agentconf/factory.conf
-  查看宽带账号和密码：cat /flash/cfg/app_conf/pppoe/chap-secrets
-  使用telecomadmin账号登录管理后台   那么经过上面的操作，已经得到telecomadmin的电信管理员密码了。
-  浏览器访问：http://192.168.1.1:8080/cgi-bin/login.htm.cgi 登录。
-  打开网络-宽带设置-网络连接选项2_INTERNET_R_VID_41连接方式为桥接，具体见下图，不同猫一般都不一样，认准含有INTERNET字段就可以了，一定要记得选绑定桥接的LAN口。
- 华为路由TC7102的IPTV使用  光猫破解后，把千兆口连接到交换机上，使用软路由或者硬路由拨号（百兆口就不考虑了）。但是IPTV跟猫绑定了，目前IPTV走的硬路由器：华为路由TC7102拨号不支持IPTV流转发（支持功能，但是被绑定再猫上了，也懒得折腾修改什么。不知道电信师傅干了什么），必须要用猫拨号，路由下去开启IPTV桥接绑定LAN端口和VLAN-ID（接电视机顶盒或二级路由），不过可以通过IPTV线直接连接到交换机上，机顶盒就可以自动接入IPTV网络了。
- 下面就是猫拨号情况下，一级路由设置，二级路由也是如此，同时二级路由可以上网（不同路由器一般不同）。
-  LAN口就是连电视机的路由器或者电视，桥接路由下去一般不用开启IPTV了（具体看情况）。如果不走猫拨号，路由器设置AP模式直接连到交换机上。比如TP的路由器，直接把wan口拔了，电视线跟交换机接的线都插到LAN口上。
- 当然电视也可以直接插猫的iTV口，默认搞了桥接。如果猫拨号，并且路由器支持IPTV默认也是可以看电视。
- 总结  路由器同样的IPTV设置情况下，由猫拨号，路由器开启IPTV桥接并绑定LAN口和VLAN-ID，下面接二级路由器连接电视跟上网正常。改猫桥接，路由器拨号，二级路由下面IPTV功能不生效。应该地区限制，必须要用光猫拨号或者直接（或接个交换机单线复用）连接光猫才能使用IPTV。
- 更详细设置请看：华为路由IPTV文档
- "/>
+<meta name="twitter:description" content="前言 笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。 为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
+破解烽火HG2543C1光猫 打开光猫telnet功能 别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
+打开后会有telnet开启提示字样
+telnet登录连接到光猫获取telecomadmin 登录用户名默认root，就是超级管理员。
+telnet命令登录：telnet 192.168.1.1
+登录密码：默认的光猫Wi-Fi密码跟默认的useradmin密码，光猫背面就可以看到了
+查看telecomadmin密码：cat /flash/cfg/agentconf/factory.conf
+查看宽带账号和密码：cat /flash/cfg/app_conf/pppoe/chap-secrets
+使用telecomadmin账号登录管理后台 那么经过上面的操作，已经得到telecomadmin的电信管理员密码了。
+浏览器访问：http://192.168.1.1:8080/cgi-bin/login.htm.cgi 登录。
+打开网络-宽带设置-网络连接选项2_INTERNET_R_VID_41连接方式为桥接，具体见下图，不同猫一般都不一样，认准含有INTERNET字段就可以了，一定要记得选绑定桥接的LAN口。
+华为路由TC7102的IPTV使用 光猫破解后，把千兆口连接到交换机上，使用软路由或者硬路由拨号（百兆口就不考虑了）。但是IPTV跟猫绑定了，目前IPTV走的硬路由器：华为路由TC7102拨号不支持IPTV流转发（支持功能，但是被绑定再猫上了，也懒得折腾修改什么。不知道电信师傅干了什么），必须要用猫拨号，路由下去开启IPTV桥接绑定LAN端口和VLAN-ID（接电视机顶盒或二级路由），不过可以通过IPTV线直接连接到交换机上，机顶盒就可以自动接入IPTV网络了。
+下面就是猫拨号情况下，一级路由设置，二级路由也是如此，同时二级路由可以上网（不同路由器一般不同）。
+LAN口就是连电视机的路由器或者电视，桥接路由下去一般不用开启IPTV了（具体看情况）。如果不走猫拨号，路由器设置AP模式直接连到交换机上。比如TP的路由器，直接把wan口拔了，电视线跟交换机接的线都插到LAN口上。
+当然电视也可以直接插猫的iTV口，默认搞了桥接。如果猫拨号，并且路由器支持IPTV默认也是可以看电视。
+总结 路由器同样的IPTV设置情况下，由猫拨号，路由器开启IPTV桥接并绑定LAN口和VLAN-ID，下面接二级路由器连接电视跟上网正常。改猫桥接，路由器拨号，二级路由下面IPTV功能不生效。应该地区限制，必须要用光猫拨号或者直接（或接个交换机单线复用）连接光猫才能使用IPTV。
+更详细设置请看：华为路由IPTV文档"/>
 
     <meta property="og:title" content="破解烽火HG2543C1光猫" />
-<meta property="og:description" content="前言  笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。 为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
- 破解烽火HG2543C1光猫  打开光猫telnet功能   别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
-  打开后会有telnet开启提示字样
-  telnet登录连接到光猫获取telecomadmin   登录用户名默认root，就是超级管理员。
-  telnet命令登录：telnet 192.168.1.1
-  登录密码：默认的光猫Wi-Fi密码跟默认的useradmin密码，光猫背面就可以看到了
-  查看telecomadmin密码：cat /flash/cfg/agentconf/factory.conf
-  查看宽带账号和密码：cat /flash/cfg/app_conf/pppoe/chap-secrets
-  使用telecomadmin账号登录管理后台   那么经过上面的操作，已经得到telecomadmin的电信管理员密码了。
-  浏览器访问：http://192.168.1.1:8080/cgi-bin/login.htm.cgi 登录。
-  打开网络-宽带设置-网络连接选项2_INTERNET_R_VID_41连接方式为桥接，具体见下图，不同猫一般都不一样，认准含有INTERNET字段就可以了，一定要记得选绑定桥接的LAN口。
- 华为路由TC7102的IPTV使用  光猫破解后，把千兆口连接到交换机上，使用软路由或者硬路由拨号（百兆口就不考虑了）。但是IPTV跟猫绑定了，目前IPTV走的硬路由器：华为路由TC7102拨号不支持IPTV流转发（支持功能，但是被绑定再猫上了，也懒得折腾修改什么。不知道电信师傅干了什么），必须要用猫拨号，路由下去开启IPTV桥接绑定LAN端口和VLAN-ID（接电视机顶盒或二级路由），不过可以通过IPTV线直接连接到交换机上，机顶盒就可以自动接入IPTV网络了。
- 下面就是猫拨号情况下，一级路由设置，二级路由也是如此，同时二级路由可以上网（不同路由器一般不同）。
-  LAN口就是连电视机的路由器或者电视，桥接路由下去一般不用开启IPTV了（具体看情况）。如果不走猫拨号，路由器设置AP模式直接连到交换机上。比如TP的路由器，直接把wan口拔了，电视线跟交换机接的线都插到LAN口上。
- 当然电视也可以直接插猫的iTV口，默认搞了桥接。如果猫拨号，并且路由器支持IPTV默认也是可以看电视。
- 总结  路由器同样的IPTV设置情况下，由猫拨号，路由器开启IPTV桥接并绑定LAN口和VLAN-ID，下面接二级路由器连接电视跟上网正常。改猫桥接，路由器拨号，二级路由下面IPTV功能不生效。应该地区限制，必须要用光猫拨号或者直接（或接个交换机单线复用）连接光猫才能使用IPTV。
- 更详细设置请看：华为路由IPTV文档
- " />
+<meta property="og:description" content="前言 笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。 为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
+破解烽火HG2543C1光猫 打开光猫telnet功能 别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
+打开后会有telnet开启提示字样
+telnet登录连接到光猫获取telecomadmin 登录用户名默认root，就是超级管理员。
+telnet命令登录：telnet 192.168.1.1
+登录密码：默认的光猫Wi-Fi密码跟默认的useradmin密码，光猫背面就可以看到了
+查看telecomadmin密码：cat /flash/cfg/agentconf/factory.conf
+查看宽带账号和密码：cat /flash/cfg/app_conf/pppoe/chap-secrets
+使用telecomadmin账号登录管理后台 那么经过上面的操作，已经得到telecomadmin的电信管理员密码了。
+浏览器访问：http://192.168.1.1:8080/cgi-bin/login.htm.cgi 登录。
+打开网络-宽带设置-网络连接选项2_INTERNET_R_VID_41连接方式为桥接，具体见下图，不同猫一般都不一样，认准含有INTERNET字段就可以了，一定要记得选绑定桥接的LAN口。
+华为路由TC7102的IPTV使用 光猫破解后，把千兆口连接到交换机上，使用软路由或者硬路由拨号（百兆口就不考虑了）。但是IPTV跟猫绑定了，目前IPTV走的硬路由器：华为路由TC7102拨号不支持IPTV流转发（支持功能，但是被绑定再猫上了，也懒得折腾修改什么。不知道电信师傅干了什么），必须要用猫拨号，路由下去开启IPTV桥接绑定LAN端口和VLAN-ID（接电视机顶盒或二级路由），不过可以通过IPTV线直接连接到交换机上，机顶盒就可以自动接入IPTV网络了。
+下面就是猫拨号情况下，一级路由设置，二级路由也是如此，同时二级路由可以上网（不同路由器一般不同）。
+LAN口就是连电视机的路由器或者电视，桥接路由下去一般不用开启IPTV了（具体看情况）。如果不走猫拨号，路由器设置AP模式直接连到交换机上。比如TP的路由器，直接把wan口拔了，电视线跟交换机接的线都插到LAN口上。
+当然电视也可以直接插猫的iTV口，默认搞了桥接。如果猫拨号，并且路由器支持IPTV默认也是可以看电视。
+总结 路由器同样的IPTV设置情况下，由猫拨号，路由器开启IPTV桥接并绑定LAN口和VLAN-ID，下面接二级路由器连接电视跟上网正常。改猫桥接，路由器拨号，二级路由下面IPTV功能不生效。应该地区限制，必须要用光猫拨号或者直接（或接个交换机单线复用）连接光猫才能使用IPTV。
+更详细设置请看：华为路由IPTV文档" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/pve/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABhg2543c1%E5%85%89%E7%8C%AB/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-01-26T11:55:42+00:00" />

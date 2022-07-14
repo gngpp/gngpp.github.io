@@ -4,7 +4,7 @@
     <title>PVE、使用hostapd创建无线AP // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -13,16 +13,18 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="PVE、使用hostapd创建无线AP"/>
-<meta name="twitter:description" content="hostapd介绍  Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
-它能做什么？  创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运  它不能做什么?  在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作  IP、DHCP 和路由  Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
-PVE（Debian）应用hostapd  使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
- PVE安装hostapd apt install hostapd -y  查看默认配置文件路径 安装好hostapd，查看/etc/default/hostapd，默认DAEMON_CONF配置路径  cat /ect/default/hostapd  编辑默认配置文件 用vim编辑/etc/hostapd/hostapd."/>
+<meta name="twitter:description" content="hostapd介绍 Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
+它能做什么？ 创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运 它不能做什么? 在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作 IP、DHCP 和路由 Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
+PVE（Debian）应用hostapd 使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
+PVE安装hostapd apt install hostapd -y 查看默认配置文件路径 安装好hostapd并查看/etc/default/hostapd，设置配置路径DAEMON_CONF配置路径
+cat /ect/default/hostapd touch /etc/hostapd/hostapd.conf echo &#34;/ect/hostapd/hostapd.conf&#34; &gt;&gt; /etc/hostapd/hostapd.conf 编辑默认配置文件 用vim编辑/etc/hostapd/hostapd."/>
 
     <meta property="og:title" content="PVE、使用hostapd创建无线AP" />
-<meta property="og:description" content="hostapd介绍  Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
-它能做什么？  创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运  它不能做什么?  在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作  IP、DHCP 和路由  Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
-PVE（Debian）应用hostapd  使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
- PVE安装hostapd apt install hostapd -y  查看默认配置文件路径 安装好hostapd，查看/etc/default/hostapd，默认DAEMON_CONF配置路径  cat /ect/default/hostapd  编辑默认配置文件 用vim编辑/etc/hostapd/hostapd." />
+<meta property="og:description" content="hostapd介绍 Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
+它能做什么？ 创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运 它不能做什么? 在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作 IP、DHCP 和路由 Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
+PVE（Debian）应用hostapd 使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
+PVE安装hostapd apt install hostapd -y 查看默认配置文件路径 安装好hostapd并查看/etc/default/hostapd，设置配置路径DAEMON_CONF配置路径
+cat /ect/default/hostapd touch /etc/hostapd/hostapd.conf echo &#34;/ect/hostapd/hostapd.conf&#34; &gt;&gt; /etc/hostapd/hostapd.conf 编辑默认配置文件 用vim编辑/etc/hostapd/hostapd." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/pve/pve%E4%BD%BF%E7%94%A8hostapd%E5%88%9B%E5%BB%BA%E6%97%A0%E7%BA%BFap/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-02-04T13:36:56+00:00" />
@@ -113,15 +115,17 @@ PVE（Debian）应用hostapd  使用hostapd将无线网卡创建为无线AP可
 <li>PVE安装hostapd
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>apt install hostapd -y
 </span></span></code></pre></div></li>
-<li>查看默认配置文件路径
-  安装好hostapd，查看<code>/etc/default/hostapd</code>，默认DAEMON_CONF配置路径</li>
+<li>查看默认配置文件路径</li>
 </ul>
+<p>  安装好hostapd并查看<code>/etc/default/hostapd</code>，设置配置路径DAEMON_CONF配置路径</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cat /ect/default/hostapd
+</span></span><span style="display:flex;"><span>touch /etc/hostapd/hostapd.conf
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;/ect/hostapd/hostapd.conf&#34;</span> &gt;&gt; /etc/hostapd/hostapd.conf
 </span></span></code></pre></div><p><img src="/img/PVE%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89HTTPS%E8%AF%81%E4%B9%A6/img.png" alt=""></p>
 <ul>
-<li>编辑默认配置文件
-  用vim编辑<code>/etc/hostapd/hostapd.conf</code>添加以下内容后保存</li>
+<li>编辑默认配置文件</li>
 </ul>
+<p>  用vim编辑<code>/etc/hostapd/hostapd.conf</code>添加以下内容后保存</p>
 <blockquote>
 <p>2.4GHz</p>
 </blockquote>

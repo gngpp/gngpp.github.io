@@ -13,7 +13,7 @@
       <pubDate>Thu, 25 Mar 2021 20:34:08 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/bug/spring-gateway%E4%B8%8E%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%B7%A8%E5%9F%9F%E7%9A%84%E5%9D%91/</guid>
-      <description> gateway设置一次cors即可，微服务不需要再进行设置跨域，否则前端XMLHttpRequest上传文件显示报错，实际上后端已经接收到文件并且正常写入。  </description>
+      <description> gateway设置一次cors即可，微服务不需要再进行设置跨域，否则前端XMLHttpRequest上传文件显示报错，实际上后端已经接收到文件并且正常写入。 </description>
     </item>
     
   </channel>

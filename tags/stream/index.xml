@@ -14,14 +14,19 @@
       
       <guid>https://blog.innas.cn/posts/stream%E7%94%A8%E6%B3%95/</guid>
       <description>Stream 如何工作 stream 包含中间和最终两种形式的操作
-  中间操作（intermediate operations)
+中间操作（intermediate operations)
 对于中间操作来说，其返回值还是一个stream，因此可以通过链式调用将中间操作串联起来。
 中间操作又分为两种状态：
-  无状态 (Stateless)
+无状态 (Stateless)
 无状态操作：是指元素的处理不受之前元素的影响
- unordered filter 过滤符合断言的元素 map 将元素映射为其它类型 mapToInt 将元素映射为 Integer 类型` mapToLong 将元素映射为 Long  mapToDouble 将元素映射为 Double flatMap 用于将N维列表，压缩成一维列表, 一个 flatMap只能降一个维度（可多次调用） flatMapToInt 和 flatMap一致，只是将元素转换为 Integer 类型输出 flatMapToLong 同上 flatMapToDouble 同上 peek 调试    有状态 (Stateful)
+unordered filter 过滤符合断言的元素 map 将元素映射为其它类型 mapToInt 将元素映射为 Integer 类型` mapToLong 将元素映射为 Long mapToDouble 将元素映射为 Double flatMap 用于将N维列表，压缩成一维列表, 一个 flatMap只能降一个维度（可多次调用） flatMapToInt 和 flatMap一致，只是将元素转换为 Integer 类型输出 flatMapToLong 同上 flatMapToDouble 同上 peek 调试 有状态 (Stateful)
 有状态操作：是指该操作只有拿到所有元素之后才能继续下去
- distinct 去重 sorted 排序 limit 返回前 n 个元素 skip 跳过/丢掉前 n 个元素      最终操作 (terminal operation)</description>
+distinct 去重 sorted 排序 limit 返回前 n 个元素 skip 跳过/丢掉前 n 个元素 最终操作 (terminal operation)
+对于最终操作来说，只能返回 void 或者一个非 stream 的结果
+最终操作又分为两种操作：
+非短路操作
+非短路操作：是指必须处理所有元素才能得到最终结果
+forEach 单线程的时候是顺序执行，多线程的时候是乱序执行 forEachOrdered 单线程和多线程都是顺序操作 toArray 转换为数组 reduce 计算 collect 收集器 max 根据比较条件查找最大元素 min 根据比较条件查找最小元素 count 计算元素个数 短路操作</description>
     </item>
     
   </channel>

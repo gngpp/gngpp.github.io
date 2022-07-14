@@ -4,7 +4,7 @@
     <title>4.对Bean属性进行写入 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -14,13 +14,13 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="4.对Bean属性进行写入"/>
 <meta name="twitter:description" content="前言 这个和getPropertyValue 有很多相似的地方
- 解析嵌套属性得到 Accessor 生成 token 实际上也就是支持 集合类型 然后调用 AbstractNestablePropertyAccessor#setProperty  setPropertyValue
-public void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException{ 	// [1] 获取嵌套属性中的最后一个Accessor 	AbstractNestablePropertyAccessor nestedPa; 	try { 	nestedPa = getPropertyAccessorForPropertyPath(propertyName); 	} 	catch (NotReadablePropertyException ex) { 	throw new NotWritablePropertyException(getRootClass(), this.nestedPath &#43; propertyName, 	&#34;Nested property in path &#39;&#34; &#43; propertyName &#43; &#34;&#39; does not exist&#34;, ex); 	} 	// [2] 生成Token 	PropertyTokenHolder tokens = getPropertyNameTokens(getFinalPath(nestedPa, propertyName));  	// [3] 根据Token设置值 	nestedPa."/>
+解析嵌套属性得到 Accessor 生成 token 实际上也就是支持 集合类型 然后调用 AbstractNestablePropertyAccessor#setProperty setPropertyValue
+public void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException{ // [1] 获取嵌套属性中的最后一个Accessor AbstractNestablePropertyAccessor nestedPa; try { nestedPa = getPropertyAccessorForPropertyPath(propertyName); } catch (NotReadablePropertyException ex) { throw new NotWritablePropertyException(getRootClass(), this.nestedPath &#43; propertyName, &#34;Nested property in path &#39;&#34; &#43; propertyName &#43; &#34;&#39; does not exist&#34;, ex); } // [2] 生成Token PropertyTokenHolder tokens = getPropertyNameTokens(getFinalPath(nestedPa, propertyName)); // [3] 根据Token设置值 nestedPa.setPropertyValue(tokens, new PropertyValue(propertyName, value)); } 是不是缺少了 PropertyHandler ？，不用疑问，因为setProperty支持 通用类型转换，强得一匹, 所以类型转换后才需要到 PropertyHandler"/>
 
     <meta property="og:title" content="4.对Bean属性进行写入" />
 <meta property="og:description" content="前言 这个和getPropertyValue 有很多相似的地方
- 解析嵌套属性得到 Accessor 生成 token 实际上也就是支持 集合类型 然后调用 AbstractNestablePropertyAccessor#setProperty  setPropertyValue
-public void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException{ 	// [1] 获取嵌套属性中的最后一个Accessor 	AbstractNestablePropertyAccessor nestedPa; 	try { 	nestedPa = getPropertyAccessorForPropertyPath(propertyName); 	} 	catch (NotReadablePropertyException ex) { 	throw new NotWritablePropertyException(getRootClass(), this.nestedPath &#43; propertyName, 	&#34;Nested property in path &#39;&#34; &#43; propertyName &#43; &#34;&#39; does not exist&#34;, ex); 	} 	// [2] 生成Token 	PropertyTokenHolder tokens = getPropertyNameTokens(getFinalPath(nestedPa, propertyName));  	// [3] 根据Token设置值 	nestedPa." />
+解析嵌套属性得到 Accessor 生成 token 实际上也就是支持 集合类型 然后调用 AbstractNestablePropertyAccessor#setProperty setPropertyValue
+public void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException{ // [1] 获取嵌套属性中的最后一个Accessor AbstractNestablePropertyAccessor nestedPa; try { nestedPa = getPropertyAccessorForPropertyPath(propertyName); } catch (NotReadablePropertyException ex) { throw new NotWritablePropertyException(getRootClass(), this.nestedPath &#43; propertyName, &#34;Nested property in path &#39;&#34; &#43; propertyName &#43; &#34;&#39; does not exist&#34;, ex); } // [2] 生成Token PropertyTokenHolder tokens = getPropertyNameTokens(getFinalPath(nestedPa, propertyName)); // [3] 根据Token设置值 nestedPa.setPropertyValue(tokens, new PropertyValue(propertyName, value)); } 是不是缺少了 PropertyHandler ？，不用疑问，因为setProperty支持 通用类型转换，强得一匹, 所以类型转换后才需要到 PropertyHandler" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/spring_analysis/beans/4.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E5%86%99%E5%85%A5/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />

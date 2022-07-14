@@ -4,7 +4,7 @@
     <title>Gradle Dependencies Cache CI/CD场景 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -13,14 +13,14 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Gradle Dependencies Cache CI/CD场景"/>
-<meta name="twitter:description" content="Gradle是当下最流行的构建工具，下面讲CI/CD场景  Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
-  但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &gt; 本地maven仓库 &gt; 远程仓库（优先级从左到右）   每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
- CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层）  // build.gradle task cacheDependencies {  setDescription &#34;Resolves all projects dependencies from the repository.&#34;  setGroup &#34;Build Server&#34;   doLast {  rootProject.allprojects { project -&gt;  println &#34;&gt;&gt; &#34; &#43; project  Set&lt;Configuration&gt; configurations =  project.buildscript.configurations &#43;  project.configurations  configurations  .findAll { it.canBeResolved }  ."/>
+<meta name="twitter:description" content="Gradle是当下最流行的构建工具，下面讲CI/CD场景 Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
+但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &gt; 本地maven仓库 &gt; 远程仓库（优先级从左到右） 每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
+CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层） // build.gradle task cacheDependencies { setDescription &#34;Resolves all projects dependencies from the repository.&#34; setGroup &#34;Build Server&#34; doLast { rootProject.allprojects { project -&gt; println &#34;&gt;&gt; &#34; &#43; project Set&lt;Configuration&gt; configurations = project.buildscript.configurations &#43; project.configurations configurations .findAll { it.canBeResolved } .forEach { resolveDependencies(it) } } } } def cacheDependencies(Configuration it) { try { Set&lt;File&gt; files = it.resolve() DependencySet set = it."/>
 
     <meta property="og:title" content="Gradle Dependencies Cache CI/CD场景" />
-<meta property="og:description" content="Gradle是当下最流行的构建工具，下面讲CI/CD场景  Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
-  但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &gt; 本地maven仓库 &gt; 远程仓库（优先级从左到右）   每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
- CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层）  // build.gradle task cacheDependencies {  setDescription &#34;Resolves all projects dependencies from the repository.&#34;  setGroup &#34;Build Server&#34;   doLast {  rootProject.allprojects { project -&gt;  println &#34;&gt;&gt; &#34; &#43; project  Set&lt;Configuration&gt; configurations =  project.buildscript.configurations &#43;  project.configurations  configurations  .findAll { it.canBeResolved }  ." />
+<meta property="og:description" content="Gradle是当下最流行的构建工具，下面讲CI/CD场景 Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
+但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &gt; 本地maven仓库 &gt; 远程仓库（优先级从左到右） 每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
+CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层） // build.gradle task cacheDependencies { setDescription &#34;Resolves all projects dependencies from the repository.&#34; setGroup &#34;Build Server&#34; doLast { rootProject.allprojects { project -&gt; println &#34;&gt;&gt; &#34; &#43; project Set&lt;Configuration&gt; configurations = project.buildscript.configurations &#43; project.configurations configurations .findAll { it.canBeResolved } .forEach { resolveDependencies(it) } } } } def cacheDependencies(Configuration it) { try { Set&lt;File&gt; files = it.resolve() DependencySet set = it." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/ci-cd/gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-11-05T18:56:17+00:00" />

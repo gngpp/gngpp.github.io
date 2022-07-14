@@ -13,8 +13,8 @@
       <pubDate>Tue, 15 Feb 2022 00:55:42 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/pve/pve%E4%BD%BF%E7%94%A8wifi%E7%BD%91%E5%8D%A1%E8%81%94%E7%BD%91/</guid>
-      <description> 打开终端 vim编辑文件/etc/network/interfaces  vim /etc/network/interfaces 添加以下内容   wlan0是网卡的标识名称，可以用ifconfig命令查看
- allow-hotplug wlan0 auto wlan0 iface wlan0 inet dhcp wpa-conf /etc/wpa.conf 创建/etc/wpa.conf文件  touch /etc/wpa.conf 写入Wi-Fi连接配置  # 安装wpa_passphrase命令工具 apt-get install wpasupplicant # 写入配置 wpa_passphrase wifi名称 wifi密码 &amp;gt;&amp;gt; /etc/wpa.conf 启动网卡  ifup wlan0 </description>
+      <description> 打开终端 vim编辑文件/etc/network/interfaces vim /etc/network/interfaces 添加以下内容 wlan0是网卡的标识名称，可以用ifconfig命令查看
+allow-hotplug wlan0 auto wlan0 iface wlan0 inet dhcp wpa-conf /etc/wpa.conf 创建/etc/wpa.conf文件 touch /etc/wpa.conf 写入Wi-Fi连接配置 # 安装wpa_passphrase命令工具 apt-get install wpasupplicant # 写入配置 wpa_passphrase wifi名称 wifi密码 &amp;gt;&amp;gt; /etc/wpa.conf 启动网卡 ifup wlan0 </description>
     </item>
     
   </channel>

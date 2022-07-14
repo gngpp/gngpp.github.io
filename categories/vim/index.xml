@@ -13,17 +13,24 @@
       <pubDate>Sat, 02 May 2020 19:26:50 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/vim/idea-vim-%E5%BF%AB%E6%8D%B7%E9%94%AE/</guid>
-      <description>IDEAVIM 常用快捷键  跳转   ctrl-] 跳转到实现 ctrl-o 返回上一次编辑地方 ctrl-i 跳到上一个跳转到的地方, 用 上面的跳回来，用这个再跳过去   修改
-  c-i-w 修改整个句子
-  c-i-W 修改整行
-  c-i-( 修改整个括号里面的内容
-  c-i-&amp;quot; 修改双引号里面的内容
-  C 从当前光标的位置修改至行尾
-    复制
- y-i-w 复制整个句子 y-i-W 复制整行，不包括换行符 yy 复制整行，包括换行符 y-i-( 复制括号里面的内容 y-i-&amp;quot; 复制双引号里面的内容 Y 复制整行，包括换行符    删除
-  d-i-w 删除整个句子
-  d-i-W 删除整行
-  d-i-( 删除整个括号里面的内容</description>
+      <description>IDEAVIM 常用快捷键 跳转 ctrl-] 跳转到实现 ctrl-o 返回上一次编辑地方 ctrl-i 跳到上一个跳转到的地方, 用 上面的跳回来，用这个再跳过去 修改
+c-i-w 修改整个句子
+c-i-W 修改整行
+c-i-( 修改整个括号里面的内容
+c-i-&amp;quot; 修改双引号里面的内容
+C 从当前光标的位置修改至行尾
+复制
+y-i-w 复制整个句子 y-i-W 复制整行，不包括换行符 yy 复制整行，包括换行符 y-i-( 复制括号里面的内容 y-i-&amp;quot; 复制双引号里面的内容 Y 复制整行，包括换行符 删除
+d-i-w 删除整个句子
+d-i-W 删除整行
+d-i-( 删除整个括号里面的内容
+d-i-&amp;quot; 删除双引号里面的内容
+D 从当前光标的位置删除至行尾
+dd 删除整行数据
+搜索
+:? 搜索的内容 n 上一个 N 下一个 技巧
+shif-~ 将小写字母转换为大写，将大写字母转换为小写 idea 专属VIM快捷键
+fa (find action) fc (find class) ff (find file) fs (find symbol) fu (find usage) gi (goto implementation) gt (goto test) gd (goto declaration) gb (go back) gf (go forward) gn (goto generate) re (refactor element) rf (fefactor file name) su (show usage) term (show terminal) nc (new class) nf (new file) nhtml (new html) format (reformat code) cleanimport (clean optimize imports) 更多action https://gist.</description>
     </item>
     
   </channel>

@@ -4,7 +4,7 @@
     <title>5.Spring自定义转换器 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -14,13 +14,13 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="5.Spring自定义转换器"/>
 <meta name="twitter:description" content="前言 若要实现自己的类型转换器，则需要注意一下几点.
- 推荐继承 ConditionalGenericConverter 也可以继承 GenericConverter 如果转换发生异常，最好抛出 ConversionFailedException 异常 最好提供ConvertiblePair 类型信息，这样就会被缓存，而不会被加入到全局转换器，到时候再一一遍历.   首先弄两个 测试类型，一个source 一个 target
-class MySourceType { 	private String name; 	private int age;  	public String getName() { 	return name; 	}  	public void setName(String name) { 	this.name = name; 	}  	public int getAge() { 	return age; 	}  	public void setAge(int age) { 	this."/>
+推荐继承 ConditionalGenericConverter 也可以继承 GenericConverter 如果转换发生异常，最好抛出 ConversionFailedException 异常 最好提供ConvertiblePair 类型信息，这样就会被缓存，而不会被加入到全局转换器，到时候再一一遍历. 首先弄两个 测试类型，一个source 一个 target
+class MySourceType { private String name; private int age; public String getName() { return name; } public void setName(String name) { this.name = name; } public int getAge() { return age; } public void setAge(int age) { this.age = age; } } class MyTargetType{ private String fake_name; private int fake_age; public String getFake_name() { return fake_name; } public void setFake_name(String fake_name) { this."/>
 
     <meta property="og:title" content="5.Spring自定义转换器" />
 <meta property="og:description" content="前言 若要实现自己的类型转换器，则需要注意一下几点.
- 推荐继承 ConditionalGenericConverter 也可以继承 GenericConverter 如果转换发生异常，最好抛出 ConversionFailedException 异常 最好提供ConvertiblePair 类型信息，这样就会被缓存，而不会被加入到全局转换器，到时候再一一遍历.   首先弄两个 测试类型，一个source 一个 target
-class MySourceType { 	private String name; 	private int age;  	public String getName() { 	return name; 	}  	public void setName(String name) { 	this.name = name; 	}  	public int getAge() { 	return age; 	}  	public void setAge(int age) { 	this." />
+推荐继承 ConditionalGenericConverter 也可以继承 GenericConverter 如果转换发生异常，最好抛出 ConversionFailedException 异常 最好提供ConvertiblePair 类型信息，这样就会被缓存，而不会被加入到全局转换器，到时候再一一遍历. 首先弄两个 测试类型，一个source 一个 target
+class MySourceType { private String name; private int age; public String getName() { return name; } public void setName(String name) { this.name = name; } public int getAge() { return age; } public void setAge(int age) { this.age = age; } } class MyTargetType{ private String fake_name; private int fake_age; public String getFake_name() { return fake_name; } public void setFake_name(String fake_name) { this." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />

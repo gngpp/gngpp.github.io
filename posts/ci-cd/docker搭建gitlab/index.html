@@ -4,7 +4,7 @@
     <title>Docker搭建Gitlab // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -13,14 +13,14 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Docker搭建Gitlab"/>
-<meta name="twitter:description" content="拉取镜像  $ docker pull gitlab/gitlab-ce:latest  运行Gitlab容器   使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
-  写一个Shell文件启动配置  vim gitlab-start.sh sudo docker run --detach \  --hostname gitlab.example.com \  --publish 8844:443 --publish 7766:80 --publish 2222:22 \  --name gitlab \  --restart always \  --volume $HOME/gitlab/config:/etc/gitlab \  --volume $HOME/gitlab/logs:/var/log/gitlab \  --volume $HOME/gitlab/data:/var/opt/gitlab \  gitlab/gitlab-ce:latest  其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
- $ sh gitlab-start."/>
+<meta name="twitter:description" content="拉取镜像 $ docker pull gitlab/gitlab-ce:latest 运行Gitlab容器 使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
+写一个Shell文件启动配置 vim gitlab-start.sh sudo docker run --detach \ --hostname gitlab.example.com \ --publish 8844:443 --publish 7766:80 --publish 2222:22 \ --name gitlab \ --restart always \ --volume $HOME/gitlab/config:/etc/gitlab \ --volume $HOME/gitlab/logs:/var/log/gitlab \ --volume $HOME/gitlab/data:/var/opt/gitlab \ gitlab/gitlab-ce:latest 其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
+$ sh gitlab-start.sh 进入容器设置初始化root用户 docker exec -it &lt;container id&gt; bash gitlab-rails console user = User.where(username: ‘root’).first user.password = ‘password’ user."/>
 
     <meta property="og:title" content="Docker搭建Gitlab" />
-<meta property="og:description" content="拉取镜像  $ docker pull gitlab/gitlab-ce:latest  运行Gitlab容器   使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
-  写一个Shell文件启动配置  vim gitlab-start.sh sudo docker run --detach \  --hostname gitlab.example.com \  --publish 8844:443 --publish 7766:80 --publish 2222:22 \  --name gitlab \  --restart always \  --volume $HOME/gitlab/config:/etc/gitlab \  --volume $HOME/gitlab/logs:/var/log/gitlab \  --volume $HOME/gitlab/data:/var/opt/gitlab \  gitlab/gitlab-ce:latest  其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
- $ sh gitlab-start." />
+<meta property="og:description" content="拉取镜像 $ docker pull gitlab/gitlab-ce:latest 运行Gitlab容器 使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
+写一个Shell文件启动配置 vim gitlab-start.sh sudo docker run --detach \ --hostname gitlab.example.com \ --publish 8844:443 --publish 7766:80 --publish 2222:22 \ --name gitlab \ --restart always \ --volume $HOME/gitlab/config:/etc/gitlab \ --volume $HOME/gitlab/logs:/var/log/gitlab \ --volume $HOME/gitlab/data:/var/opt/gitlab \ gitlab/gitlab-ce:latest 其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
+$ sh gitlab-start.sh 进入容器设置初始化root用户 docker exec -it &lt;container id&gt; bash gitlab-rails console user = User.where(username: ‘root’).first user.password = ‘password’ user." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/ci-cd/docker%E6%90%AD%E5%BB%BAgitlab/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-07-31T11:47:39+00:00" />

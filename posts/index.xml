@@ -22,9 +22,8 @@
       <pubDate>Wed, 30 Mar 2022 00:38:29 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/linux%E8%AE%BE%E7%BD%AEopenwrt-%E7%BD%91%E6%98%93%E4%BA%91%E8%A7%A3%E9%94%81/</guid>
-      <description> Linux 客户端 (1.2 版本以上需要自签证书 MITM，启动客户端需要增加 –ignore-certificate-errors 参数)
- sudo vi /usr/share/applications/netease-cloud-music.desktop  在Exec行末尾增加--ignore-certificate-errors参数
- </description>
+      <description>Linux 客户端 (1.2 版本以上需要自签证书 MITM，启动客户端需要增加 –ignore-certificate-errors 参数)
+sudo vi /usr/share/applications/netease-cloud-music.desktop 在Exec行末尾增加--ignore-certificate-errors参数</description>
     </item>
     
     <item>
@@ -33,8 +32,8 @@
       <pubDate>Tue, 15 Feb 2022 00:55:42 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/pve/pve%E4%BD%BF%E7%94%A8wifi%E7%BD%91%E5%8D%A1%E8%81%94%E7%BD%91/</guid>
-      <description> 打开终端 vim编辑文件/etc/network/interfaces  vim /etc/network/interfaces 添加以下内容   wlan0是网卡的标识名称，可以用ifconfig命令查看
- allow-hotplug wlan0 auto wlan0 iface wlan0 inet dhcp wpa-conf /etc/wpa.conf 创建/etc/wpa.conf文件  touch /etc/wpa.conf 写入Wi-Fi连接配置  # 安装wpa_passphrase命令工具 apt-get install wpasupplicant # 写入配置 wpa_passphrase wifi名称 wifi密码 &amp;gt;&amp;gt; /etc/wpa.conf 启动网卡  ifup wlan0 </description>
+      <description> 打开终端 vim编辑文件/etc/network/interfaces vim /etc/network/interfaces 添加以下内容 wlan0是网卡的标识名称，可以用ifconfig命令查看
+allow-hotplug wlan0 auto wlan0 iface wlan0 inet dhcp wpa-conf /etc/wpa.conf 创建/etc/wpa.conf文件 touch /etc/wpa.conf 写入Wi-Fi连接配置 # 安装wpa_passphrase命令工具 apt-get install wpasupplicant # 写入配置 wpa_passphrase wifi名称 wifi密码 &amp;gt;&amp;gt; /etc/wpa.conf 启动网卡 ifup wlan0 </description>
     </item>
     
     <item>
@@ -43,12 +42,12 @@
       <pubDate>Thu, 10 Feb 2022 21:05:31 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/pve/pve%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89https%E8%AF%81%E4%B9%A6/</guid>
-      <description>前言  PVE需要使用https来访问，默认使用的是自带的SSL自签证书浏览器是不认可的，所以会爆红访问提示不安全，这里笔者为大家提供配置免费证书的方法，让你的PVE访问变得安全，而且关键时只有配置证书了的PVE才能外网访问控制台。
-SSL证书申请  证书申请可以在：https://freessl.cn 申请   最方便是使用DNS验证(文件验证不支持域名带端口验证)，添加一个CNAME/TXT记录验证即可颁发证书，之后进入FreeSSL控制台下载证书，或者把证书保存到本地的KeyManager（https://keymanager.org支持多平台）后查看证书
-  查看PEM
- PVE配置证书  上传自定义证书
-  如果是不小心把自带证书删掉了，或者自定义证书也没了，可以重启pveproxy服务，重新生成自带证书。
- systemctl restart pveproxy </description>
+      <description>前言 PVE需要使用https来访问，默认使用的是自带的SSL自签证书浏览器是不认可的，所以会爆红访问提示不安全，这里笔者为大家提供配置免费证书的方法，让你的PVE访问变得安全，而且关键时只有配置证书了的PVE才能外网访问控制台。
+SSL证书申请 证书申请可以在：https://freessl.cn 申请 最方便是使用DNS验证(文件验证不支持域名带端口验证)，添加一个CNAME/TXT记录验证即可颁发证书，之后进入FreeSSL控制台下载证书，或者把证书保存到本地的KeyManager（https://keymanager.org支持多平台）后查看证书
+查看PEM
+PVE配置证书 上传自定义证书
+如果是不小心把自带证书删掉了，或者自定义证书也没了，可以重启pveproxy服务，重新生成自带证书。
+systemctl restart pveproxy </description>
     </item>
     
     <item>
@@ -57,10 +56,9 @@ SSL证书申请  证书申请可以在：https://freessl.cn 申请   最方便�
       <pubDate>Tue, 08 Feb 2022 21:04:22 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/docker/docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/</guid>
-      <description> 笔者插的USB网口给Docker网心云用，由于网络测试原因多次删除和创建macvlan网络，遇到了以下坑，重启docker并不能解决。
-$ docker network create -d macvlan --subnet=192.168.3.0/24 --gateway=192.168.3.1 -o parent=enx00e04c680011 macvlan_net  ... Error response from daemon: network dm-04589cecfc96 is already using parent interface enx00e04c680011  解决参考，删除以下文件并重启docker
- $ rm /var/lib/docker/network/files/local-kv.db  # restart docker systemctl restart docker  这里还有个issue参考：https://github.com/moby/libnetwork/issues/1743
- </description>
+      <description>笔者插的USB网口给Docker网心云用，由于网络测试原因多次删除和创建macvlan网络，遇到了以下坑，重启docker并不能解决。
+$ docker network create -d macvlan --subnet=192.168.3.0/24 --gateway=192.168.3.1 -o parent=enx00e04c680011 macvlan_net ... Error response from daemon: network dm-04589cecfc96 is already using parent interface enx00e04c680011 解决参考，删除以下文件并重启docker
+$ rm /var/lib/docker/network/files/local-kv.db # restart docker systemctl restart docker 这里还有个issue参考：https://github.com/moby/libnetwork/issues/1743</description>
     </item>
     
     <item>
@@ -69,10 +67,11 @@ $ docker network create -d macvlan --subnet=192.168.3.0/24 --gateway=192.168.3.1
       <pubDate>Fri, 04 Feb 2022 13:36:56 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/pve/pve%E4%BD%BF%E7%94%A8hostapd%E5%88%9B%E5%BB%BA%E6%97%A0%E7%BA%BFap/</guid>
-      <description>hostapd介绍  Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
-它能做什么？  创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运  它不能做什么?  在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作  IP、DHCP 和路由  Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
-PVE（Debian）应用hostapd  使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
- PVE安装hostapd apt install hostapd -y  查看默认配置文件路径 安装好hostapd，查看/etc/default/hostapd，默认DAEMON_CONF配置路径  cat /ect/default/hostapd  编辑默认配置文件 用vim编辑/etc/hostapd/hostapd.</description>
+      <description>hostapd介绍 Hostapd（Host access point daemon）是一个用户空间软件接入点，能够将普通的网络接口卡变成接入点和认证服务器。当前版本支持 Linux（主机 AP、madwifi、基于 mac80211 的驱动程序）和 FreeBSD（net80211)
+它能做什么？ 创建一个AP 在同一张卡上创建多个AP（如果卡支持，通常最多8个） 在一个卡上创建一个 AP，在第二个卡上创建另一个 AP，所有这些都在一个 Hostapd 实例中 在同一张卡上同时使用 2.4GHz 和 5GHz。这需要一张支持两种无线频率Wi-Fi网卡，这非常罕见（但 hostapd 支持它）——如果卡创建了两个 wlanX 接口，你可能会很幸运 它不能做什么? 在同一张卡的不同通道上创建多个 AP。同一张卡上的多个AP将共享同一个信道 创建一个双频 AP，即使有两张卡。但它可以创建两个具有相同 SSID 的 AP 为连接到 AP 的设备分配 IP，为此需要 dhcp 服务器 为 AP 本身分配 IP，这不是 hostapd 的工作 IP、DHCP 和路由 Hostapd 只创建无线以太网交换机，它不知道 IP 协议或路由。
+PVE（Debian）应用hostapd 使用hostapd将无线网卡创建为无线AP可以方便连接到pve内部网络进行管理。
+PVE安装hostapd apt install hostapd -y 查看默认配置文件路径 安装好hostapd并查看/etc/default/hostapd，设置配置路径DAEMON_CONF配置路径
+cat /ect/default/hostapd touch /etc/hostapd/hostapd.conf echo &amp;#34;/ect/hostapd/hostapd.conf&amp;#34; &amp;gt;&amp;gt; /etc/hostapd/hostapd.conf 编辑默认配置文件 用vim编辑/etc/hostapd/hostapd.</description>
     </item>
     
     <item>
@@ -81,14 +80,15 @@ PVE（Debian）应用hostapd  使用hostapd将无线网卡创建为无线AP可
       <pubDate>Wed, 02 Feb 2022 17:54:00 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/pve/pvedocker-macvlan%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/</guid>
-      <description>前言  最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。
-Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持host跟macvlan两种网络模式
- 使用host网络模式（Windows、macOS不支持）   缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。
- 使用macvlan网络模式  macvlan支持的两种模式，但是需要牺牲掉一个网卡(可以使用虚拟网卡或物理网卡，下面详细讲)。
-  Bridge模式：不创建子接口的情况下直接去桥接网卡，可以直接桥接到与宿主级的同网段。 VLAN Bridge模式：创建子接口去桥接物理接口。可划分多个VLAN。     这里只讨论Bridge模式。 macvlan跟PVE网络vmbr桥接很相似了，可以直接绑定物理或虚拟网卡，比如PVE中LXC容器内的虚拟网卡。同时也可以直接把网卡虚拟出子网卡。支持Bridge模式、VLAN Bridge模式模式，这里就不细说，请查看:Docker文档 ，我们主要使用桥接模式就可以了。
- Bridge模式实际上就是绑定一个网卡进出口，PVE虚拟交换机也是一样。那么docker容器指定这个macvlan网络就可以成为网段内设备，网口线拉到路由所在交换机交给软路由去分流，亦或者直接桥接到宿主机内部虚拟机交换机的接到虚拟机路由也可以，多条宽带也是可以的。开启upnp就完事了。
-虚拟网卡、物理网卡，创建macvlan网络 物理网卡篇 docker network create -d macvlan --subnet=192.168.1.1/24 --gateway=192.168.1.1 -o parent=ensxxx macvlan_net  -d macvlan 指定网络驱动程序为macvlan &amp;ndash;subnet 指定一个子网段 &amp;ndash;gateway 路由网关 -o parent=ensxxx 绑定物理网卡 macvlan_net 自定义网络名称   物理网卡id怎么看？
- # 查看网卡设备 ifconfig -a # 查看的是已启用的网卡设备 ifcofnig # 启用网卡，开机启用就不多说了，自行百度 ifconfig wlp4s0 up  下面可以看到我的无线Wi-Fi网卡识别为wlp4s0，这个就是物理网卡标识符  虚拟网卡篇  使用的PVE下的OVS Bride桥接虚拟网卡(依赖openvswitch-switch)，需要安装openvswitch-switch。</description>
+      <description>前言 最近折腾网络，弄了几条宽带，打算用闲置公网宽带来挂网心云来回本电费。简单讲，网心云群晖什么的搞桥接多开（我没有群晖），或者直接单开，都稍微有点麻烦了。为什么不用x86镜像？肯定是麻烦啊，docker稍微方便点。或许你可以用PVE LXC模版方案套娃来跑docker网心云，但是经过我的测试，没有办法做到。 当然可能有人做到了，说明我菜。
+Docker跑网心云目前玩过的几种方式 网心云Docker目前只支持host跟macvlan两种网络模式
+使用host网络模式（Windows、macOS不支持） 缺点就是有点单一了，跟宿主机同一个网络，万一你宿主机是公网DMZ主机（我这里假设是DMZ主机是服务器，你总得搞防火墙端口限制吧，如果你自己搞NAT当我没说）怎么办？Docker网心云含有一个web管理业务页面，而且不带验证的，就意味着有可能被人搞（默认18888端口），你总不能说我走NAT，或者把端口禁了、再或者用个服务把页面给拦截。但是，网心云NAT类型就会识别为全锥型了，那么就会导致收益下降。
+使用macvlan网络模式 macvlan支持的两种模式，但是需要牺牲掉一个网卡(可以使用虚拟网卡或物理网卡，下面详细讲)。
+Bridge模式：不创建子接口的情况下直接去桥接网卡，可以直接桥接到与宿主级的同网段。 VLAN Bridge模式：创建子接口去桥接物理接口。可划分多个VLAN。 这里只讨论Bridge模式。 macvlan跟PVE网络vmbr桥接很相似了，可以直接绑定物理或虚拟网卡，比如PVE中LXC容器内的虚拟网卡。同时也可以直接把网卡虚拟出子网卡。支持Bridge模式、VLAN Bridge模式模式，这里就不细说，请查看:Docker文档 ，我们主要使用桥接模式就可以了。
+Bridge模式实际上就是绑定一个网卡进出口，PVE虚拟交换机也是一样。那么docker容器指定这个macvlan网络就可以成为网段内设备，网口线拉到路由所在交换机交给软路由去分流，亦或者直接桥接到宿主机内部虚拟机交换机的接到虚拟机路由也可以，多条宽带也是可以的。开启upnp就完事了。
+虚拟网卡、物理网卡，创建macvlan网络 物理网卡篇 docker network create -d macvlan --subnet=192.168.1.1/24 --gateway=192.168.1.1 -o parent=ensxxx macvlan_net -d macvlan 指定网络驱动程序为macvlan &amp;ndash;subnet 指定一个子网段 &amp;ndash;gateway 路由网关 -o parent=ensxxx 绑定物理网卡 macvlan_net 自定义网络名称 物理网卡id怎么看？
+# 查看网卡设备 ifconfig -a # 查看的是已启用的网卡设备 ifcofnig # 启用网卡，开机启用就不多说了，自行百度 ifconfig wlp4s0 up 下面可以看到我的无线Wi-Fi网卡识别为wlp4s0，这个就是物理网卡标识符 虚拟网卡篇 使用的PVE下的OVS Bride桥接虚拟网卡(依赖openvswitch-switch)，需要安装openvswitch-switch。
+sudo apt update sudo apt install openvswitch-switch 创建OVS Bridge 上图创建了名为vmbr1的OVS Bridge虚拟交换机。</description>
     </item>
     
     <item>
@@ -97,9 +97,9 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Wed, 02 Feb 2022 13:34:22 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/pve/lxc%E5%AE%B9%E5%99%A8%E6%8C%82%E8%BD%BD%E7%9B%AE%E5%BD%95/</guid>
-      <description>前言  笔者在PVE中跑LXC容器，用来挂网心云，涉及到磁盘分配目录大小。 LXC容器要挂载磁盘在PVE Web控制台操作起来相当麻烦，必须要先创建存储区，而且文件是使用存raw格式的镜像做存储磁盘。 并且LXC容器不存在和VM一样的硬盘直通，使用方式更多的像Docker，所以理解磁盘挂在的方式可以用Docker的方式来理解。
- 比如 把PVE宿主机/dev/sda分区磁盘挂在宿主/mnt/wd/wxcloud目录下，那么LXC容器中挂载方式为：  pct set &amp;lt;lxc id&amp;gt; -mp1 /mnt/wd/wxcloud,mp=/root/wxcloud  左侧/mnt/wd/wxcloud为宿主机目录路径，则右边/root/wxcloud为LXC容器目录路径
- 更多详细操作请参考： 文档  </description>
+      <description>前言 笔者在PVE中跑LXC容器，用来挂网心云，涉及到磁盘分配目录大小。 LXC容器要挂载磁盘在PVE Web控制台操作起来相当麻烦，必须要先创建存储区，而且文件是使用存raw格式的镜像做存储磁盘。 并且LXC容器不存在和VM一样的硬盘直通，使用方式更多的像Docker，所以理解磁盘挂在的方式可以用Docker的方式来理解。
+比如 把PVE宿主机/dev/sda分区磁盘挂在宿主/mnt/wd/wxcloud目录下，那么LXC容器中挂载方式为： pct set &amp;lt;lxc id&amp;gt; -mp1 /mnt/wd/wxcloud,mp=/root/wxcloud 左侧/mnt/wd/wxcloud为宿主机目录路径，则右边/root/wxcloud为LXC容器目录路径
+更多详细操作请参考： 文档 </description>
     </item>
     
     <item>
@@ -108,13 +108,12 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Mon, 31 Jan 2022 00:55:42 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/pve/pve%E5%8D%95%E8%87%82%E8%BD%AF%E8%B7%AF%E7%94%B1ikuai%E5%A4%9A%E6%8B%A8%E5%AE%B6%E5%BA%AD%E7%BB%84%E7%BD%91/</guid>
-      <description>介绍  具体PVE、ikuai虚拟机怎么安装，这里就不过多赘述了，相信网上都有教程。 笔者家庭组网：PVE单网口主机安装ikuai软路由虚拟机单线多拨，外带一个物理交换机（无网管功能）。
- PVE配置ikuai软路由网口  配置vmbr0虚拟网桥   vmbr0是pve默认创建的，这里使用软路由网关192.168.3.1（软路由需要改LAN地址，默认是192.168.1.1），并且绑定网卡和设置静态ip：192.168.3.2作为访问pve的ip。
-  若没有安装软路由，或者软路由崩了的情况下。用将客户机网线插到单臂网口，或者单臂网口连的交换机端口上，设置静态ip（192.168.3.1/24网段内）进行访问pve。
-  分配ikuai网卡   在安装前ikuai路由前分配两个虚拟网卡eth0、eth1，并且都接到vmbr0虚拟网桥。
-  ikuai绑定WAN、LAN口   安装完ikuai后，此时外部192.168.3.1/24段的网络设备是无法访问ikuai路由的。只能从 pve的web控制台访问ikuai虚拟机，选择-设置网卡绑定
-  ikuai设置LAN口ip   修改LAN默认ip地址，选择-设置LAN/WAN地址-设置LAN1地址，WAN口的暂时不用管。 LAN1修改为：192.168.3.1
- </description>
+      <description>介绍 具体PVE、ikuai虚拟机怎么安装，这里就不过多赘述了，相信网上都有教程。 笔者家庭组网：PVE单网口主机安装ikuai软路由虚拟机单线多拨，外带一个物理交换机（无网管功能）。
+PVE配置ikuai软路由网口 配置vmbr0虚拟网桥 vmbr0是pve默认创建的，这里使用软路由网关192.168.3.1（软路由需要改LAN地址，默认是192.168.1.1），并且绑定网卡和设置静态ip：192.168.3.2作为访问pve的ip。
+若没有安装软路由，或者软路由崩了的情况下。用将客户机网线插到单臂网口，或者单臂网口连的交换机端口上，设置静态ip（192.168.3.1/24网段内）进行访问pve。
+分配ikuai网卡 在安装前ikuai路由前分配两个虚拟网卡eth0、eth1，并且都接到vmbr0虚拟网桥。
+ikuai绑定WAN、LAN口 安装完ikuai后，此时外部192.168.3.1/24段的网络设备是无法访问ikuai路由的。只能从 pve的web控制台访问ikuai虚拟机，选择-设置网卡绑定
+ikuai设置LAN口ip 修改LAN默认ip地址，选择-设置LAN/WAN地址-设置LAN1地址，WAN口的暂时不用管。 LAN1修改为：192.168.3.1</description>
     </item>
     
     <item>
@@ -123,24 +122,23 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Wed, 26 Jan 2022 11:55:42 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/pve/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABhg2543c1%E5%85%89%E7%8C%AB/</guid>
-      <description>前言  笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。 为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
- 破解烽火HG2543C1光猫  打开光猫telnet功能   别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
-  打开后会有telnet开启提示字样
-  telnet登录连接到光猫获取telecomadmin   登录用户名默认root，就是超级管理员。
-  telnet命令登录：telnet 192.168.1.1
-  登录密码：默认的光猫Wi-Fi密码跟默认的useradmin密码，光猫背面就可以看到了
-  查看telecomadmin密码：cat /flash/cfg/agentconf/factory.conf
-  查看宽带账号和密码：cat /flash/cfg/app_conf/pppoe/chap-secrets
-  使用telecomadmin账号登录管理后台   那么经过上面的操作，已经得到telecomadmin的电信管理员密码了。
-  浏览器访问：http://192.168.1.1:8080/cgi-bin/login.htm.cgi 登录。
-  打开网络-宽带设置-网络连接选项2_INTERNET_R_VID_41连接方式为桥接，具体见下图，不同猫一般都不一样，认准含有INTERNET字段就可以了，一定要记得选绑定桥接的LAN口。
- 华为路由TC7102的IPTV使用  光猫破解后，把千兆口连接到交换机上，使用软路由或者硬路由拨号（百兆口就不考虑了）。但是IPTV跟猫绑定了，目前IPTV走的硬路由器：华为路由TC7102拨号不支持IPTV流转发（支持功能，但是被绑定再猫上了，也懒得折腾修改什么。不知道电信师傅干了什么），必须要用猫拨号，路由下去开启IPTV桥接绑定LAN端口和VLAN-ID（接电视机顶盒或二级路由），不过可以通过IPTV线直接连接到交换机上，机顶盒就可以自动接入IPTV网络了。
- 下面就是猫拨号情况下，一级路由设置，二级路由也是如此，同时二级路由可以上网（不同路由器一般不同）。
-  LAN口就是连电视机的路由器或者电视，桥接路由下去一般不用开启IPTV了（具体看情况）。如果不走猫拨号，路由器设置AP模式直接连到交换机上。比如TP的路由器，直接把wan口拔了，电视线跟交换机接的线都插到LAN口上。
- 当然电视也可以直接插猫的iTV口，默认搞了桥接。如果猫拨号，并且路由器支持IPTV默认也是可以看电视。
- 总结  路由器同样的IPTV设置情况下，由猫拨号，路由器开启IPTV桥接并绑定LAN口和VLAN-ID，下面接二级路由器连接电视跟上网正常。改猫桥接，路由器拨号，二级路由下面IPTV功能不生效。应该地区限制，必须要用光猫拨号或者直接（或接个交换机单线复用）连接光猫才能使用IPTV。
- 更详细设置请看：华为路由IPTV文档
- </description>
+      <description>前言 笔者在PVE中搭建ikuai/openwrt软路由，正好家里有一条千兆公网宽带。 为了更好利用这个公网，决定把光猫破解改桥接。(超级密码拉网的师傅一般是不会告诉你的)
+破解烽火HG2543C1光猫 打开光猫telnet功能 别问为什么不用ssh，浏览器访问：http://192.168.1.1:8080/cgi-bin/telnetenable.cgi?telnetenable=1
+打开后会有telnet开启提示字样
+telnet登录连接到光猫获取telecomadmin 登录用户名默认root，就是超级管理员。
+telnet命令登录：telnet 192.168.1.1
+登录密码：默认的光猫Wi-Fi密码跟默认的useradmin密码，光猫背面就可以看到了
+查看telecomadmin密码：cat /flash/cfg/agentconf/factory.conf
+查看宽带账号和密码：cat /flash/cfg/app_conf/pppoe/chap-secrets
+使用telecomadmin账号登录管理后台 那么经过上面的操作，已经得到telecomadmin的电信管理员密码了。
+浏览器访问：http://192.168.1.1:8080/cgi-bin/login.htm.cgi 登录。
+打开网络-宽带设置-网络连接选项2_INTERNET_R_VID_41连接方式为桥接，具体见下图，不同猫一般都不一样，认准含有INTERNET字段就可以了，一定要记得选绑定桥接的LAN口。
+华为路由TC7102的IPTV使用 光猫破解后，把千兆口连接到交换机上，使用软路由或者硬路由拨号（百兆口就不考虑了）。但是IPTV跟猫绑定了，目前IPTV走的硬路由器：华为路由TC7102拨号不支持IPTV流转发（支持功能，但是被绑定再猫上了，也懒得折腾修改什么。不知道电信师傅干了什么），必须要用猫拨号，路由下去开启IPTV桥接绑定LAN端口和VLAN-ID（接电视机顶盒或二级路由），不过可以通过IPTV线直接连接到交换机上，机顶盒就可以自动接入IPTV网络了。
+下面就是猫拨号情况下，一级路由设置，二级路由也是如此，同时二级路由可以上网（不同路由器一般不同）。
+LAN口就是连电视机的路由器或者电视，桥接路由下去一般不用开启IPTV了（具体看情况）。如果不走猫拨号，路由器设置AP模式直接连到交换机上。比如TP的路由器，直接把wan口拔了，电视线跟交换机接的线都插到LAN口上。
+当然电视也可以直接插猫的iTV口，默认搞了桥接。如果猫拨号，并且路由器支持IPTV默认也是可以看电视。
+总结 路由器同样的IPTV设置情况下，由猫拨号，路由器开启IPTV桥接并绑定LAN口和VLAN-ID，下面接二级路由器连接电视跟上网正常。改猫桥接，路由器拨号，二级路由下面IPTV功能不生效。应该地区限制，必须要用光猫拨号或者直接（或接个交换机单线复用）连接光猫才能使用IPTV。
+更详细设置请看：华为路由IPTV文档</description>
     </item>
     
     <item>
@@ -149,9 +147,10 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Mon, 08 Nov 2021 11:39:52 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/docker/docker-compose%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</guid>
-      <description>前言  docker-compose工作做的就是容器编排，说白了就是自动化部署容器的工作，其中可以利用Dockerfile构建自定义容器打包部署，也可以利用现有的仓库镜像进行部署。
- docker- compose常用命令 基本命令
- ps：列出所有运行容器   docker-compose ps  port：打印绑定的公共端口，下面命令可以输出 eureka 服务 8761 端口所绑定的公共端口  docker-compose port eureka 8761  build：构建或者重新构建服务  docker-compose build  start：启动指定服务已存在的容器  docker-compose start eureka  stop：停止已运行的服务的容器  docker-compose stop eureka  rm：删除服务的容器  docker-compose rm eureka # 不指定，则删除所有 docker-compose rm  up：构建、启动容器  docker-compose up  kill：通过发送 SIGKILL 信号来停止指定服务的容器  docker-compose kill eureka  pull：下载服务镜像  docker-compose pull  scale：设置指定服务运气容器的个数，以 service=num 形式指定  docker-compose scale user=3 movie=3  run：在一个服务上执行一个命令  docker-compose run web bash 进阶用法</description>
+      <description>前言 docker-compose工作做的就是容器编排，说白了就是自动化部署容器的工作，其中可以利用Dockerfile构建自定义容器打包部署，也可以利用现有的仓库镜像进行部署。
+docker- compose常用命令 基本命令
+ps：列出所有运行容器 docker-compose ps port：打印绑定的公共端口，下面命令可以输出 eureka 服务 8761 端口所绑定的公共端口 docker-compose port eureka 8761 build：构建或者重新构建服务 docker-compose build start：启动指定服务已存在的容器 docker-compose start eureka stop：停止已运行的服务的容器 docker-compose stop eureka rm：删除服务的容器 docker-compose rm eureka # 不指定，则删除所有 docker-compose rm up：构建、启动容器 docker-compose up kill：通过发送 SIGKILL 信号来停止指定服务的容器 docker-compose kill eureka pull：下载服务镜像 docker-compose pull scale：设置指定服务运气容器的个数，以 service=num 形式指定 docker-compose scale user=3 movie=3 run：在一个服务上执行一个命令 docker-compose run web bash 进阶用法
+指定docker-compose文件 docker-compose -f file_path </description>
     </item>
     
     <item>
@@ -160,9 +159,9 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Fri, 05 Nov 2021 18:56:17 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/ci-cd/gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid>
-      <description>Gradle是当下最流行的构建工具，下面讲CI/CD场景  Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
-  但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &amp;gt; 本地maven仓库 &amp;gt; 远程仓库（优先级从左到右）   每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
- CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层）  // build.gradle task cacheDependencies {  setDescription &amp;#34;Resolves all projects dependencies from the repository.&amp;#34;  setGroup &amp;#34;Build Server&amp;#34;   doLast {  rootProject.allprojects { project -&amp;gt;  println &amp;#34;&amp;gt;&amp;gt; &amp;#34; + project  Set&amp;lt;Configuration&amp;gt; configurations =  project.buildscript.configurations +  project.configurations  configurations  .findAll { it.canBeResolved }  .</description>
+      <description>Gradle是当下最流行的构建工具，下面讲CI/CD场景 Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
+但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &amp;gt; 本地maven仓库 &amp;gt; 远程仓库（优先级从左到右） 每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
+CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层） // build.gradle task cacheDependencies { setDescription &amp;#34;Resolves all projects dependencies from the repository.&amp;#34; setGroup &amp;#34;Build Server&amp;#34; doLast { rootProject.allprojects { project -&amp;gt; println &amp;#34;&amp;gt;&amp;gt; &amp;#34; + project Set&amp;lt;Configuration&amp;gt; configurations = project.buildscript.configurations + project.configurations configurations .findAll { it.canBeResolved } .forEach { resolveDependencies(it) } } } } def cacheDependencies(Configuration it) { try { Set&amp;lt;File&amp;gt; files = it.resolve() DependencySet set = it.</description>
     </item>
     
     <item>
@@ -171,8 +170,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Wed, 27 Oct 2021 18:32:47 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/bug/%E9%97%AE%E9%A2%98/</guid>
-      <description> 2021-10-27   从Spring项目源码构建到成品Docker镜像过程中，遇到jdeps &amp;ndash;multi-release的坑。总结：这基本上使得多版本jar无法与模块一起使用。
- </description>
+      <description>2021-10-27 从Spring项目源码构建到成品Docker镜像过程中，遇到jdeps &amp;ndash;multi-release的坑。总结：这基本上使得多版本jar无法与模块一起使用。</description>
     </item>
     
     <item>
@@ -181,7 +179,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Tue, 14 Sep 2021 22:20:09 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/debian%E5%AE%89%E8%A3%85code-server/</guid>
-      <description> 拉取安装包 Release地址：https://github.com/cdr/code-server/releases  # 这里使用了加速镜像 curl -fOL https://github.91chifun.workers.dev/https://github.com//cdr/code-server/releases/download/v3.11.1/code-server_3.11.1_amd64.deb # 解压安装 sudo dpkg -i code-server_3.11.1_amd64.deb # 随系统启动 sudo systemctl enable --now code-server@$USER # 重启服务，我这里用户名是root systemctl restart code-server@root.service  编辑配置  # 默认配置路径~/.config/code-server/config.yaml #字段为绑定地址跟端口，IP:Port,其中允许任何IP访问，设置ip为0.0.0.0 bind-addr: 127.0.0.1:8080 # auth字段，password为密码认证，none为无认证 auth: password #password字段，密码 password: xxxx  详细文档：https://coder.com/docs/code-server/v3.11.1  </description>
+      <description> 拉取安装包 Release地址：https://github.com/cdr/code-server/releases # 这里使用了加速镜像 curl -fOL https://github.91chifun.workers.dev/https://github.com//cdr/code-server/releases/download/v3.11.1/code-server_3.11.1_amd64.deb # 解压安装 sudo dpkg -i code-server_3.11.1_amd64.deb # 随系统启动 sudo systemctl enable --now code-server@$USER # 重启服务，我这里用户名是root systemctl restart code-server@root.service 编辑配置 # 默认配置路径~/.config/code-server/config.yaml #字段为绑定地址跟端口，IP:Port,其中允许任何IP访问，设置ip为0.0.0.0 bind-addr: 127.0.0.1:8080 # auth字段，password为密码认证，none为无认证 auth: password #password字段，密码 password: xxxx 详细文档：https://coder.com/docs/code-server/v3.11.1 </description>
     </item>
     
     <item>
@@ -190,7 +188,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Mon, 16 Aug 2021 19:44:06 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/bug/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%E9%81%87%E5%88%B0%E9%BB%98%E8%AE%A4ansi-x3-4-1968%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</guid>
-      <description>笔者在一次做项目的Runtime环境，自制精简Jre Docker image过程中替换base镜像遇到到编码问题   Dockerfile文件  FROM eclipse-temurin:16.0.2_7-jdk as jre-build # Create a custom Java runtime RUN $JAVA_HOME/bin/jlink \ --add-modules java.base,java.compiler,java.logging,java.desktop,java.management,java.naming,java.net.http,java.rmi,java.scripting,java.security.jgss,java.sql,java.xml,jdk.jdi,jdk.unsupported \ --strip-debug \ --no-man-pages \ --no-header-files \ --compress=2 \ --output /javaruntime # Define your base image FROM debian:buster-slim USER root LABEL name=vertx-ddns LABEL url=https://github.com/zf1976/vertx-ddns ENV JAVA_HOME=/opt/java/openjdk ENV PATH &amp;#34;${JAVA_HOME}/bin:${PATH}&amp;#34; COPY --from=jre-build /javaruntime $JAVA_HOME #COPY --from=jre-build /usr/share/fonts /usr/share/fonts # Continue with your application deployment RUN mkdir /opt/app ARG JAR_FILE=build/libs/vertx-ddns-latest-all.</description>
+      <description>笔者在一次做项目的Runtime环境，自制精简Jre Docker image过程中替换base镜像遇到到编码问题 Dockerfile文件 FROM eclipse-temurin:16.0.2_7-jdk as jre-build # Create a custom Java runtime RUN $JAVA_HOME/bin/jlink \ --add-modules java.base,java.compiler,java.logging,java.desktop,java.management,java.naming,java.net.http,java.rmi,java.scripting,java.security.jgss,java.sql,java.xml,jdk.jdi,jdk.unsupported \ --strip-debug \ --no-man-pages \ --no-header-files \ --compress=2 \ --output /javaruntime # Define your base image FROM debian:buster-slim USER root LABEL name=vertx-ddns LABEL url=https://github.com/zf1976/vertx-ddns ENV JAVA_HOME=/opt/java/openjdk ENV PATH &amp;#34;${JAVA_HOME}/bin:${PATH}&amp;#34; COPY --from=jre-build /javaruntime $JAVA_HOME #COPY --from=jre-build /usr/share/fonts /usr/share/fonts # Continue with your application deployment RUN mkdir /opt/app ARG JAR_FILE=build/libs/vertx-ddns-latest-all.jar COPY ${JAR_FILE} /opt/app/vertx-ddns.</description>
     </item>
     
     <item>
@@ -200,9 +198,9 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       
       <guid>https://blog.innas.cn/posts/config/gradle%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85jar%E6%8F%92%E4%BB%B6%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</guid>
       <description> 笔者在折腾自己的普通Java项目打包（并非Spring项目） 从6.x升级了Gradle7.0版本，下面这种打包方式似乎已经不支持了（暂时没研究api是否已经变化）
- jar { manifest { attributes( &amp;#34;Manifest-Version&amp;#34;: 1.0, &amp;#39;Main-Class&amp;#39;:&amp;#39;com.zf1976.ddns.Application&amp;#39; ) } from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } into(&amp;#39;assets&amp;#39;) { from &amp;#39;assets&amp;#39; } }  时间关系懒得折腾，经测试使用shadow插件能解决大部分Java项目打包   详细请移步Github：https://github.com/johnrengelman/shadow
+jar { manifest { attributes( &amp;#34;Manifest-Version&amp;#34;: 1.0, &amp;#39;Main-Class&amp;#39;:&amp;#39;com.zf1976.ddns.Application&amp;#39; ) } from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } into(&amp;#39;assets&amp;#39;) { from &amp;#39;assets&amp;#39; } } 时间关系懒得折腾，经测试使用shadow插件能解决大部分Java项目打包 详细请移步Github：https://github.com/johnrengelman/shadow
 配置跟上面方式差不多
- //打jar包需要的配置 jar { manifest { attributes( &amp;#34;Manifest-Version&amp;#34;: 1.0, &amp;#39;Main-Class&amp;#39;:&amp;#39;com.zf1976.ddns.Application&amp;#39; ) } } </description>
+//打jar包需要的配置 jar { manifest { attributes( &amp;#34;Manifest-Version&amp;#34;: 1.0, &amp;#39;Main-Class&amp;#39;:&amp;#39;com.zf1976.ddns.Application&amp;#39; ) } } </description>
     </item>
     
     <item>
@@ -211,7 +209,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Mon, 02 Aug 2021 21:07:01 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/hexo/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E6%96%B0%E7%89%88%E6%9C%ACnext%E4%B8%BB%E9%A2%98%E4%B8%8D%E6%94%AF%E6%8C%81auto-excerpt%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</guid>
-      <description> 使用npm安装hexo-excerpt  npm install hexo-excerpt --save  在站点配置文件中添加  excerpt: depth: 5 excerpt_excludes: [] more_excludes: [] hideWholePostExcerpts: true </description>
+      <description> 使用npm安装hexo-excerpt npm install hexo-excerpt --save 在站点配置文件中添加 excerpt: depth: 5 excerpt_excludes: [] more_excludes: [] hideWholePostExcerpts: true </description>
     </item>
     
     <item>
@@ -220,7 +218,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Mon, 02 Aug 2021 14:53:56 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</guid>
-      <description> 原因是hexo在5.0之后把swig给删除了需要自己手动安装  npm i hexo-renderer-swig </description>
+      <description> 原因是hexo在5.0之后把swig给删除了需要自己手动安装 npm i hexo-renderer-swig </description>
     </item>
     
     <item>
@@ -230,7 +228,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       
       <guid>https://blog.innas.cn/posts/hexo/linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/</guid>
       <description> hexo是一个非常高效的博客，但由于其设计特点，目的是为了转换为静态页面， 因此不必要一直在后台运行，但是我想随时随地写博客同步到github， 使用hexo admin编辑器，这就需要hexo一直在后台运行，于是在网上找到了pm2托管的方式。
-  安装pm2  npm install -g pm2  在博客根目录创建一个js脚本  $ vim hexo_run.js // js脚本文件 const { exec } = require(&amp;#39;child_process&amp;#39;) exec(&amp;#39;hexo server -p &amp;lt;IP端口，不使用则使用默认4000端口&amp;gt;&amp;#39;,(error, stdout, stderr) =&amp;gt; { if(error){ console.log(&amp;#39;exec error: ${error}&amp;#39;) return } console.log(&amp;#39;stdout: ${stdout}&amp;#39;); console.log(&amp;#39;stderr: ${stderr}&amp;#39;); })  在博客根目录运行脚本  $ pm2 hexo_run.js </description>
+安装pm2 npm install -g pm2 在博客根目录创建一个js脚本 $ vim hexo_run.js // js脚本文件 const { exec } = require(&amp;#39;child_process&amp;#39;) exec(&amp;#39;hexo server -p &amp;lt;IP端口，不使用则使用默认4000端口&amp;gt;&amp;#39;,(error, stdout, stderr) =&amp;gt; { if(error){ console.log(&amp;#39;exec error: ${error}&amp;#39;) return } console.log(&amp;#39;stdout: ${stdout}&amp;#39;); console.log(&amp;#39;stderr: ${stderr}&amp;#39;); }) 在博客根目录运行脚本 $ pm2 hexo_run.js </description>
     </item>
     
     <item>
@@ -239,7 +237,7 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <pubDate>Mon, 02 Aug 2021 11:41:35 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/%E9%A1%B9%E7%9B%AE%E6%B3%A8%E6%84%8F%E7%82%B9/</guid>
-      <description> 禁止在循环中查询数据库，应当采用批量查询方式 如果为数据量比较大的表，直接用分页查询插件 表中某些字段为可空的情况下，查出来的数据一定要判空  </description>
+      <description> 禁止在循环中查询数据库，应当采用批量查询方式 如果为数据量比较大的表，直接用分页查询插件 表中某些字段为可空的情况下，查出来的数据一定要判空 </description>
     </item>
     
     <item>
@@ -249,8 +247,10 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       
       <guid>https://blog.innas.cn/posts/spring_analysis/beans/1.bean%E7%9A%84%E5%8C%85%E8%A3%85/</guid>
       <description>1.前言 为什么先从对bean的包装开始阅读源码呢，因为beans包的核心就是BeanFactory 🐶，其作用就是对bean进行管理，那么对bean管理的前提就是对bean进行解析，然后支持属性的set 或 get 操作。那么我们列举一下BeanFactory的主要职责，即使没阅读过源码，也应该知道个大概过程.
- 解析xml或者其它配置文件得到 BeanDefinition 实例化 Instance AutoWired自动装配 Bean的依赖  所以，我们先了解如何去得到一个Bean的 “定义” (解析xml那部分先不讲)
-2. BeanWrapper接口 这个类的主要作用是解析`Class` 然后获取属性，进一步封装，然后提供修改属性的接口 public interface BeanWrapper extends ConfigurablePropertyAccessor {  // 设置集合属性自增长的长度 	void setAutoGrowCollectionLimit(int autoGrowCollectionLimit); 	 // 获取当前集合属性自增长的长度 	int getAutoGrowCollectionLimit(); 		// 获取包装的Bean的Instance 	Object getWrappedInstance(); 		// 获取Bean的Class 	Class&amp;lt;?&amp;gt; getWrappedClass(); 		// 获取所有属性描述符 	PropertyDescriptor[] getPropertyDescriptors();   // 获取属性描述符 	PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException;  } 为什么上面会涉及到集合，因为Bean 支持nested (嵌套) 属性读写，也就是pojo</description>
+解析xml或者其它配置文件得到 BeanDefinition 实例化 Instance AutoWired自动装配 Bean的依赖 所以，我们先了解如何去得到一个Bean的 “定义” (解析xml那部分先不讲)
+2. BeanWrapper接口 这个类的主要作用是解析`Class` 然后获取属性，进一步封装，然后提供修改属性的接口 public interface BeanWrapper extends ConfigurablePropertyAccessor { // 设置集合属性自增长的长度 void setAutoGrowCollectionLimit(int autoGrowCollectionLimit); // 获取当前集合属性自增长的长度 int getAutoGrowCollectionLimit(); // 获取包装的Bean的Instance Object getWrappedInstance(); // 获取Bean的Class Class&amp;lt;?&amp;gt; getWrappedClass(); // 获取所有属性描述符 PropertyDescriptor[] getPropertyDescriptors(); // 获取属性描述符 PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException; } 为什么上面会涉及到集合，因为Bean 支持nested (嵌套) 属性读写，也就是pojo
+bean.setValue(&amp;#34;bean.child.attr&amp;#34;, 1) 3. BeanWrapperImpl实现 我们从其测试代码中可以看到这样的用法
+GetterBean target = new GetterBean(); BeanWrapper accessor = createAccessor(target); accessor.</description>
     </item>
     
     <item>
@@ -262,12 +262,12 @@ Docker跑网心云目前玩过的几种方式  网心云Docker目前只支持h
       <description>##factory-method 和 factory-bean的实现
 在讨论实现原理之前，得先清楚怎么用，这两个东西.
 假设目前有两个类 ServiceFactory 和 Service 我们就可以指定 factory-method 和 factory-bean 给 Service
-&amp;lt;bean id=&amp;#34;Service&amp;#34; class=&amp;#34;org.springframework.beans.factory.FactoryBeanTests$Service&amp;#34; factory-bean=&amp;#34;ServiceFactoryBean&amp;#34; factory-method=&amp;#34;getObject&amp;#34;&amp;gt;&amp;lt;/bean&amp;gt; 	&amp;lt;bean id=&amp;#34;ServiceFactoryBean&amp;#34; class=&amp;#34;org.springframework.beans.factory.FactoryBeanTests$ServiceFactoryBean&amp;#34; &amp;gt;&amp;lt;/bean&amp;gt; 上述的意思就是，当我们getBean Service 的时候，会从 ServiceFactory的 getObject 方法中获取 Service
+&amp;lt;bean id=&amp;#34;Service&amp;#34; class=&amp;#34;org.springframework.beans.factory.FactoryBeanTests$Service&amp;#34; factory-bean=&amp;#34;ServiceFactoryBean&amp;#34; factory-method=&amp;#34;getObject&amp;#34;&amp;gt;&amp;lt;/bean&amp;gt; &amp;lt;bean id=&amp;#34;ServiceFactoryBean&amp;#34; class=&amp;#34;org.springframework.beans.factory.FactoryBeanTests$ServiceFactoryBean&amp;#34; &amp;gt;&amp;lt;/bean&amp;gt; 上述的意思就是，当我们getBean Service 的时候，会从 ServiceFactory的 getObject 方法中获取 Service
 所以应该会分成两个过程 ：
- 先获取 ServiceFactory 实例 调用ServiceFactory的 getObject  实际上获取从ServiceFactory中获取 Service，就相当于把 ServiceFactory当成是 FactoryBean ，只是这样做的话可以允许程序员自定义自己的factory-method罢了，因为 FactoryBean的话就要继承接口，工厂方法也就被定下来了。
- 原理部分
+先获取 ServiceFactory 实例 调用ServiceFactory的 getObject 实际上获取从ServiceFactory中获取 Service，就相当于把 ServiceFactory当成是 FactoryBean ，只是这样做的话可以允许程序员自定义自己的factory-method罢了，因为 FactoryBean的话就要继承接口，工厂方法也就被定下来了。
+原理部分
 因为这一小节只是详解 factory-method 和 factory-bean 的原理部分，所以源码只会截取一部分，若想要完整，那就到 beans 文件夹中查看详解部分.
-protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 创建bean 实例 * [1] 判断类是不是 public * [2] 判断是否提供了工厂方法，若有，则调用 {@link #instantiateUsingFactoryMethod} * [3] 判断是否提供了构造函数，若有，则调用 {@link #autowireConstructor} * [4] 两者都不提供，则直接调用默认构造函数 {@link #instantiateBean} *------------------------------------------------------------------------------------------------------------*/  	// 确保class已经被解析 	Class&amp;lt;?</description>
+protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) { /**------------------------------------------------------------------------------------------------------------ * [DESC] 创建bean 实例 * [1] 判断类是不是 public * [2] 判断是否提供了工厂方法，若有，则调用 {@link #instantiateUsingFactoryMethod} * [3] 判断是否提供了构造函数，若有，则调用 {@link #autowireConstructor} * [4] 两者都不提供，则直接调用默认构造函数 {@link #instantiateBean} *------------------------------------------------------------------------------------------------------------*/ // 确保class已经被解析 Class&amp;lt;?</description>
     </item>
     
     <item>
@@ -277,9 +277,9 @@ protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd
       
       <guid>https://blog.innas.cn/posts/spring_analysis/core/1.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1/</guid>
       <description>前言 sping对整个类型转换组件抽象成为service , 毕竟类型转换这些没什么神秘之处，我们只需要了解它的设计模式。老规矩，从test开始 package org.springframework.core.convert.converter#DefaultConversionServiceTests.java
-class DefaultConversionServiceTests {  	private final DefaultConversionService conversionService = new DefaultConversionService();  	@Test 	void stringToCharacter() { 	assertThat(conversionService.convert(&amp;#34;1&amp;#34;, Character.class)).isEqualTo(Character.valueOf(&amp;#39;1&amp;#39;)); 	} }   GenericConversionService
+class DefaultConversionServiceTests { private final DefaultConversionService conversionService = new DefaultConversionService(); @Test void stringToCharacter() { assertThat(conversionService.convert(&amp;#34;1&amp;#34;, Character.class)).isEqualTo(Character.valueOf(&amp;#39;1&amp;#39;)); } } GenericConversionService
 因为DefaultConversionService是继承自GenericConversionService，并且后者才是真正的核心，所以只需要看后者即可。
-public Object convert(@Nullable Object source, @Nullable TypeDescriptor sourceType, TypeDescriptor targetType) { 	/**----------------------------------------------------------------------------------------------------------- * [DESC] 转换数据类型 * 1. 先获取转换器 * 2. 利用转换器进行数据转换 * 3. 对转换后的结果进行验证 *-----------------------------------------------------------------------------------------------------------*/ 	if (sourceType == null) { 	// [1] sourceType为空，直接报异常就完事 	return handleResult(null, targetType, convertNullSource(null, targetType)); 	} 	if (source !</description>
+public Object convert(@Nullable Object source, @Nullable TypeDescriptor sourceType, TypeDescriptor targetType) { /**----------------------------------------------------------------------------------------------------------- * [DESC] 转换数据类型 * 1. 先获取转换器 * 2. 利用转换器进行数据转换 * 3. 对转换后的结果进行验证 *-----------------------------------------------------------------------------------------------------------*/ if (sourceType == null) { // [1] sourceType为空，直接报异常就完事 return handleResult(null, targetType, convertNullSource(null, targetType)); } if (source != null &amp;amp;&amp;amp; !</description>
     </item>
     
     <item>
@@ -289,10 +289,10 @@ public Object convert(@Nullable Object source, @Nullable TypeDescriptor sourceTy
       
       <guid>https://blog.innas.cn/posts/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/</guid>
       <description>前言 因为分开每一个类理解是很难理解其设计，所以需要总结，分析各个类的义务，组合起来就是整个类型转换服务的功能. 先看一张结构图。
-  ConvertiblePair 用于描述类型转换信息
-final class ConvertiblePair { 	private final Class&amp;lt;?&amp;gt; sourceType; 	private final Class&amp;lt;?&amp;gt; targetType; 	}   Converter 用于转换数据
-public interface GenericConverter { 	// 获取描述信息 	Set&amp;lt;ConvertiblePair&amp;gt; getConvertibleTypes();  	// 数据转换 	Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType); }   ConvertersForPair 用于管理同一个类型的所有的Converter
-private static class ConvertersForPair { 	// 存放同一类型的转换器 	private final LinkedList&amp;lt;GenericConverter&amp;gt; converters = new LinkedList&amp;lt;&amp;gt;();  // 添加转换器 	public void add(GenericConverter converter);  	// 匹配并且获取转换器 	public GenericConverter getConverter(TypeDescriptor sourceType, TypeDescriptor targetType); 	}   Converters 用于管理所有类型的转换器</description>
+ConvertiblePair 用于描述类型转换信息
+final class ConvertiblePair { private final Class&amp;lt;?&amp;gt; sourceType; private final Class&amp;lt;?&amp;gt; targetType; } Converter 用于转换数据
+public interface GenericConverter { // 获取描述信息 Set&amp;lt;ConvertiblePair&amp;gt; getConvertibleTypes(); // 数据转换 Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType); } ConvertersForPair 用于管理同一个类型的所有的Converter
+private static class ConvertersForPair { // 存放同一类型的转换器 private final LinkedList&amp;lt;GenericConverter&amp;gt; converters = new LinkedList&amp;lt;&amp;gt;(); // 添加转换器 public void add(GenericConverter converter); // 匹配并且获取转换器 public GenericConverter getConverter(TypeDescriptor sourceType, TypeDescriptor targetType); } Converters 用于管理所有类型的转换器</description>
     </item>
     
     <item>
@@ -303,11 +303,11 @@ private static class ConvertersForPair { 	// 存放同一类型的转换器 	pri
       <guid>https://blog.innas.cn/posts/spring_analysis/beans/2.%E5%B5%8C%E5%A5%97%E5%B1%9E%E6%80%A7%E8%A7%A3%E6%9E%90/</guid>
       <description>前言 在上面的getPropertyDescriptor中用到了这个方法去解析 nested 嵌套属性，下面就来看下它怎么实现的
 首先我们得明确一件事情，BeanWrapperImp 继承自 AbstractNestablePropertyAccessor 因为 BeanWrapperImp 携带有 Instance ，所以 AbstractNestablePropertyAccessor 必然也携带有 Instance ，那按照我们的思路该如何解析 nested 属性呢，比如 有一个Bean
-class Student{  private name;  private Clazz clazzInfo; } class Clazz{  private Integer id; } 这个我们需要取出其ClazzId，用nested 表示就是 clazzInfo.id ，那我们该如何解析，首先找到第一个属性
+class Student{ private name; private Clazz clazzInfo; } class Clazz{ private Integer id; } 这个我们需要取出其ClazzId，用nested 表示就是 clazzInfo.id ，那我们该如何解析，首先找到第一个属性
 clazzInfo，然后从Student中获取 clazzInfo 的Instance ，然后在解析第二个属性 id ，然后再在classInfo 中拿到 id 的值，这显然是一个递归。
 下面来看实现:
-protected AbstractNestablePropertyAccessor getPropertyAccessorForPropertyPath(String propertyPath) {  // [1] 解析出第一个属性的分割索引  int pos = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(propertyPath);  首先看第一步：PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex
-private static int getNestedPropertySeparatorIndex(String propertyPath, boolean last) {  // [1] map[my.</description>
+protected AbstractNestablePropertyAccessor getPropertyAccessorForPropertyPath(String propertyPath) { // [1] 解析出第一个属性的分割索引 int pos = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(propertyPath); 首先看第一步：PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex
+private static int getNestedPropertySeparatorIndex(String propertyPath, boolean last) { // [1] map[my.</description>
     </item>
     
     <item>
@@ -319,12 +319,12 @@ private static int getNestedPropertySeparatorIndex(String propertyPath, boolean 
       <description>前言 @Qualifier用于注解在属性、方法、参数，指定用于修复依赖的 bean
 QualifierAnnotationAutowireCandidateResolver用于支持 @Qualifier和 @Value注解
 这得分两种情形，否则会出意外的BUG出现 :
- 以byType 方式装配 使用注解 Autowried 装配  当以byType 方式装配的时候，@Qualifier 要写在setter 方法或者参数上
+以byType 方式装配 使用注解 Autowried 装配 当以byType 方式装配的时候，@Qualifier 要写在setter 方法或者参数上
 当以@Autowried注解装配，则写在 属性 上
 因为byType 是以 setter 方法进行依赖修复的
 @Autowried 是以属性的方式进行依赖修复
 下面看源码一目了然
-protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) { 	// Note 根据类型来自动装配 	// Note 那就必然涉及到类型的转换  	// [1] 先new 一个类型转转换器 	TypeConverter converter = getCustomTypeConverter(); 	if (converter == null) { 	// 如果没有就用Wrapper内置的类型转换，支持基础类型 	converter = bw; 	}  	// [2] 遍历属性和装配了 	Set&amp;lt;String&amp;gt; autowiredBeanNames = new LinkedHashSet&amp;lt;&amp;gt;(4);  	// NOTE 在这里排除一些不满足装配条件的属性 	// NOTE 使用 &amp;lt;property name=&amp;#34;impl1&amp;#34; ref=&amp;#34;BEAN1&amp;#34;/&amp;gt; ref属性引用的bean，这个是不会被装配的 	// NOTE CGLIB 定义的属性也不会被装配 	// NOTE 简单类型是不会被装配 	// TODO 之所以使用 ref是因为接触循环依赖？目前还不清楚 	String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw); 	for (String propertyName : propertyNames) { 	try {  	// Note 第一步肯定是获取属性的描述符 	PropertyDescriptor pd = bw.</description>
+protected void autowireByType( String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) { // Note 根据类型来自动装配 // Note 那就必然涉及到类型的转换 // [1] 先new 一个类型转转换器 TypeConverter converter = getCustomTypeConverter(); if (converter == null) { // 如果没有就用Wrapper内置的类型转换，支持基础类型 converter = bw; } // [2] 遍历属性和装配了 Set&amp;lt;String&amp;gt; autowiredBeanNames = new LinkedHashSet&amp;lt;&amp;gt;(4); // NOTE 在这里排除一些不满足装配条件的属性 // NOTE 使用 &amp;lt;property name=&amp;#34;impl1&amp;#34; ref=&amp;#34;BEAN1&amp;#34;/&amp;gt; ref属性引用的bean，这个是不会被装配的 // NOTE CGLIB 定义的属性也不会被装配 // NOTE 简单类型是不会被装配 // TODO 之所以使用 ref是因为接触循环依赖？目前还不清楚 String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw); for (String propertyName : propertyNames) { try { // Note 第一步肯定是获取属性的描述符 PropertyDescriptor pd = bw.</description>
     </item>
     
     <item>
@@ -336,11 +336,11 @@ protected void autowireByType( 	String beanName, AbstractBeanDefinition mbd, Bea
       <description>前言 @Autowired 注解的实现原理
 第二小节说了，byType是根据 method 和methodParm 来装配的
 在这里 @Autowried 是根据 field来进行装配的
-AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired  注解装配
+AutowiredAnnotationBeanPostProcessor 这个处理器来负责实现@Autowired 注解装配
 spring 也支持 JSR330 的 Inject 注解
 先看这个 processor 初始化部分
-@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&amp;lt;?&amp;gt; beanType, String beanName) {  // [1] 预处理，准备注解数据，这个在new instance 后调用  // 调用之后才是 填充bean依赖数据  InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);  metadata.checkConfigMembers(beanDefinition); } 继续跟进
-private InjectionMetadata findAutowiringMetadata(String beanName, Class&amp;lt;?&amp;gt; clazz, @Nullable PropertyValues pvs) { 	/**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why?</description>
+@Override public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&amp;lt;?&amp;gt; beanType, String beanName) { // [1] 预处理，准备注解数据，这个在new instance 后调用 // 调用之后才是 填充bean依赖数据 InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null); metadata.checkConfigMembers(beanDefinition); } 继续跟进
+private InjectionMetadata findAutowiringMetadata(String beanName, Class&amp;lt;?&amp;gt; clazz, @Nullable PropertyValues pvs) { /**------------------------------------------------------------------------------------------------------------ * [DESC] 寻找存在注解的方法或者属性，前提是属性不能为 static 类型 NOTE so why? i don&amp;#39;t know * [1] 第一步从缓存中搜索，没有就调用 {@link #buildAutowiringMetadata(Class)} 来生成注解数据 *-----------------------------------------------------------------------------------------------------------*/ // Fall back to class name as cache key, for backwards compatibility with custom callers.</description>
     </item>
     
     <item>
@@ -350,7 +350,7 @@ private InjectionMetadata findAutowiringMetadata(String beanName, Class&amp;lt;?
       
       <guid>https://blog.innas.cn/posts/spring_analysis/core/3.sprint%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</guid>
       <description>前言 GenericConversionService 的功能提供转换数据的服务, DefaultConversionService 是继承自前者的，它的责任就是注册一些基本的Converter, let me see～
-public static void addDefaultConverters(ConverterRegistry converterRegistry) {  addScalarConverters(converterRegistry);  addCollectionConverters(converterRegistry);  // ByteBuff -&amp;gt; byte[]  // byte[] -&amp;gt; ByteBuff  converterRegistry.addConverter(new ByteBufferConverter((ConversionService) converterRegistry));   // String -&amp;gt; TimeZone  converterRegistry.addConverter(new StringToTimeZoneConverter());   // ZoneId -&amp;gt; TimeZone  converterRegistry.addConverter(new ZoneIdToTimeZoneConverter());   // DateTime -&amp;gt; Calendar  converterRegistry.addConverter(new ZonedDateTimeToCalendarConverter());   // Object -&amp;gt; Object  converterRegistry.addConverter(new ObjectToObjectConverter());   // Id -&amp;gt; Entity  converterRegistry.</description>
+public static void addDefaultConverters(ConverterRegistry converterRegistry) { addScalarConverters(converterRegistry); addCollectionConverters(converterRegistry); // ByteBuff -&amp;gt; byte[] // byte[] -&amp;gt; ByteBuff converterRegistry.addConverter(new ByteBufferConverter((ConversionService) converterRegistry)); // String -&amp;gt; TimeZone converterRegistry.addConverter(new StringToTimeZoneConverter()); // ZoneId -&amp;gt; TimeZone converterRegistry.addConverter(new ZoneIdToTimeZoneConverter()); // DateTime -&amp;gt; Calendar converterRegistry.addConverter(new ZonedDateTimeToCalendarConverter()); // Object -&amp;gt; Object converterRegistry.addConverter(new ObjectToObjectConverter()); // Id -&amp;gt; Entity converterRegistry.addConverter(new IdToEntityConverter((ConversionService) converterRegistry)); // FallBackObject -&amp;gt; String converterRegistry.addConverter(new FallbackObjectToStringConverter()); // Object -&amp;gt; Optional converterRegistry.addConverter(new ObjectToOptionalConverter((ConversionService) converterRegistry)); } /** * Add common collection converters.</description>
     </item>
     
     <item>
@@ -360,10 +360,11 @@ public static void addDefaultConverters(ConverterRegistry converterRegistry) {  
       
       <guid>https://blog.innas.cn/posts/spring_analysis/beans/3.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E8%AF%BB%E5%8F%96/</guid>
       <description>###前言
-  根据token获取该属性的 Instance
+根据token获取该属性的 Instance
 在上面 解析中，我们已经拿到了token ，我们知道 token 里面包含了属性名和 keys ，接下来就能通过属性名拿到属性值了
- Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException {  String propertyName = tokens.canonicalName;  String actualName = tokens.actualName;  // [1] 直接获取 handler,handler用于访问属性  PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
-protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) {  // [1] 实现很简单，直接从缓存获取属性描述符  PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName);  return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器</description>
+Object value = getPropertyValue(tokens); protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException { String propertyName = tokens.canonicalName; String actualName = tokens.actualName; // [1] 直接获取 handler,handler用于访问属性 PropertyHandler ph = getLocalPropertyHandler(actualName); 上面提到过，PropertyHandler 是用于访问属性的，职责分离嘛，所以再拿到token 后，就可以获取 Handler了。这个方法的实现是在BeanWrapperImpl#getLocalPropertyHandler中实现的。
+protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) { // [1] 实现很简单，直接从缓存获取属性描述符 PropertyDescriptor pd = getCachedIntrospectionResults().getPropertyDescriptor(propertyName); return (pd != null ? new BeanPropertyHandler(pd) : null); } 善用缓存～:happy: ，还记得 getCachedIntrospectionResults 这个方法么，从缓存或者从线程上下文类加载器
+拿到 BeanInfo，现在我们需要到 BeanInfo -&amp;gt; PropertyDescriptor</description>
     </item>
     
     <item>
@@ -373,8 +374,8 @@ protected BeanPropertyHandler getLocalPropertyHandler(String propertyName) {  //
       
       <guid>https://blog.innas.cn/posts/spring_analysis/beans/4.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E5%86%99%E5%85%A5/</guid>
       <description>前言 这个和getPropertyValue 有很多相似的地方
- 解析嵌套属性得到 Accessor 生成 token 实际上也就是支持 集合类型 然后调用 AbstractNestablePropertyAccessor#setProperty  setPropertyValue
-public void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException{ 	// [1] 获取嵌套属性中的最后一个Accessor 	AbstractNestablePropertyAccessor nestedPa; 	try { 	nestedPa = getPropertyAccessorForPropertyPath(propertyName); 	} 	catch (NotReadablePropertyException ex) { 	throw new NotWritablePropertyException(getRootClass(), this.nestedPath + propertyName, 	&amp;#34;Nested property in path &amp;#39;&amp;#34; + propertyName + &amp;#34;&amp;#39; does not exist&amp;#34;, ex); 	} 	// [2] 生成Token 	PropertyTokenHolder tokens = getPropertyNameTokens(getFinalPath(nestedPa, propertyName));  	// [3] 根据Token设置值 	nestedPa.</description>
+解析嵌套属性得到 Accessor 生成 token 实际上也就是支持 集合类型 然后调用 AbstractNestablePropertyAccessor#setProperty setPropertyValue
+public void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException{ // [1] 获取嵌套属性中的最后一个Accessor AbstractNestablePropertyAccessor nestedPa; try { nestedPa = getPropertyAccessorForPropertyPath(propertyName); } catch (NotReadablePropertyException ex) { throw new NotWritablePropertyException(getRootClass(), this.nestedPath + propertyName, &amp;#34;Nested property in path &amp;#39;&amp;#34; + propertyName + &amp;#34;&amp;#39; does not exist&amp;#34;, ex); } // [2] 生成Token PropertyTokenHolder tokens = getPropertyNameTokens(getFinalPath(nestedPa, propertyName)); // [3] 根据Token设置值 nestedPa.setPropertyValue(tokens, new PropertyValue(propertyName, value)); } 是不是缺少了 PropertyHandler ？，不用疑问，因为setProperty支持 通用类型转换，强得一匹, 所以类型转换后才需要到 PropertyHandler</description>
     </item>
     
     <item>
@@ -384,8 +385,8 @@ public void setPropertyValue(String propertyName, @Nullable Object value) throws
       
       <guid>https://blog.innas.cn/posts/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/</guid>
       <description>前言 本节将单个功能添加转换器拿出来再讨论
-public void addConverter(Converter&amp;lt;?, ?&amp;gt; converter) { 	// [1] 首先获取范形的类型 [NOTE] 这个工具方法其实也蛮常用的，有兴趣可以了解下 	ResolvableType[] typeInfo = getRequiredTypeInfo(converter.getClass(), Converter.class); 	if (typeInfo == null &amp;amp;&amp;amp; converter instanceof DecoratingProxy) { 	typeInfo = getRequiredTypeInfo(((DecoratingProxy) converter).getDecoratedClass(), Converter.class); 	} 	// 然后构造成 Adapter，继续跟 	addConverter(new ConverterAdapter(converter, typeInfo[0], typeInfo[1])); 	} 这里出现了一个 ConverterAdapter, 转换器适配器，来看下其功能是什么.
-/** * [DESC] Converter只负责对指定数据类型的转换，类型匹配的职责就用适配器来扩充 */ 	@SuppressWarnings(&amp;#34;unchecked&amp;#34;) 	private final class ConverterAdapter implements ConditionalGenericConverter { 	private final Converter&amp;lt;Object, Object&amp;gt; converter;  	private final ConvertiblePair typeInfo;  	private final ResolvableType targetType; 	@Override 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) { 	// [1] 先检查目标类型是否一致 	if (this.</description>
+public void addConverter(Converter&amp;lt;?, ?&amp;gt; converter) { // [1] 首先获取范形的类型 [NOTE] 这个工具方法其实也蛮常用的，有兴趣可以了解下 ResolvableType[] typeInfo = getRequiredTypeInfo(converter.getClass(), Converter.class); if (typeInfo == null &amp;amp;&amp;amp; converter instanceof DecoratingProxy) { typeInfo = getRequiredTypeInfo(((DecoratingProxy) converter).getDecoratedClass(), Converter.class); } // 然后构造成 Adapter，继续跟 addConverter(new ConverterAdapter(converter, typeInfo[0], typeInfo[1])); } 这里出现了一个 ConverterAdapter, 转换器适配器，来看下其功能是什么.
+/** * [DESC] Converter只负责对指定数据类型的转换，类型匹配的职责就用适配器来扩充 */ @SuppressWarnings(&amp;#34;unchecked&amp;#34;) private final class ConverterAdapter implements ConditionalGenericConverter { private final Converter&amp;lt;Object, Object&amp;gt; converter; private final ConvertiblePair typeInfo; private final ResolvableType targetType; @Override public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) { // [1] 先检查目标类型是否一致 if (this.</description>
     </item>
     
     <item>
@@ -406,8 +407,8 @@ public void addConverter(Converter&amp;lt;?, ?&amp;gt; converter) { 	// [1] 首�
       
       <guid>https://blog.innas.cn/posts/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/</guid>
       <description>前言 若要实现自己的类型转换器，则需要注意一下几点.
- 推荐继承 ConditionalGenericConverter 也可以继承 GenericConverter 如果转换发生异常，最好抛出 ConversionFailedException 异常 最好提供ConvertiblePair 类型信息，这样就会被缓存，而不会被加入到全局转换器，到时候再一一遍历.   首先弄两个 测试类型，一个source 一个 target
-class MySourceType { 	private String name; 	private int age;  	public String getName() { 	return name; 	}  	public void setName(String name) { 	this.name = name; 	}  	public int getAge() { 	return age; 	}  	public void setAge(int age) { 	this.</description>
+推荐继承 ConditionalGenericConverter 也可以继承 GenericConverter 如果转换发生异常，最好抛出 ConversionFailedException 异常 最好提供ConvertiblePair 类型信息，这样就会被缓存，而不会被加入到全局转换器，到时候再一一遍历. 首先弄两个 测试类型，一个source 一个 target
+class MySourceType { private String name; private int age; public String getName() { return name; } public void setName(String name) { this.name = name; } public int getAge() { return age; } public void setAge(int age) { this.age = age; } } class MyTargetType{ private String fake_name; private int fake_age; public String getFake_name() { return fake_name; } public void setFake_name(String fake_name) { this.</description>
     </item>
     
     <item>
@@ -417,10 +418,10 @@ class MySourceType { 	private String name; 	private int age;  	public String get
       
       <guid>https://blog.innas.cn/posts/spring_analysis/beans/6.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A6%82%E8%A7%88/</guid>
       <description>前言 spring 对 bean 的操作可以分为以下三个步骤：
- 创建 Instance 填充 Instance 初始化 Bean  所以在这里先从最基本的开始，创建 Instance
+创建 Instance 填充 Instance 初始化 Bean 所以在这里先从最基本的开始，创建 Instance
 首先 bean 的类型可以分为两种，仅讨论 beans 包下 的 BeanFactory ：
- singleton prototype  先讨论 doGetBean 也就是 梦开始的地方
-protected &amp;lt;T&amp;gt; T doGetBean(final String name, @Nullable final Class&amp;lt;T&amp;gt; requiredType, 	@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException{  	/**------------------------------------------------------------------------------------------------------------- * 调用者：{@link #getBean(String)} ... * * [DESC] 获取指定的Bean * [1] 先从Singleton缓存中查找，若不存在遍历其父工厂递归getBean * [2] 调用{@link AbstractAutowireCapableBeanFactory#createBean(String, RootBeanDefinition, Object[])} 创建实例 *-------------------------------------------------------------------------------------------------------------*/   	// 获取真实的bean名字，类似 &amp;amp;BeanName 就会被解析为 BeanName就是去掉 &amp;amp; 这个符号 	// 然后从别名中获取真实名字 	// [TODO] 这里去掉了 &amp;amp; 并不影响后面处理 FactoryBean，FactoryBean是需要根据 &amp;amp; 这个字符来判断的，在这里去掉并不影响 	final String beanName = transformedBeanName(name); 	Object bean;  	// [1] 优先从单例缓存中查找 	Object sharedInstance = getSingleton(beanName); 	if (sharedInstance !</description>
+singleton prototype 先讨论 doGetBean 也就是 梦开始的地方
+protected &amp;lt;T&amp;gt; T doGetBean(final String name, @Nullable final Class&amp;lt;T&amp;gt; requiredType, @Nullable final Object[] args, boolean typeCheckOnly) throws BeansException{ /**------------------------------------------------------------------------------------------------------------- * 调用者：{@link #getBean(String)} ... * * [DESC] 获取指定的Bean * [1] 先从Singleton缓存中查找，若不存在遍历其父工厂递归getBean * [2] 调用{@link AbstractAutowireCapableBeanFactory#createBean(String, RootBeanDefinition, Object[])} 创建实例 *-------------------------------------------------------------------------------------------------------------*/ // 获取真实的bean名字，类似 &amp;amp;BeanName 就会被解析为 BeanName就是去掉 &amp;amp; 这个符号 // 然后从别名中获取真实名字 // [TODO] 这里去掉了 &amp;amp; 并不影响后面处理 FactoryBean，FactoryBean是需要根据 &amp;amp; 这个字符来判断的，在这里去掉并不影响 final String beanName = transformedBeanName(name); Object bean; // [1] 优先从单例缓存中查找 Object sharedInstance = getSingleton(beanName); if (sharedInstance !</description>
     </item>
     
     <item>
@@ -430,9 +431,9 @@ protected &amp;lt;T&amp;gt; T doGetBean(final String name, @Nullable final Class
       
       <guid>https://blog.innas.cn/posts/spring_analysis/beans/7.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A0%B9%E6%8D%AE%E5%B8%A6%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</guid>
       <description>前言 在上一节讨论到 ``autowireConstructor 利用其实例化Bean，这个功能是通过调用代参构造函数来拿到Instance` 的。不多bb，开搞
-protected BeanWrapper autowireConstructor( 	String beanName, RootBeanDefinition mbd, @Nullable Constructor&amp;lt;?&amp;gt;[] ctors, @Nullable Object[] explicitArgs) {  	return new ConstructorResolver(this).autowireConstructor(beanName, mbd, ctors, explicitArgs); 	} 上面 ConstructorResolver 这个是 构造函数解析器，是beans 中比较重要的一部分，后面也常常涉及到这个类，那么继续
+protected BeanWrapper autowireConstructor( String beanName, RootBeanDefinition mbd, @Nullable Constructor&amp;lt;?&amp;gt;[] ctors, @Nullable Object[] explicitArgs) { return new ConstructorResolver(this).autowireConstructor(beanName, mbd, ctors, explicitArgs); } 上面 ConstructorResolver 这个是 构造函数解析器，是beans 中比较重要的一部分，后面也常常涉及到这个类，那么继续
 这个函数长度是 200 所以一点点分析，这样比较清晰
-public BeanWrapper autowireConstructor(String beanName, RootBeanDefinition mbd, 	@Nullable Constructor&amp;lt;?&amp;gt;[] chosenCtors, @Nullable Object[] explicitArgs) {  	/**------------------------------------------------------------------------------------------------------------ * [DESC] 解析构造函数进行数据装配然后实例化对象 * [1] 第一种情况就是只有一个构造函数并且构造函数没有参数，这和工厂方法有点像，那就直接调用无参构造函数 * [2] 第二种情况，就是多个构造函数和带参数 * 先判断是不是在构造函数上用了 {@link ConstructorProperties} 注解来标明构造函数的名称，若没有提供注解则直接从构造函数中获取参数名称 * 然后用 {@link #createArgumentArray} 去匹配和创建构造函数的参数数组，TODO 这个方法比较核心，提供许多策略去匹配参数 * [3] 最后根据构造函数的数组 直接调用构造函数 实例化对象 *------------------------------------------------------------------------------------------------------------*/ 	BeanWrapperImpl bw = new BeanWrapperImpl(); 	this.</description>
+public BeanWrapper autowireConstructor(String beanName, RootBeanDefinition mbd, @Nullable Constructor&amp;lt;?&amp;gt;[] chosenCtors, @Nullable Object[] explicitArgs) { /**------------------------------------------------------------------------------------------------------------ * [DESC] 解析构造函数进行数据装配然后实例化对象 * [1] 第一种情况就是只有一个构造函数并且构造函数没有参数，这和工厂方法有点像，那就直接调用无参构造函数 * [2] 第二种情况，就是多个构造函数和带参数 * 先判断是不是在构造函数上用了 {@link ConstructorProperties} 注解来标明构造函数的名称，若没有提供注解则直接从构造函数中获取参数名称 * 然后用 {@link #createArgumentArray} 去匹配和创建构造函数的参数数组，TODO 这个方法比较核心，提供许多策略去匹配参数 * [3] 最后根据构造函数的数组 直接调用构造函数 实例化对象 *------------------------------------------------------------------------------------------------------------*/ BeanWrapperImpl bw = new BeanWrapperImpl(); this.</description>
     </item>
     
     <item>
@@ -442,7 +443,7 @@ public BeanWrapper autowireConstructor(String beanName, RootBeanDefinition mbd, 
       
       <guid>https://blog.innas.cn/posts/spring_analysis/beans/8.%E5%88%9B%E5%BB%BAbeaninstance-%E6%A0%B9%E6%8D%AE%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</guid>
       <description>前言 利用无参数构造函数创建Bean 的Instance ，这个方式比较简单。来简单看一下, 其实在上一章节已经接触过了。。
-protected BeanWrapper instantiateBean(final String beanName, final RootBeanDefinition mbd) { 	try { 	Object beanInstance; 	final BeanFactory parent = this; 	if (System.getSecurityManager() != null) { 	beanInstance = AccessController.doPrivileged((PrivilegedAction&amp;lt;Object&amp;gt;) () -&amp;gt; 	getInstantiationStrategy().instantiate(mbd, beanName, parent), 	getAccessControlContext()); 	} 	else { 	beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, parent); 	} 	BeanWrapper bw = new BeanWrapperImpl(beanInstance); 	initBeanWrapper(bw); 	return bw; 	} 	catch (Throwable ex) { 	throw new BeanCreationException( 	mbd.</description>
+protected BeanWrapper instantiateBean(final String beanName, final RootBeanDefinition mbd) { try { Object beanInstance; final BeanFactory parent = this; if (System.getSecurityManager() != null) { beanInstance = AccessController.doPrivileged((PrivilegedAction&amp;lt;Object&amp;gt;) () -&amp;gt; getInstantiationStrategy().instantiate(mbd, beanName, parent), getAccessControlContext()); } else { beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, parent); } BeanWrapper bw = new BeanWrapperImpl(beanInstance); initBeanWrapper(bw); return bw; } catch (Throwable ex) { throw new BeanCreationException( mbd.getResourceDescription(), beanName, &amp;#34;Instantiation of bean failed&amp;#34;, ex); } } 这个 getInstantiationStrategy() 初始化策略可以用CGI动态代理策略代替，在这里不深入。</description>
     </item>
     
     <item>
@@ -452,7 +453,7 @@ protected BeanWrapper instantiateBean(final String beanName, final RootBeanDefin
       
       <guid>https://blog.innas.cn/posts/spring_analysis/beans/9.%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8Dinstance/</guid>
       <description>前言 我们已经完成了创建 Instance 的分析，接下来就应该是自动装配，只有装配完 Bean 才能被使用，在这里可能会看到 spring是如何解决 循环依赖的
-protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) 	throws BeanCreationException {  	/**------------------------------------------------------------------------------------------------------------ * [DESC] 负责创建Bean * [1] 如果是singleton对象，现在缓存中移除 * [2] 如果之前没有创建过singleton，则调用 {@link #createBeanInstance} 创建 * [3] 将单例添加到factory中，预先暴露bean，这可以支持spring去解决 singleton循环依赖问题 * [4] 调用 {@link #populateBean} 填充依赖属性 * [5] 调用 {@link #initializeBean} 初始化bean * [6] 如果Bean定义了Dependent-on 那就修复 依赖 *------------------------------------------------------------------------------------------------------------*/  	// 创建出来的实例是需要包装起来，然后才能修复依赖 	BeanWrapper instanceWrapper = null;  	// Note [1] 单例对象需要从缓存中移除 	// 如果之前没有创建过，那接下来就创建实例 	if (mbd.</description>
+protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) throws BeanCreationException { /**------------------------------------------------------------------------------------------------------------ * [DESC] 负责创建Bean * [1] 如果是singleton对象，现在缓存中移除 * [2] 如果之前没有创建过singleton，则调用 {@link #createBeanInstance} 创建 * [3] 将单例添加到factory中，预先暴露bean，这可以支持spring去解决 singleton循环依赖问题 * [4] 调用 {@link #populateBean} 填充依赖属性 * [5] 调用 {@link #initializeBean} 初始化bean * [6] 如果Bean定义了Dependent-on 那就修复 依赖 *------------------------------------------------------------------------------------------------------------*/ // 创建出来的实例是需要包装起来，然后才能修复依赖 BeanWrapper instanceWrapper = null; // Note [1] 单例对象需要从缓存中移除 // 如果之前没有创建过，那接下来就创建实例 if (mbd.</description>
     </item>
     
     <item>
@@ -463,7 +464,7 @@ protected Object doCreateBean(final String beanName, final RootBeanDefinition mb
       <guid>https://blog.innas.cn/posts/elasticsearch/1.%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</guid>
       <description>elasticsearch 安装配置 brew install elastic/tap/elasticsearch-full brew install elastic/tap/kibana-full elasticsearch 默认地址和端口号 http://localhost:9200/?pretty
 kibana 默认地址和端口号 http://localhost:5601/app/kibana#/dev_tools/console?_g=()
-启动elasticsearch elasticsearch kibana elasticsearch 目录  home /usr/local/var/homebrew/linked/elasticsearch-full bin /usr/local/var/homebrew/linked/elasticsearch-full/bin conf /usr/local/etc/elasticsearch data /usr/local/var/lib/elasticsearch logs /usr/local/var/log/elasticsearch plugins /usr/local/var/homebrew/linked/elasticsearch/plugins  </description>
+启动elasticsearch elasticsearch kibana elasticsearch 目录 home /usr/local/var/homebrew/linked/elasticsearch-full bin /usr/local/var/homebrew/linked/elasticsearch-full/bin conf /usr/local/etc/elasticsearch data /usr/local/var/lib/elasticsearch logs /usr/local/var/log/elasticsearch plugins /usr/local/var/homebrew/linked/elasticsearch/plugins </description>
     </item>
     
     <item>
@@ -472,19 +473,20 @@ kibana 默认地址和端口号 http://localhost:5601/app/kibana#/dev_tools/cons
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/elasticsearch/%E5%88%A9%E7%94%A8kibana%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E6%93%8D%E4%BD%9C/</guid>
-      <description>利用kibana进行可视化操作 基本命令   查看elasticsearch的状态
+      <description>利用kibana进行可视化操作 基本命令 查看elasticsearch的状态
 GET /_cat/health?v
-  查看elasticsearch的索引
+查看elasticsearch的索引
 GET /_cat/indices?v
-  添加索引
+添加索引
 PUT indexName
-  删除索引
+删除索引
 DELETE indexName
-  对文档进行CRUD操作   添加document
-// 最后面跟的是id PUT /school/_doc/1 {  &amp;#34;name&amp;#34; : &amp;#34;xuf&amp;#34;,  &amp;#34;age&amp;#34; : &amp;#34;2&amp;#34; }   查询document
-GET /school/_doc/1   更新document
-POST /school/_update/1/ {  &amp;#34;doc&amp;#34;:{  &amp;#34;name&amp;#34; : &amp;#34;modify1&amp;#34;  } }   删除document
-DELETE /school/_doc/1   使用脚本更新值</description>
+对文档进行CRUD操作 添加document
+// 最后面跟的是id PUT /school/_doc/1 { &amp;#34;name&amp;#34; : &amp;#34;xuf&amp;#34;, &amp;#34;age&amp;#34; : &amp;#34;2&amp;#34; } 查询document
+GET /school/_doc/1 更新document
+POST /school/_update/1/ { &amp;#34;doc&amp;#34;:{ &amp;#34;name&amp;#34; : &amp;#34;modify1&amp;#34; } } 删除document
+DELETE /school/_doc/1 使用脚本更新值
+// 在原有的值上加上2 POST /school/_update/1 { &amp;#34;script&amp;#34;: &amp;#34;ctx._source.age += 2&amp;#34; } </description>
     </item>
     
     <item>
@@ -493,8 +495,8 @@ DELETE /school/_doc/1   使用脚本更新值</description>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/nginx/nginx%E5%9C%A8docker%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</guid>
-      <description>nginx在docker中自动反向代理  http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/
- 一个反向代理服务器通常在其它服务器的前面，用以提供额外web服务器自身不能提供的功能。比如说，一个反向代理服务器可以提供SSL终端、负载均衡、路由请求、缓存、压缩或A/B测试。当我们运行web服务在docker容器中时，nginx可以运行在容器的前面，这对于简单部署来说很有用。
+      <description>nginx在docker中自动反向代理 http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/
+一个反向代理服务器通常在其它服务器的前面，用以提供额外web服务器自身不能提供的功能。比如说，一个反向代理服务器可以提供SSL终端、负载均衡、路由请求、缓存、压缩或A/B测试。当我们运行web服务在docker容器中时，nginx可以运行在容器的前面，这对于简单部署来说很有用。
 为什么对docker使用反向代理 docker容器随机分配IP和ports，其生成很多来自于客户端的复杂地址。默认的，ips和ports是本地私有的且不能被外部访问，除非它们绑定了host。
 绑定容器的本地端口能防止多容器运行在同一个主机。例如，现在只有一个容器能绑定80端口，当不停机的推出新的容器版本这是很复杂的，因为旧的容器必须在新的容器启动之前停止。反向代理能够帮组我们解决这个问题并且改善0停机部署。</description>
     </item>
@@ -505,8 +507,8 @@ DELETE /school/_doc/1   使用脚本更新值</description>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/nginx/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
-      <description>nginx 的使用 1. 停止运行 &amp;#39;方法1: 使用 -s 发送指令 -s means signal 记得带上你的配置，否则它就会从默认配置中读取pid&amp;#39; sudo nginx -s stop -c /etc/nginx/nginx.conf  &amp;#39;方法2: 使用系统命令，nginx会在运行的时候创建一个pid文件，文件里面有nginx的pid&amp;#39; &amp;#39;后面这个路径可以修改的，讲配置文件的时候会讲&amp;#39; sudo kill -QUIT $( cat /usr/local/nginx/logs/nginx.pid ) &amp;#39;下面这个是我常用的&amp;#39; sudo kill -QUIT $( cat /etc/nginx/logs/nginx.pid) 对于方法2 还可以使用一些别的参数（好像没什么用）:joy:
-   TERM, INT 快速关闭     QUIT Graceful shutdown   KILL Halts a stubborn process   HUP 优雅的关闭并使用新的配置文件去重新启动nginx   USR1 Reopen the log files   USR2 立马升级可执行文件   WINCH 完美的结束进程    2.</description>
+      <description>nginx 的使用 1. 停止运行 &amp;#39;方法1: 使用 -s 发送指令 -s means signal 记得带上你的配置，否则它就会从默认配置中读取pid&amp;#39; sudo nginx -s stop -c /etc/nginx/nginx.conf &amp;#39;方法2: 使用系统命令，nginx会在运行的时候创建一个pid文件，文件里面有nginx的pid&amp;#39; &amp;#39;后面这个路径可以修改的，讲配置文件的时候会讲&amp;#39; sudo kill -QUIT $( cat /usr/local/nginx/logs/nginx.pid ) &amp;#39;下面这个是我常用的&amp;#39; sudo kill -QUIT $( cat /etc/nginx/logs/nginx.pid) 对于方法2 还可以使用一些别的参数（好像没什么用）:joy:
+TERM, INT 快速关闭 QUIT Graceful shutdown KILL Halts a stubborn process HUP 优雅的关闭并使用新的配置文件去重新启动nginx USR1 Reopen the log files USR2 立马升级可执行文件 WINCH 完美的结束进程 2. 运行 nginx sudo nginx -s start -c /etc/nginx/nginx.conf 3.测试配置文件 sudo nginx -t -c /etc/nginx/nginx.</description>
     </item>
     
     <item>
@@ -515,7 +517,7 @@ DELETE /school/_doc/1   使用脚本更新值</description>
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/nginx/nginx%E5%AE%89%E8%A3%85/</guid>
-      <description>nginx的安装 1. 使用brew 安装 brew install nginx 2. 命令参数    -?, -h Print help.     -v Print version.   -V 打印NGINX版本、编译版本和配置参数   -t 不会运行NGINX,只会测试配置文件. NGINX检查配置文件的指令正确性，并且尝试去尝试打开在配置中被关联的文件.   -q 在测试配置的时候抑制非错误信息   -s signal Send signal to a master process: stop, quit, reopen, reload. (version &amp;gt;= 0.7.53)   -p prefix 设置路径前缀 (default:/usr/local/nginx/)   -c filename Specify which configuration file NGINX should use instead of the default.</description>
+      <description>nginx的安装 1. 使用brew 安装 brew install nginx 2. 命令参数 -?, -h Print help. -v Print version. -V 打印NGINX版本、编译版本和配置参数 -t 不会运行NGINX,只会测试配置文件. NGINX检查配置文件的指令正确性，并且尝试去尝试打开在配置中被关联的文件. -q 在测试配置的时候抑制非错误信息 -s signal Send signal to a master process: stop, quit, reopen, reload. (version &amp;gt;= 0.7.53) -p prefix 设置路径前缀 (default:/usr/local/nginx/) -c filename Specify which configuration file NGINX should use instead of the default. -g directives 设置全局指令 全局指令：https://nginx.org/en/docs/http/ngx_http_core_module.html</description>
     </item>
     
     <item>
@@ -526,19 +528,28 @@ DELETE /school/_doc/1   使用脚本更新值</description>
       <guid>https://blog.innas.cn/posts/jdk/reentrantlock/</guid>
       <description>前言 ReentrantLock作为 AQS的实现类之一，其是基于 CAS实现的锁，此锁为独占锁，并且用一个阻塞队列来阻塞前来拿锁的线程。队列为CLH 队列
 其使用两种策略，一种是非公平，一种是公平，默认是 非公平锁。在这里先讨论非公平锁
-  先来看一下 用于阻塞线程的CLH 队列  看一下该节点的定义：
-static final class Node {  volatile int waitStatus;  volatile Node prev;  volatile Node next;  volatile Thread thread;  Node nextWaiter;  }   waitStatus
- 等待状态
-  CANCELLED
+先来看一下 用于阻塞线程的CLH 队列 看一下该节点的定义：
+static final class Node { volatile int waitStatus; volatile Node prev; volatile Node next; volatile Thread thread; Node nextWaiter; } waitStatus
+等待状态
+CANCELLED
 节点由于超时或者被中断而被取消.
-  SIGNAL
+SIGNAL
 节点正在被阻塞并且等待信号的到来
-  CONDITION
+CONDITION
 用于条件队列中
-  PROPAGATE
+PROPAGATE
 用于共享锁
-     prev 指向上一个节点
-  next 指向下一个节点</description>
+prev 指向上一个节点
+next 指向下一个节点
+thread 表示请求锁的线程
+nextWaiter
+​	锁的占用模式
+SHARED 代表共享模式 EXCLUSIVE 代表独占模式 AbstractQueuedSynchronizer实现锁的策略
+其使用了一个state字段用来表示资源
+private volatile int state; 并且使用一个 thread字段来表示当前已经占用该资源的线程
+volatile Thread thread; 如果为独占锁，我们只需要用这两个字段来表示资源和占用资源的线程，没有得到资源的线程，这个时候我们就可以用CLH队列去记录它们。
+获取锁 lock
+final void lock() { // 利用 CAS判断状态是否为0，若为0则说明资源还没被占用则将其设置为1表示占用资源 // 则表示拿到锁 if (compareAndSetState(0, 1)) // 拿到锁后利用CAS设置资源占有者，也就是当前线程 setExclusiveOwnerThread(Thread.</description>
     </item>
     
     <item>
@@ -547,26 +558,29 @@ static final class Node {  volatile int waitStatus;  volatile Node prev;  volati
       <pubDate>Mon, 02 Aug 2021 11:39:34 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/spring-security-%E7%BB%84%E4%BB%B6%E8%A7%A3%E6%9E%90/</guid>
-      <description>Spring Security 组件解析   Authentication （用户身份）
- 在 spring security 里，用户身份在不同阶段有着不同的含义
- 在校验开始时，用户身份代表用户输入的用户信息，比如账号、密码、验证码 在校验成功后，用户身份代表用户的真实信息，比如账号、密码、权限   Authentication 接口则是 security 提供的用户身份接口，实现类有常用的 UsernamePasswordAuthenticationToken, 这个接口其包含的最基本的信息如下
-  authorities
+      <description>Spring Security 组件解析 Authentication （用户身份）
+在 spring security 里，用户身份在不同阶段有着不同的含义
+在校验开始时，用户身份代表用户输入的用户信息，比如账号、密码、验证码 在校验成功后，用户身份代表用户的真实信息，比如账号、密码、权限 Authentication 接口则是 security 提供的用户身份接口，实现类有常用的 UsernamePasswordAuthenticationToken, 这个接口其包含的最基本的信息如下
+authorities
 用户身份所拥有的所有权限
-  principal
+principal
 其代表用户的唯一标识，在校验开始阶段其表示账号 ，在校验成功后其表示 UserDetails 也就是用户细节
-  credentials
+credentials
 其代表用户凭证，通常是密码
-  details
+details
 其代表细节部分, 默认是SessionID和IP， 当然如果要做成验证码, 这里我们也可以自定义
-     AuthenticationManager (验证器管理器)
- 验证器管理器的作用仅仅时用来管理验证器而已，真正的验证功能还是靠验证器来实现
+AuthenticationManager (验证器管理器)
+验证器管理器的作用仅仅时用来管理验证器而已，真正的验证功能还是靠验证器来实现
 该管理器的默认实现类是 ProviderManager
 其主要负责管理以下组件:
-  AuthenticationEventPublisher
+AuthenticationEventPublisher
 验证事件公开者，当验证成功或者失败，其会将此类事件公开，如果我们设置了对应事件的 Handler 那我们就可以监听该类事件，比如说登录成功事件 或 登录失败事件
-  AuthenticationProvider
+AuthenticationProvider
 身份校验器提供者，也就是身份校验器，用于校验用户身份
-  这个管理器还有一个 parent 字段，意味其类似于一个链表，和 spring beanFactory 有点相似</description>
+这个管理器还有一个 parent 字段，意味其类似于一个链表，和 spring beanFactory 有点相似
+AuthenticationEventPublisher
+验证事件公开者, 当验证成功或者失败，其会将此类事件公开, 可以看下它的接口
+public interface AuthenticationEventPublisher { // 验证成功事件 void publishAuthenticationSuccess(Authentication authentication); // 验证失败事件 void publishAuthenticationFailure(AuthenticationException exception, Authentication authentication); } 它的默认实现类是 DefaultAuthenticationEventPublisher, 里面多了一个 ApplicationEventPublisher 这个是 spring 的事件公开者， 默认只是将这个事件公开给 spring 上下文</description>
     </item>
     
     <item>
@@ -576,14 +590,19 @@ static final class Node {  volatile int waitStatus;  volatile Node prev;  volati
       
       <guid>https://blog.innas.cn/posts/stream%E7%94%A8%E6%B3%95/</guid>
       <description>Stream 如何工作 stream 包含中间和最终两种形式的操作
-  中间操作（intermediate operations)
+中间操作（intermediate operations)
 对于中间操作来说，其返回值还是一个stream，因此可以通过链式调用将中间操作串联起来。
 中间操作又分为两种状态：
-  无状态 (Stateless)
+无状态 (Stateless)
 无状态操作：是指元素的处理不受之前元素的影响
- unordered filter 过滤符合断言的元素 map 将元素映射为其它类型 mapToInt 将元素映射为 Integer 类型` mapToLong 将元素映射为 Long  mapToDouble 将元素映射为 Double flatMap 用于将N维列表，压缩成一维列表, 一个 flatMap只能降一个维度（可多次调用） flatMapToInt 和 flatMap一致，只是将元素转换为 Integer 类型输出 flatMapToLong 同上 flatMapToDouble 同上 peek 调试    有状态 (Stateful)
+unordered filter 过滤符合断言的元素 map 将元素映射为其它类型 mapToInt 将元素映射为 Integer 类型` mapToLong 将元素映射为 Long mapToDouble 将元素映射为 Double flatMap 用于将N维列表，压缩成一维列表, 一个 flatMap只能降一个维度（可多次调用） flatMapToInt 和 flatMap一致，只是将元素转换为 Integer 类型输出 flatMapToLong 同上 flatMapToDouble 同上 peek 调试 有状态 (Stateful)
 有状态操作：是指该操作只有拿到所有元素之后才能继续下去
- distinct 去重 sorted 排序 limit 返回前 n 个元素 skip 跳过/丢掉前 n 个元素      最终操作 (terminal operation)</description>
+distinct 去重 sorted 排序 limit 返回前 n 个元素 skip 跳过/丢掉前 n 个元素 最终操作 (terminal operation)
+对于最终操作来说，只能返回 void 或者一个非 stream 的结果
+最终操作又分为两种操作：
+非短路操作
+非短路操作：是指必须处理所有元素才能得到最终结果
+forEach 单线程的时候是顺序执行，多线程的时候是乱序执行 forEachOrdered 单线程和多线程都是顺序操作 toArray 转换为数组 reduce 计算 collect 收集器 max 根据比较条件查找最大元素 min 根据比较条件查找最小元素 count 计算元素个数 短路操作</description>
     </item>
     
     <item>
@@ -593,11 +612,12 @@ static final class Node {  volatile int waitStatus;  volatile Node prev;  volati
       
       <guid>https://blog.innas.cn/posts/spring_analysis/interview/%E6%BA%90%E7%A0%81%E7%BA%A7%E7%90%86%E8%A7%A3-beanfactory-%E5%92%8C-factorybean%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
       <description>1. BeanFactory BeanFactory 是一个接口，其定义了一个 容器 所具备的接口
- getBean containsBean isSingleton isPrototype isTypeMatch getType  意味着 BeanFactory 实现了 Dependent Injection，比较常见的用法
-DefaultListableBeanFactory factory = new DefaultListableBeanFactory(); 	new XmlBeanDefinitionReader(factory).loadBeanDefinitions(WITH_AUTOWIRING_CONTEXT); final Object bean = factory.getBean(&amp;#34;TestFactoryBean&amp;#34;); 这个工厂的源码解析在上一层目录 beans中，在这不多讨论。
+getBean containsBean isSingleton isPrototype isTypeMatch getType 意味着 BeanFactory 实现了 Dependent Injection，比较常见的用法
+DefaultListableBeanFactory factory = new DefaultListableBeanFactory(); new XmlBeanDefinitionReader(factory).loadBeanDefinitions(WITH_AUTOWIRING_CONTEXT); final Object bean = factory.getBean(&amp;#34;TestFactoryBean&amp;#34;); 这个工厂的源码解析在上一层目录 beans中，在这不多讨论。
 2. FactoryBean 其实BeanFactory 没什么好讨论的，这个接口基本贯穿了整个beans 组件，唯一比较容易搞混的就是FactoryBean
 先概览一下其接口:
-public interface FactoryBean&amp;lt;T&amp;gt; { 	String OBJECT_TYPE_ATTRIBUTE = &amp;#34;factoryBeanObjectType&amp;#34;;  	@Nullable 	T getObject() throws Exception;  	@Nullable 	Class&amp;lt;?&amp;gt; getObjectType();  	default boolean isSingleton() { 	return true; 	} } 这玩意和我们用的什么 sqlSessionFactory、LoggerFactory 都有着相同的思想，就是一个用于生产对象的工厂类。</description>
+public interface FactoryBean&amp;lt;T&amp;gt; { String OBJECT_TYPE_ATTRIBUTE = &amp;#34;factoryBeanObjectType&amp;#34;; @Nullable T getObject() throws Exception; @Nullable Class&amp;lt;?&amp;gt; getObjectType(); default boolean isSingleton() { return true; } } 这玩意和我们用的什么 sqlSessionFactory、LoggerFactory 都有着相同的思想，就是一个用于生产对象的工厂类。
+BeanFactory 是一个容器，而 FactoryBean 则是一个实实在在的 Bean ，但其也有不普通的地方，也就是其的作用只是用来生产 Bean。下面写一个测试类 :</description>
     </item>
     
     <item>
@@ -608,7 +628,7 @@ public interface FactoryBean&amp;lt;T&amp;gt; { 	String OBJECT_TYPE_ATTRIBUTE = 
       <guid>https://blog.innas.cn/posts/nginx/nginx%E9%85%8D%E7%BD%AE/</guid>
       <description>配置nginx反向代理服务器 直接在 /etc/nxing/nginx.conf 中配置 http { # 反向代理服务器 server{ # 配置代理服务器 listen	80; server_name http://127.0.0.1; access_log	logs/server1.log main; # 目标真实服务器 localtion / { proxy_pass	http://127.0.0.1:8080; } } } 从上面的配置，我们就可以完成将访问 http://127.0.0.1：80的请求转发给 http://127.0.0.1:8080
 我们也可以配置多台真实服务器，也就是所谓的集群
-http {  # 反向代理服务器 	server{ 	# 配置代理服务器 	listen	80; 	server_name http://127.0.0.1; 	access_log	logs/server1.log main; 		# 目标真实服务器 	localtion / { 	# 这里采用集群方式 	proxy_pass	http://tomcats; 	} 	} 	# tomcats 集群 	upstream tomcats { 	server 127.</description>
+http { # 反向代理服务器 server{ # 配置代理服务器 listen	80; server_name http://127.0.0.1; access_log	logs/server1.log main; # 目标真实服务器 localtion / { # 这里采用集群方式 proxy_pass	http://tomcats; } } # tomcats 集群 upstream tomcats { server 127.0.0.1:8080; server 127.0.0.1:8081; } } </description>
     </item>
     
     <item>
@@ -618,11 +638,11 @@ http {  # 反向代理服务器 	server{ 	# 配置代理服务器 	listen	80; 	s
       
       <guid>https://blog.innas.cn/posts/crud%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
       <description>Objects常用场景
- 重写hashCode 时，使用 Objects.hash(Object ...) 计算所有对象 HashCode 使用 Objects.requireNonNull(Object) 代替if(Object == null) throw new NullPointerException()    集合和字符串判空常用方法
- CollectionUtils.isEmpty 这是spring提供的工具类 StringUtils.isEmpty 这是 spring提供的工具类    Optional常用场景
+重写hashCode 时，使用 Objects.hash(Object ...) 计算所有对象 HashCode 使用 Objects.requireNonNull(Object) 代替if(Object == null) throw new NullPointerException() 集合和字符串判空常用方法
+CollectionUtils.isEmpty 这是spring提供的工具类 StringUtils.isEmpty 这是 spring提供的工具类 Optional常用场景
 Optinal 简单用法
-// 若value为null则抛出异常 Optional&amp;lt;Object&amp;gt; optional = Optional.of(Object);  // value可以为null Optional&amp;lt;Object&amp;gt; optional = Optional.ofNullable(Object);  // 操作值，若值不为null optional.ifPresent(Consumer&amp;lt;T&amp;gt; concumer); optinal.ifPresent(System.out::print);   处理允许为 null 的返回值
-Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPresent((value) -&amp;gt; {  // do something if value not null });  // 等价于 if(value !</description>
+// 若value为null则抛出异常 Optional&amp;lt;Object&amp;gt; optional = Optional.of(Object); // value可以为null Optional&amp;lt;Object&amp;gt; optional = Optional.ofNullable(Object); // 操作值，若值不为null optional.ifPresent(Consumer&amp;lt;T&amp;gt; concumer); optinal.ifPresent(System.out::print); 处理允许为 null 的返回值
+Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPresent((value) -&amp;gt; { // do something if value not null }); // 等价于 if(value != null){ // do something } 处理不允许为null的返回值</description>
     </item>
     
     <item>
@@ -631,7 +651,7 @@ Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPre
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/template/mybatis/controller/</guid>
-      <description>##导入宏定义 $!define  ##设置表后缀（宏定义） #setTableSuffix(&amp;#34;Controller&amp;#34;)  ##保存文件（宏定义） #save(&amp;#34;/controller&amp;#34;, &amp;#34;Controller.java&amp;#34;)  ##包路径（宏定义） #setPackageSuffix(&amp;#34;controller&amp;#34;)  ##定义服务名 #set($serviceName = $!tool.append($!tool.firstLowerCase($!tableInfo.name), &amp;#34;Service&amp;#34;))  ##定义实体对象名 #set($entityName = $!tool.firstLowerCase($!tableInfo.name))  import $!{tableInfo.savePackageName}.pojo.$!tableInfo.name; import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service; import org.springframework.web.bind.annotation.*;  import javax.annotation.Resource; import io.swagger.annotations.Api; import java.util.List;  ##表注释（宏定义） #tableComment(&amp;#34;表控制层&amp;#34;) @RestController @RequestMapping(&amp;#34;$!tool.firstLowerCase($!tableInfo.name)&amp;#34;) @Api(&amp;#34;视图$!{tableName}&amp;#34;) public class $!{tableName} {  /** * 服务对象 */  @Resource  private $!{tableInfo.name}Service $!{serviceName};   /** * 分页查询所有数据 * * @param page 分页对象 * @param $!</description>
+      <description>##导入宏定义 $!define ##设置表后缀（宏定义） #setTableSuffix(&amp;#34;Controller&amp;#34;) ##保存文件（宏定义） #save(&amp;#34;/controller&amp;#34;, &amp;#34;Controller.java&amp;#34;) ##包路径（宏定义） #setPackageSuffix(&amp;#34;controller&amp;#34;) ##定义服务名 #set($serviceName = $!tool.append($!tool.firstLowerCase($!tableInfo.name), &amp;#34;Service&amp;#34;)) ##定义实体对象名 #set($entityName = $!tool.firstLowerCase($!tableInfo.name)) import $!{tableInfo.savePackageName}.pojo.$!tableInfo.name; import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service; import org.springframework.web.bind.annotation.*; import javax.annotation.Resource; import io.swagger.annotations.Api; import java.util.List; ##表注释（宏定义） #tableComment(&amp;#34;表控制层&amp;#34;) @RestController @RequestMapping(&amp;#34;$!tool.firstLowerCase($!tableInfo.name)&amp;#34;) @Api(&amp;#34;视图$!{tableName}&amp;#34;) public class $!{tableName} { /** * 服务对象 */ @Resource private $!{tableInfo.name}Service $!{serviceName}; /** * 分页查询所有数据 * * @param page 分页对象 * @param $!entityName 查询实体 * @return 所有数据 */ @GetMapping @ApiOperation(&amp;#34;分页查询所有数据&amp;#34;) public ApiResult selectAll(Page&amp;lt;$!tableInfo.name&amp;gt; page, $!tableInfo.name $!</description>
     </item>
     
     <item>
@@ -640,7 +660,7 @@ Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPre
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/template/mybatis/dao/</guid>
-      <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;Mapper&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/mapper&amp;#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.mapper#{end};  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import org.apache.ibatis.annotations.Param; import java.util.List;  /** * $!{tableInfo.comment}($!{tableInfo.name})表数据库访问层 * * @author $!author * @since $!time.currTime() */ public interface $!{tableName} {   /** * 通过ID查询单条数据 * * @param $!pk.name 主键 * @return 实例对象 */  $!{tableInfo.name} queryById($!pk.shortType $!pk.name);   /** * 查询所有实体数据 * @return 对象列表 */  List&amp;lt;$!</description>
+      <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;Mapper&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/mapper&amp;#34;)) ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty()) #set($pk = $tableInfo.pkColumn.get(0)) #end #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.mapper#{end}; import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import org.apache.ibatis.annotations.Param; import java.util.List; /** * $!{tableInfo.comment}($!{tableInfo.name})表数据库访问层 * * @author $!author * @since $!time.currTime() */ public interface $!{tableName} { /** * 通过ID查询单条数据 * * @param $!pk.name 主键 * @return 实例对象 */ $!{tableInfo.name} queryById($!pk.shortType $!pk.name); /** * 查询所有实体数据 * @return 对象列表 */ List&amp;lt;$!{tableInfo.name}&amp;gt; queryList(); /** * 通过实体作为筛选条件查询 * * @param $!tool.firstLowerCase($!{tableInfo.name}) 实例对象 * @return 对象列表 */ List&amp;lt;$!</description>
     </item>
     
     <item>
@@ -649,7 +669,7 @@ Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPre
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/template/mybatis/entity/</guid>
-      <description>###Entity  ##导入宏定义 $!define  ##保存文件（宏定义） #save(&amp;#34;/pojo&amp;#34;, &amp;#34;.java&amp;#34;)  ##包路径（宏定义） #setPackageSuffix(&amp;#34;pojo&amp;#34;)  ##自动导入包（全局变量） $!autoImport import java.io.Serializable;  ##表注释（宏定义） /** * ($!{tableInfo.name})表实体类 * * @author $!author * @since $!time.currTime() */ public class $!{tableInfo.name} implements Serializable{ #foreach($column in $tableInfo.fullColumn)  #if(${column.comment}) #end  private $!{tool.getClsNameByFullName($column.type)} $!{column.name}; #end #foreach($column in $tableInfo.fullColumn)  #getSetMethod($column) #end } </description>
+      <description>###Entity ##导入宏定义 $!define ##保存文件（宏定义） #save(&amp;#34;/pojo&amp;#34;, &amp;#34;.java&amp;#34;) ##包路径（宏定义） #setPackageSuffix(&amp;#34;pojo&amp;#34;) ##自动导入包（全局变量） $!autoImport import java.io.Serializable; ##表注释（宏定义） /** * ($!{tableInfo.name})表实体类 * * @author $!author * @since $!time.currTime() */ public class $!{tableInfo.name} implements Serializable{ #foreach($column in $tableInfo.fullColumn) #if(${column.comment}) #end private $!{tool.getClsNameByFullName($column.type)} $!{column.name}; #end #foreach($column in $tableInfo.fullColumn) #getSetMethod($column) #end } </description>
     </item>
     
     <item>
@@ -658,7 +678,7 @@ Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPre
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/template/mybatis/mapper/</guid>
-      <description>##引入mybatis支持 $!mybatisSupport  ##设置保存名称与保存位置 $!callback.setFileName($tool.append($!{tableInfo.name}, &amp;#34;Mapper.xml&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/mapper&amp;#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  &amp;lt;!DOCTYPE mapper PUBLIC &amp;#34;-//mybatis.org//DTD Mapper 3.0//EN&amp;#34; &amp;#34;http://mybatis.org/dtd/mybatis-3-mapper.dtd&amp;#34;&amp;gt; &amp;lt;mapper namespace=&amp;#34;$!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper&amp;#34;&amp;gt;    &amp;lt;resultMap type=&amp;#34;$!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}&amp;#34; id=&amp;#34;$!{tableInfo.name}Map&amp;#34;&amp;gt;  #foreach($column in $tableInfo.fullColumn)  &amp;lt;result property=&amp;#34;$!column.name&amp;#34; column=&amp;#34;$!column.obj.name&amp;#34; jdbcType=&amp;#34;$!column.ext.jdbcType&amp;#34;/&amp;gt; #end  &amp;lt;/resultMap&amp;gt;   &amp;lt;!--查询单个--&amp;gt;  &amp;lt;select id=&amp;#34;queryById&amp;#34; resultMap=&amp;#34;$!{tableInfo.name}Map&amp;#34;&amp;gt;  SELECT  #allSqlColumn()   FROM $!tableInfo.obj.name  WHERE $!pk.obj.name = #{$!pk.name}  &amp;lt;/select&amp;gt;   &amp;lt;!</description>
+      <description>##引入mybatis支持 $!mybatisSupport ##设置保存名称与保存位置 $!callback.setFileName($tool.append($!{tableInfo.name}, &amp;#34;Mapper.xml&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/mapper&amp;#34;)) ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty()) #set($pk = $tableInfo.pkColumn.get(0)) #end &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;!DOCTYPE mapper PUBLIC &amp;#34;-//mybatis.org//DTD Mapper 3.0//EN&amp;#34; &amp;#34;http://mybatis.org/dtd/mybatis-3-mapper.dtd&amp;#34;&amp;gt; &amp;lt;mapper namespace=&amp;#34;$!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper&amp;#34;&amp;gt; &amp;lt;resultMap type=&amp;#34;$!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}&amp;#34; id=&amp;#34;$!{tableInfo.name}Map&amp;#34;&amp;gt; #foreach($column in $tableInfo.fullColumn) &amp;lt;result property=&amp;#34;$!column.name&amp;#34; column=&amp;#34;$!column.obj.name&amp;#34; jdbcType=&amp;#34;$!column.ext.jdbcType&amp;#34;/&amp;gt; #end &amp;lt;/resultMap&amp;gt; &amp;lt;!--查询单个--&amp;gt; &amp;lt;select id=&amp;#34;queryById&amp;#34; resultMap=&amp;#34;$!{tableInfo.name}Map&amp;#34;&amp;gt; SELECT #allSqlColumn() FROM $!tableInfo.obj.name WHERE $!pk.obj.name = #{$!pk.name} &amp;lt;/select&amp;gt; &amp;lt;!--通过实体作为筛选条件查询--&amp;gt; &amp;lt;select id=&amp;#34;queryAll&amp;#34; resultMap=&amp;#34;$!{tableInfo.name}Map&amp;#34;&amp;gt; SELECT #allSqlColumn() FROM $!tableInfo.obj.name &amp;lt;where&amp;gt; #foreach($column in $tableInfo.fullColumn) &amp;lt;if test=&amp;#34;$!column.name != null#if($column.type.equals(&amp;#34;java.lang.String&amp;#34;)) and $!column.name != &amp;#39;&amp;#39;#end&amp;#34;&amp;gt; AND $!</description>
     </item>
     
     <item>
@@ -667,7 +687,7 @@ Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPre
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/template/mybatis/serviceimpl/</guid>
-      <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;ServiceImpl&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/service/impl&amp;#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.#{end}service.impl;  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import $!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper; import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service; import org.springframework.stereotype.Service; import org.springframework.util.CollectionUtils; import javax.annotation.Resource; import java.util.List; import com.github.pagehelper.PageHelper; import com.github.pagehelper.PageInfo; import java.util.Collections;   /** * $!{tableInfo.comment}($!{tableInfo.name})表服务实现类 * * @author $!author * @since $!time.currTime() */ @Service(&amp;#34;$!tool.firstLowerCase($!{tableInfo.name})Service&amp;#34;) public class $!{tableName} implements $!{tableInfo.name}Service {  @Resource  private $!{tableInfo.name}Mapper $!tool.firstLowerCase($!{tableInfo.name})Mapper;   /** * 通过ID查询单条数据 * * @param $!</description>
+      <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;ServiceImpl&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/service/impl&amp;#34;)) ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty()) #set($pk = $tableInfo.pkColumn.get(0)) #end #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}.#{end}service.impl; import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import $!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper; import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service; import org.springframework.stereotype.Service; import org.springframework.util.CollectionUtils; import javax.annotation.Resource; import java.util.List; import com.github.pagehelper.PageHelper; import com.github.pagehelper.PageInfo; import java.util.Collections; /** * $!{tableInfo.comment}($!{tableInfo.name})表服务实现类 * * @author $!author * @since $!time.currTime() */ @Service(&amp;#34;$!tool.firstLowerCase($!{tableInfo.name})Service&amp;#34;) public class $!{tableName} implements $!{tableInfo.name}Service { @Resource private $!{tableInfo.name}Mapper $!tool.firstLowerCase($!{tableInfo.name})Mapper; /** * 通过ID查询单条数据 * * @param $!pk.name 主键 * @return 实例对象 */ @Override public $!</description>
     </item>
     
     <item>
@@ -676,7 +696,7 @@ Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPre
       <pubDate>Mon, 02 Aug 2021 11:38:18 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/template/mybatis/service/</guid>
-      <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;Service&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/service&amp;#34;))  ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty())  #set($pk = $tableInfo.pkColumn.get(0)) #end  #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}#{end}.service;  import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import java.util.List; import com.github.pagehelper.PageHelper; import com.github.pagehelper.PageInfo;  /** * $!{tableInfo.comment}($!{tableInfo.name})表服务接口 * * @author $!author * @since $!time.currTime() */ public interface $!{tableName} {   /** * 通过ID查询单条数据 * * @param $!pk.name 主键 * @return 实例对象 */  $!{tableInfo.name} queryById($!pk.shortType $!pk.name);   /** * 新增数据 * * @param $!</description>
+      <description>##定义初始变量 #set($tableName = $tool.append($tableInfo.name, &amp;#34;Service&amp;#34;)) ##设置回调 $!callback.setFileName($tool.append($tableName, &amp;#34;.java&amp;#34;)) $!callback.setSavePath($tool.append($tableInfo.savePath, &amp;#34;/service&amp;#34;)) ##拿到主键 #if(!$tableInfo.pkColumn.isEmpty()) #set($pk = $tableInfo.pkColumn.get(0)) #end #if($tableInfo.savePackageName)package $!{tableInfo.savePackageName}#{end}.service; import $!{tableInfo.savePackageName}.pojo.$!{tableInfo.name}; import java.util.List; import com.github.pagehelper.PageHelper; import com.github.pagehelper.PageInfo; /** * $!{tableInfo.comment}($!{tableInfo.name})表服务接口 * * @author $!author * @since $!time.currTime() */ public interface $!{tableName} { /** * 通过ID查询单条数据 * * @param $!pk.name 主键 * @return 实例对象 */ $!{tableInfo.name} queryById($!pk.shortType $!pk.name); /** * 新增数据 * * @param $!tool.firstLowerCase($!{tableInfo.name}) 实例对象 * @return 插入是否成功 */ boolean insertOne($!{tableInfo.name} $!</description>
     </item>
     
     <item>
@@ -687,7 +707,7 @@ Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPre
       <guid>https://blog.innas.cn/posts/springboot/%E4%BD%BF%E7%94%A8swagger2/</guid>
       <description>1.使用Swagger2需要进行配置 (配置运行后-&amp;gt;http://localhost:8080/swagger-ui.html)
 创建配置Swagger配置类
-@Configuration @EnableSwagger2 public class SwaggerConfig{    //创建bean交给spring管理  @Bean  public Docket createRestApi(){  return new Docket(DocumentationType.SWAGGER_2)  .apiInfo(apiInfo()) //构建api文档的详细信息  .select()  .apis(RequestHandlerSelectors.basePackage(Api.class)) //这里选择被Api注解的类  .paths(PathSelectors.any())  }   //构建api文档详细信息  private ApiInfo apiInfo(){  return new ApiInfoBuilder  .title(&amp;#34;设置文档标题&amp;#34;)  .description(&amp;#34;设置接口描述&amp;#34;)  .contact(&amp;#34;设置联系方式&amp;#34;)  .version(&amp;#34;设置版本&amp;#34;)  .build(); //构建  }  } 2.Swagger2注解的使用 实体类注解：@ApiModel (用于类上注解，用于参数用实体类接收) 方法注解：@ApiModelProperty (用于类方法的注解，对model属性进行说明或者对数据对修改)
+@Configuration @EnableSwagger2 public class SwaggerConfig{ //创建bean交给spring管理 @Bean public Docket createRestApi(){ return new Docket(DocumentationType.SWAGGER_2) .apiInfo(apiInfo()) //构建api文档的详细信息 .select() .apis(RequestHandlerSelectors.basePackage(Api.class)) //这里选择被Api注解的类 .paths(PathSelectors.any()) } //构建api文档详细信息 private ApiInfo apiInfo(){ return new ApiInfoBuilder .title(&amp;#34;设置文档标题&amp;#34;) .description(&amp;#34;设置接口描述&amp;#34;) .contact(&amp;#34;设置联系方式&amp;#34;) .version(&amp;#34;设置版本&amp;#34;) .build(); //构建 } } 2.Swagger2注解的使用 实体类注解：@ApiModel (用于类上注解，用于参数用实体类接收) 方法注解：@ApiModelProperty (用于类方法的注解，对model属性进行说明或者对数据对修改)
 控制器类注解：@Api (注解用于类上，表示标识这个类是 swagger 的资源) 方法注解：@ApiOperation ( 注解用于方法，表示一个 http 请求的操作) 参数注解：@Param (注解用于参数上，用来标明参数信息)</description>
     </item>
     
@@ -698,7 +718,7 @@ Optional&amp;lt;Object&amp;gt; result = Optional.ofNullable(Value); result.ifPre
       
       <guid>https://blog.innas.cn/posts/springboot/%E6%95%B0%E6%8D%AE%E6%BA%90/</guid>
       <description>spring boot 配置 druid数据源 druid有许多优点，所以用druid当数据源比较合适，在网上有一个druid的自定配置项目
-https://github.com/drtrang/druid-spring-boot 1. 首先在pom文件中引入依赖项  &amp;lt;dependency&amp;gt;  &amp;lt;groupId&amp;gt;com.github.drtrang&amp;lt;/groupId&amp;gt;  &amp;lt;artifactId&amp;gt;druid-spring-boot2-starter&amp;lt;/artifactId&amp;gt;  &amp;lt;version&amp;gt;1.1.10&amp;lt;/version&amp;gt;  &amp;lt;/dependency&amp;gt;  &amp;lt;dependency&amp;gt;  &amp;lt;groupId&amp;gt;com.github.drtrang&amp;lt;/groupId&amp;gt;  &amp;lt;artifactId&amp;gt;druid-spring-boot2-actuator-starter&amp;lt;/artifactId&amp;gt;  &amp;lt;version&amp;gt;1.1.10&amp;lt;/version&amp;gt;  &amp;lt;/dependency&amp;gt;  &amp;lt;dependency&amp;gt;  &amp;lt;groupId&amp;gt;mysql&amp;lt;/groupId&amp;gt;  &amp;lt;artifactId&amp;gt;mysql-connector-java&amp;lt;/artifactId&amp;gt;  &amp;lt;/dependency&amp;gt; 2. 最后在application.yaml配置 spring:  datasource:  # 使用阿里的Druid连接池  type: com.alibaba.druid.pool.DruidDataSource  driver-class-name: com.mysql.cj.jdbc.Driver  # 填写你数据库的url、登录名、密码和数据库名  url: jdbc:mysql://localhost:3306/test?useSSL=false&amp;amp;characterEncoding=utf8  username: root  password: 123456789  druid:  # 连接池的配置信息  # 初始化大小，最小，最大  initial-size: 5  min-idle: 5  maxActive: 20  # 配置获取连接等待超时的时间  maxWait: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒  timeBetweenEvictionRunsMillis: 60000  # 配置一个连接在池中最小生存的时间，单位是毫秒  minEvictableIdleTimeMillis: 300000  validationQuery: SELECT 1  testWhileIdle: true  testOnBorrow: false  testOnReturn: false  # 打开PSCache，并且指定每个连接上PSCache的大小  poolPreparedStatements: true  maxPoolPreparedStatementPerConnectionSize: 20  # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，&amp;#39;wall&amp;#39;用于防火墙  filters: stat,wall,slf4j  # 通过connectProperties属性来打开mergeSql功能；慢SQL记录  connectionProperties: druid.</description>
+https://github.com/drtrang/druid-spring-boot 1. 首先在pom文件中引入依赖项 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.github.drtrang&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;druid-spring-boot2-starter&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.1.10&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.github.drtrang&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;druid-spring-boot2-actuator-starter&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.1.10&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;mysql&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;mysql-connector-java&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; 2. 最后在application.yaml配置 spring: datasource: # 使用阿里的Druid连接池 type: com.alibaba.druid.pool.DruidDataSource driver-class-name: com.mysql.cj.jdbc.Driver # 填写你数据库的url、登录名、密码和数据库名 url: jdbc:mysql://localhost:3306/test?useSSL=false&amp;amp;characterEncoding=utf8 username: root password: 123456789 druid: # 连接池的配置信息 # 初始化大小，最小，最大 initial-size: 5 min-idle: 5 maxActive: 20 # 配置获取连接等待超时的时间 maxWait: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 timeBetweenEvictionRunsMillis: 60000 # 配置一个连接在池中最小生存的时间，单位是毫秒 minEvictableIdleTimeMillis: 300000 validationQuery: SELECT 1 testWhileIdle: true testOnBorrow: false testOnReturn: false # 打开PSCache，并且指定每个连接上PSCache的大小 poolPreparedStatements: true maxPoolPreparedStatementPerConnectionSize: 20 # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，&amp;#39;wall&amp;#39;用于防火墙 filters: stat,wall,slf4j # 通过connectProperties属性来打开mergeSql功能；慢SQL记录 connectionProperties: druid.</description>
     </item>
     
     <item>
@@ -708,9 +728,9 @@ https://github.com/drtrang/druid-spring-boot 1. 首先在pom文件中引入依�
       
       <guid>https://blog.innas.cn/posts/springboot/%E6%97%A5%E5%BF%97/</guid>
       <description>spring boot 日志配置 POM文件引入依赖
-&amp;lt;dependency&amp;gt;  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;  &amp;lt;artifactId&amp;gt;spring-boot-starter&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; 1.修改日志输出级别 debug: true trace: true  debug 模式会将INFO 、ERROR、WARN 信息给输出 trace 级别会更详细，能囊括springboot的全部log输出  还可以设置其它的日志系统
-logging:  level:  root: warn 2.使用彩色日志编码输出 spring:  output:  ansi:  enabled: always 3. 传统方式配置logback 新建文件conf/logback-prod.xml
-&amp;lt;configuration&amp;gt;  &amp;lt;!-- 控制台打印日志的相关配置 --&amp;gt;  &amp;lt;appender name=&amp;#34;STDOUT&amp;#34; class=&amp;#34;ch.qos.logback.core.ConsoleAppender&amp;#34;&amp;gt;  &amp;lt;!-- 日志格式 --&amp;gt;  &amp;lt;encoder&amp;gt;  &amp;lt;pattern&amp;gt;%d{yyyy-MM-dd HH:mm:ss} %highlight(%-4relative) [%thread] %highlight(%-5level) %logger{35} - %msg %n&amp;lt;/pattern&amp;gt;  &amp;lt;/encoder&amp;gt;  &amp;lt;/appender&amp;gt;   &amp;lt;appender name=&amp;#34;FILE&amp;#34; class=&amp;#34;ch.</description>
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; 1.修改日志输出级别 debug: true trace: true debug 模式会将INFO 、ERROR、WARN 信息给输出 trace 级别会更详细，能囊括springboot的全部log输出 还可以设置其它的日志系统
+logging: level: root: warn 2.使用彩色日志编码输出 spring: output: ansi: enabled: always 3. 传统方式配置logback 新建文件conf/logback-prod.xml
+&amp;lt;configuration&amp;gt; &amp;lt;!-- 控制台打印日志的相关配置 --&amp;gt; &amp;lt;appender name=&amp;#34;STDOUT&amp;#34; class=&amp;#34;ch.qos.logback.core.ConsoleAppender&amp;#34;&amp;gt; &amp;lt;!-- 日志格式 --&amp;gt; &amp;lt;encoder&amp;gt; &amp;lt;pattern&amp;gt;%d{yyyy-MM-dd HH:mm:ss} %highlight(%-4relative) [%thread] %highlight(%-5level) %logger{35} - %msg %n&amp;lt;/pattern&amp;gt; &amp;lt;/encoder&amp;gt; &amp;lt;/appender&amp;gt; &amp;lt;appender name=&amp;#34;FILE&amp;#34; class=&amp;#34;ch.qos.logback.core.rolling.RollingFileAppender&amp;#34;&amp;gt; &amp;lt;!-- 保存日志文件的路径 --&amp;gt; &amp;lt;file&amp;gt;.logs/log.log&amp;lt;/file&amp;gt; &amp;lt;!-- 日志格式 --&amp;gt; &amp;lt;encoder&amp;gt; &amp;lt;pattern&amp;gt;%d{yyyy-MM-dd HH:mm:ss} %highlight(%-4relative) [%thread] %-5level %logger{35} - %msg %n&amp;lt;/pattern&amp;gt; &amp;lt;/encoder&amp;gt; &amp;lt;!</description>
     </item>
     
     <item>
@@ -720,9 +740,10 @@ logging:  level:  root: warn 2.使用彩色日志编码输出 spring:  output:  
       
       <guid>https://blog.innas.cn/posts/springboot/%E9%85%8D%E7%BD%AE/</guid>
       <description>spring boot 外部配置 1.使用配置bean的属性 bean的定义:
-@ConfigurationProperties(prefix=&amp;#34;bean&amp;#34;) @Component public class TestBean {  private String name;  private Integer age;  private List&amp;lt;Integer&amp;gt; list;  private Map&amp;lt;String,Integer&amp;gt; mapper;  // setter &amp;amp; getter ... 必须要提供setter 和 getter } yml文件:
-bean:  age: 1  name: inject property  利用 @ConfigurationPropertyes 注解可以将yml中的数据对象注入到bean里面，其中prefix 为数据对象的名称  集合类型的属性配置 首先是list
-bean:  age: 1  name: inject property  list:  - 1  - 2  - 3  用 - 来作为集合中的每一个数据  最后是map</description>
+@ConfigurationProperties(prefix=&amp;#34;bean&amp;#34;) @Component public class TestBean { private String name; private Integer age; private List&amp;lt;Integer&amp;gt; list; private Map&amp;lt;String,Integer&amp;gt; mapper; // setter &amp;amp; getter ... 必须要提供setter 和 getter } yml文件:
+bean: age: 1 name: inject property 利用 @ConfigurationPropertyes 注解可以将yml中的数据对象注入到bean里面，其中prefix 为数据对象的名称 集合类型的属性配置 首先是list
+bean: age: 1 name: inject property list: - 1 - 2 - 3 用 - 来作为集合中的每一个数据 最后是map
+bean: age: 1 name: inject property list: - 1 - 2 - 3 mapper: key1: 1 key2: 2 yaml本身就会从properties转换为map，所以它本身就是一个map，和定义其它数据对象一样，也就是用key-value的方式定义.</description>
     </item>
     
     <item>
@@ -753,9 +774,9 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
       <pubDate>Sat, 31 Jul 2021 11:47:39 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/ci-cd/docker%E6%90%AD%E5%BB%BAgitlab/</guid>
-      <description>拉取镜像  $ docker pull gitlab/gitlab-ce:latest  运行Gitlab容器   使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
-  写一个Shell文件启动配置  vim gitlab-start.sh sudo docker run --detach \  --hostname gitlab.example.com \  --publish 8844:443 --publish 7766:80 --publish 2222:22 \  --name gitlab \  --restart always \  --volume $HOME/gitlab/config:/etc/gitlab \  --volume $HOME/gitlab/logs:/var/log/gitlab \  --volume $HOME/gitlab/data:/var/opt/gitlab \  gitlab/gitlab-ce:latest  其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
- $ sh gitlab-start.</description>
+      <description>拉取镜像 $ docker pull gitlab/gitlab-ce:latest 运行Gitlab容器 使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
+写一个Shell文件启动配置 vim gitlab-start.sh sudo docker run --detach \ --hostname gitlab.example.com \ --publish 8844:443 --publish 7766:80 --publish 2222:22 \ --name gitlab \ --restart always \ --volume $HOME/gitlab/config:/etc/gitlab \ --volume $HOME/gitlab/logs:/var/log/gitlab \ --volume $HOME/gitlab/data:/var/opt/gitlab \ gitlab/gitlab-ce:latest 其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
+$ sh gitlab-start.sh 进入容器设置初始化root用户 docker exec -it &amp;lt;container id&amp;gt; bash gitlab-rails console user = User.where(username: ‘root’).first user.password = ‘password’ user.</description>
     </item>
     
     <item>
@@ -764,7 +785,7 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
       <pubDate>Thu, 03 Jun 2021 21:32:31 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/docker/docker%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEspringcloud%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8/</guid>
-      <description>Nacos  拉下镜像  docker pull nacos/nacos-server  启动  docker run -d -p 8848:8848 --env MODE=standalone --name nacos --restart=always nacos/nacos-server Sentinel  拉下镜像  docker pull bladex/sentinel-dashboard  启动  docker run --name sentinel --restart=always -d -p 8858:8858 -d bladex/sentinel-dashboard </description>
+      <description>Nacos 拉下镜像 docker pull nacos/nacos-server 启动 docker run -d -p 8848:8848 --env MODE=standalone --name nacos --restart=always nacos/nacos-server Sentinel 拉下镜像 docker pull bladex/sentinel-dashboard 启动 docker run --name sentinel --restart=always -d -p 8858:8858 -d bladex/sentinel-dashboard </description>
     </item>
     
     <item>
@@ -773,8 +794,7 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
       <pubDate>Mon, 05 Apr 2021 23:14:11 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/docker/docker-%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90-docker%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</guid>
-      <description> 网易 http://hub-mirror.c.163.com Docker中国区官方镜像 https://registry.docker-cn.com 中国科技大学 https://docker.mirrors.ustc.edu.cn 阿里云容器 服务 https://cr.console.aliyun.com/ 首页点击“创建我的容器镜像” 得到一个专属的镜像加速地址，类似于“https://1234abcd.mirror.aliyuncs.com”
- </description>
+      <description>网易 http://hub-mirror.c.163.com Docker中国区官方镜像 https://registry.docker-cn.com 中国科技大学 https://docker.mirrors.ustc.edu.cn 阿里云容器 服务 https://cr.console.aliyun.com/ 首页点击“创建我的容器镜像” 得到一个专属的镜像加速地址，类似于“https://1234abcd.mirror.aliyuncs.com”</description>
     </item>
     
     <item>
@@ -783,9 +803,9 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
       <pubDate>Fri, 26 Mar 2021 20:48:20 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/openj9-%E4%BC%98%E5%8C%96%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8Aidea-%E4%BD%BF%E7%94%A8openj9%E4%BD%9C%E4%B8%BAruntime/</guid>
-      <description>优化后叠buff  优化参数  -XX:+UseShenandoahGC -Xshareclasses:name=(随便整个) -Xquickstart -Xscmx512M  IDEA使用OpenJ9作为Runtime   下载Choose Runtime插件
- 切换OpenJ9作为Runtime
- 注：openj9下载地址：JDK Download  </description>
+      <description>优化后叠buff 优化参数 -XX:+UseShenandoahGC -Xshareclasses:name=(随便整个) -Xquickstart -Xscmx512M IDEA使用OpenJ9作为Runtime 下载Choose Runtime插件
+切换OpenJ9作为Runtime
+注：openj9下载地址：JDK Download </description>
     </item>
     
     <item>
@@ -803,7 +823,7 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
       <pubDate>Thu, 25 Mar 2021 20:34:08 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/bug/spring-gateway%E4%B8%8E%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%B7%A8%E5%9F%9F%E7%9A%84%E5%9D%91/</guid>
-      <description> gateway设置一次cors即可，微服务不需要再进行设置跨域，否则前端XMLHttpRequest上传文件显示报错，实际上后端已经接收到文件并且正常写入。  </description>
+      <description> gateway设置一次cors即可，微服务不需要再进行设置跨域，否则前端XMLHttpRequest上传文件显示报错，实际上后端已经接收到文件并且正常写入。 </description>
     </item>
     
     <item>
@@ -812,9 +832,8 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
       <pubDate>Thu, 18 Mar 2021 15:47:55 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/mysql%E7%AD%96%E7%95%A5%E5%A4%87%E4%BB%BD/</guid>
-      <description> 笔者用的是MySQL5.7版本，如果是在macOS or Linux 配置策略文件用户名密码
- vim编辑文件： sudo vim /etc/my.cnf 新增内容： [client] user=your_username password=your_password :wq退出 终端输入：mysqldump --defaults-extra-file=/etc/my.cnf your_database &amp;gt; /your_path  注：macOS or Linux 可以使用man page查询相关命令 如：man &amp;ndash;defaults-extra-file
- </description>
+      <description>笔者用的是MySQL5.7版本，如果是在macOS or Linux 配置策略文件用户名密码
+vim编辑文件： sudo vim /etc/my.cnf 新增内容： [client] user=your_username password=your_password :wq退出 终端输入：mysqldump --defaults-extra-file=/etc/my.cnf your_database &amp;gt; /your_path 注：macOS or Linux 可以使用man page查询相关命令 如：man &amp;ndash;defaults-extra-file</description>
     </item>
     
     <item>
@@ -823,10 +842,11 @@ nvim ~/.docker/daemon.json 然后添加上这一行 registry-mirrors: [http://hu
       <pubDate>Thu, 18 Mar 2021 15:09:02 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/config/mysql%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/</guid>
-      <description>MySQL5.7版本  查看当前版本密码策略
- SHOW VARIABLES LIKE &amp;#39;validate_password%&amp;#39;; +--------------------------------------+--------+ | Variable_name | Value | +--------------------------------------+--------+ | validate_password_check_user_name | OFF | | validate_password_dictionary_file | | | validate_password_length | 8 | | validate_password_mixed_case_count | 1 | | validate_password_number_count | 1 | | validate_password_policy | MEDIUM | | validate_password_special_char_count | 1 | +--------------------------------------+--------+  密码策略级别(简单密码可以按需求设置)
- set global validate_password_policy=LOW; set global validate_password_policy=6;  修改密码
- use mysql; update user set authentication_string = password(&amp;#39;your_password&amp;#39;) where User=&amp;#39;root&amp;#39;;  刷新权限</description>
+      <description>MySQL5.7版本 查看当前版本密码策略
+SHOW VARIABLES LIKE &amp;#39;validate_password%&amp;#39;; +--------------------------------------+--------+ | Variable_name | Value | +--------------------------------------+--------+ | validate_password_check_user_name | OFF | | validate_password_dictionary_file | | | validate_password_length | 8 | | validate_password_mixed_case_count | 1 | | validate_password_number_count | 1 | | validate_password_policy | MEDIUM | | validate_password_special_char_count | 1 | +--------------------------------------+--------+ 密码策略级别(简单密码可以按需求设置)
+set global validate_password_policy=LOW; set global validate_password_policy=6; 修改密码
+use mysql; update user set authentication_string = password(&amp;#39;your_password&amp;#39;) where User=&amp;#39;root&amp;#39;; 刷新权限
+flush privileges; </description>
     </item>
     
     <item>
@@ -849,17 +869,24 @@ docker ps 检查nacos服务是否正常
       <pubDate>Sat, 02 May 2020 19:26:50 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/vim/idea-vim-%E5%BF%AB%E6%8D%B7%E9%94%AE/</guid>
-      <description>IDEAVIM 常用快捷键  跳转   ctrl-] 跳转到实现 ctrl-o 返回上一次编辑地方 ctrl-i 跳到上一个跳转到的地方, 用 上面的跳回来，用这个再跳过去   修改
-  c-i-w 修改整个句子
-  c-i-W 修改整行
-  c-i-( 修改整个括号里面的内容
-  c-i-&amp;quot; 修改双引号里面的内容
-  C 从当前光标的位置修改至行尾
-    复制
- y-i-w 复制整个句子 y-i-W 复制整行，不包括换行符 yy 复制整行，包括换行符 y-i-( 复制括号里面的内容 y-i-&amp;quot; 复制双引号里面的内容 Y 复制整行，包括换行符    删除
-  d-i-w 删除整个句子
-  d-i-W 删除整行
-  d-i-( 删除整个括号里面的内容</description>
+      <description>IDEAVIM 常用快捷键 跳转 ctrl-] 跳转到实现 ctrl-o 返回上一次编辑地方 ctrl-i 跳到上一个跳转到的地方, 用 上面的跳回来，用这个再跳过去 修改
+c-i-w 修改整个句子
+c-i-W 修改整行
+c-i-( 修改整个括号里面的内容
+c-i-&amp;quot; 修改双引号里面的内容
+C 从当前光标的位置修改至行尾
+复制
+y-i-w 复制整个句子 y-i-W 复制整行，不包括换行符 yy 复制整行，包括换行符 y-i-( 复制括号里面的内容 y-i-&amp;quot; 复制双引号里面的内容 Y 复制整行，包括换行符 删除
+d-i-w 删除整个句子
+d-i-W 删除整行
+d-i-( 删除整个括号里面的内容
+d-i-&amp;quot; 删除双引号里面的内容
+D 从当前光标的位置删除至行尾
+dd 删除整行数据
+搜索
+:? 搜索的内容 n 上一个 N 下一个 技巧
+shif-~ 将小写字母转换为大写，将大写字母转换为小写 idea 专属VIM快捷键
+fa (find action) fc (find class) ff (find file) fs (find symbol) fu (find usage) gi (goto implementation) gt (goto test) gd (goto declaration) gb (go back) gf (go forward) gn (goto generate) re (refactor element) rf (fefactor file name) su (show usage) term (show terminal) nc (new class) nf (new file) nhtml (new html) format (reformat code) cleanimport (clean optimize imports) 更多action https://gist.</description>
     </item>
     
     <item>
@@ -869,7 +896,8 @@ docker ps 检查nacos服务是否正常
       
       <guid>https://blog.innas.cn/posts/ci-cd/drone-ci-%E5%85%A5%E9%97%A8/</guid>
       <description>Drone CI 基本操作 1. Drone-Server Drone-server是整个CI的核心，drone.yml的解析以及与其它各个git平台的集成，还有UI的显示等功能. 其必须运行在docker环境下, 配置文件如下。
-services:  drone-server:  image: drone/drone:latest  ports:  - 3306:80  - 10043:443  volumes:  - /var/lib/drone:/var/lib/drone  restart: always  environment:  - DRONE_GITHUB_CLIENT_ID=  - DRONE_GITHUB_CLIENT_SECRET=  - DRONE_RPC_SECRET=a7ab0d75fe294718575953b164c12ddf  - DRONE_RPC_PROTO=http  - DRONE_SERVER_HOST=you host  - DRONE_SERVER_PROTO=http  - DRONE_SECRET=462e36f444bd7ba17d2372f2b391ba5f  - DRONE_LOGS_DEBUG=true  - DRONE_LOGS_TEXT=true  - DRONE_LOGS_PRETTY=true  - DRONE_LOGS_COLOR=true  - DRONE_LOGS_TRACE=true  - DRONE_RPC_DUMP_HTTP=true  - DRONE_RPC_DUMP_HTTP_BODY=true  - DRONE_UI_USERNAME=root  - DRONE_UI_PASSWORD=root  - DRONE_USER_CREATE=username:lyqingye,admin:true  - DRONE_OPEN=true 其中：</description>
+services: drone-server: image: drone/drone:latest ports: - 3306:80 - 10043:443 volumes: - /var/lib/drone:/var/lib/drone restart: always environment: - DRONE_GITHUB_CLIENT_ID= - DRONE_GITHUB_CLIENT_SECRET= - DRONE_RPC_SECRET=a7ab0d75fe294718575953b164c12ddf - DRONE_RPC_PROTO=http - DRONE_SERVER_HOST=you host - DRONE_SERVER_PROTO=http - DRONE_SECRET=462e36f444bd7ba17d2372f2b391ba5f - DRONE_LOGS_DEBUG=true - DRONE_LOGS_TEXT=true - DRONE_LOGS_PRETTY=true - DRONE_LOGS_COLOR=true - DRONE_LOGS_TRACE=true - DRONE_RPC_DUMP_HTTP=true - DRONE_RPC_DUMP_HTTP_BODY=true - DRONE_UI_USERNAME=root - DRONE_UI_PASSWORD=root - DRONE_USER_CREATE=username:lyqingye,admin:true - DRONE_OPEN=true 其中：
+DRONE_RPC_SECRET 为远程调用的秘钥，因为Drone可以是分布式的，其其它组件可以通过远程调用的方式与Server通信。 DRONE_SERVER_HOST 为你的主机地址，Drone UI的地址，可以看到在Docker配置中，我做了一个端口映射3306:80, Drone-Server 默认运行在 80端口，所以我的主机地址应该填xxx:3306 DRONE_GITHUB_CLIENT_ID 和 DRONE_GITHUB_CLIENT_SECRET 在 https://github.</description>
     </item>
     
     <item>

@@ -4,7 +4,7 @@
     <title>docker-compose基本使用 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -13,14 +13,16 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="docker-compose基本使用"/>
-<meta name="twitter:description" content="前言  docker-compose工作做的就是容器编排，说白了就是自动化部署容器的工作，其中可以利用Dockerfile构建自定义容器打包部署，也可以利用现有的仓库镜像进行部署。
- docker- compose常用命令 基本命令
- ps：列出所有运行容器   docker-compose ps  port：打印绑定的公共端口，下面命令可以输出 eureka 服务 8761 端口所绑定的公共端口  docker-compose port eureka 8761  build：构建或者重新构建服务  docker-compose build  start：启动指定服务已存在的容器  docker-compose start eureka  stop：停止已运行的服务的容器  docker-compose stop eureka  rm：删除服务的容器  docker-compose rm eureka # 不指定，则删除所有 docker-compose rm  up：构建、启动容器  docker-compose up  kill：通过发送 SIGKILL 信号来停止指定服务的容器  docker-compose kill eureka  pull：下载服务镜像  docker-compose pull  scale：设置指定服务运气容器的个数，以 service=num 形式指定  docker-compose scale user=3 movie=3  run：在一个服务上执行一个命令  docker-compose run web bash 进阶用法"/>
+<meta name="twitter:description" content="前言 docker-compose工作做的就是容器编排，说白了就是自动化部署容器的工作，其中可以利用Dockerfile构建自定义容器打包部署，也可以利用现有的仓库镜像进行部署。
+docker- compose常用命令 基本命令
+ps：列出所有运行容器 docker-compose ps port：打印绑定的公共端口，下面命令可以输出 eureka 服务 8761 端口所绑定的公共端口 docker-compose port eureka 8761 build：构建或者重新构建服务 docker-compose build start：启动指定服务已存在的容器 docker-compose start eureka stop：停止已运行的服务的容器 docker-compose stop eureka rm：删除服务的容器 docker-compose rm eureka # 不指定，则删除所有 docker-compose rm up：构建、启动容器 docker-compose up kill：通过发送 SIGKILL 信号来停止指定服务的容器 docker-compose kill eureka pull：下载服务镜像 docker-compose pull scale：设置指定服务运气容器的个数，以 service=num 形式指定 docker-compose scale user=3 movie=3 run：在一个服务上执行一个命令 docker-compose run web bash 进阶用法
+指定docker-compose文件 docker-compose -f file_path "/>
 
     <meta property="og:title" content="docker-compose基本使用" />
-<meta property="og:description" content="前言  docker-compose工作做的就是容器编排，说白了就是自动化部署容器的工作，其中可以利用Dockerfile构建自定义容器打包部署，也可以利用现有的仓库镜像进行部署。
- docker- compose常用命令 基本命令
- ps：列出所有运行容器   docker-compose ps  port：打印绑定的公共端口，下面命令可以输出 eureka 服务 8761 端口所绑定的公共端口  docker-compose port eureka 8761  build：构建或者重新构建服务  docker-compose build  start：启动指定服务已存在的容器  docker-compose start eureka  stop：停止已运行的服务的容器  docker-compose stop eureka  rm：删除服务的容器  docker-compose rm eureka # 不指定，则删除所有 docker-compose rm  up：构建、启动容器  docker-compose up  kill：通过发送 SIGKILL 信号来停止指定服务的容器  docker-compose kill eureka  pull：下载服务镜像  docker-compose pull  scale：设置指定服务运气容器的个数，以 service=num 形式指定  docker-compose scale user=3 movie=3  run：在一个服务上执行一个命令  docker-compose run web bash 进阶用法" />
+<meta property="og:description" content="前言 docker-compose工作做的就是容器编排，说白了就是自动化部署容器的工作，其中可以利用Dockerfile构建自定义容器打包部署，也可以利用现有的仓库镜像进行部署。
+docker- compose常用命令 基本命令
+ps：列出所有运行容器 docker-compose ps port：打印绑定的公共端口，下面命令可以输出 eureka 服务 8761 端口所绑定的公共端口 docker-compose port eureka 8761 build：构建或者重新构建服务 docker-compose build start：启动指定服务已存在的容器 docker-compose start eureka stop：停止已运行的服务的容器 docker-compose stop eureka rm：删除服务的容器 docker-compose rm eureka # 不指定，则删除所有 docker-compose rm up：构建、启动容器 docker-compose up kill：通过发送 SIGKILL 信号来停止指定服务的容器 docker-compose kill eureka pull：下载服务镜像 docker-compose pull scale：设置指定服务运气容器的个数，以 service=num 形式指定 docker-compose scale user=3 movie=3 run：在一个服务上执行一个命令 docker-compose run web bash 进阶用法
+指定docker-compose文件 docker-compose -f file_path " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/docker/docker-compose%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-11-08T11:39:52+00:00" />

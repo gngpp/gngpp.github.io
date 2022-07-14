@@ -12,9 +12,9 @@
       <pubDate>Fri, 05 Nov 2021 18:56:17 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/ci-cd/gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid>
-      <description>Gradle是当下最流行的构建工具，下面讲CI/CD场景  Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
-  但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &amp;gt; 本地maven仓库 &amp;gt; 远程仓库（优先级从左到右）   每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
- CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层）  // build.gradle task cacheDependencies {  setDescription &amp;#34;Resolves all projects dependencies from the repository.&amp;#34;  setGroup &amp;#34;Build Server&amp;#34;   doLast {  rootProject.allprojects { project -&amp;gt;  println &amp;#34;&amp;gt;&amp;gt; &amp;#34; + project  Set&amp;lt;Configuration&amp;gt; configurations =  project.buildscript.configurations +  project.configurations  configurations  .findAll { it.canBeResolved }  .</description>
+      <description>Gradle是当下最流行的构建工具，下面讲CI/CD场景 Gradle构建可以指定本地maven仓库和远程仓库地址，根据配置优先策略寻找构建所需依赖。
+但从远程下载但jar并不是存储在本地maven仓库，而是缓存在目录：~/.gradle/caches/modules-2/files-2.1（一般情况）, Docker Gradle Image默认缓存目录：/home/gradle/.gradle/caches/modules-2/files-2.1 还有就是caches Copy别到的主机上是不能够直接使用的，有验证策略，这里不过多赘述 Gradle构建的依赖来源于~/.gradle/caches/modules-2/files-2.1 &amp;gt; 本地maven仓库 &amp;gt; 远程仓库（优先级从左到右） 每次构建都会寻找依赖（从~/.gradle/caches/modules-2/files-2.1查找，一般我们都设置有maven本地仓库），若本地仓库没有依赖，默认从远程仓库下载，而下载的依赖缓存在上述目录。
+CI/CD环境下依赖一般不需要重复下载依赖，因此可以提前下载依赖缓存起来（比如Docker环境下利用Docker到缓存机制缓存镜像层） // build.gradle task cacheDependencies { setDescription &amp;#34;Resolves all projects dependencies from the repository.&amp;#34; setGroup &amp;#34;Build Server&amp;#34; doLast { rootProject.allprojects { project -&amp;gt; println &amp;#34;&amp;gt;&amp;gt; &amp;#34; + project Set&amp;lt;Configuration&amp;gt; configurations = project.buildscript.configurations + project.configurations configurations .findAll { it.canBeResolved } .forEach { resolveDependencies(it) } } } } def cacheDependencies(Configuration it) { try { Set&amp;lt;File&amp;gt; files = it.resolve() DependencySet set = it.</description>
     </item>
     
     <item>
@@ -23,9 +23,9 @@
       <pubDate>Sat, 31 Jul 2021 11:47:39 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/ci-cd/docker%E6%90%AD%E5%BB%BAgitlab/</guid>
-      <description>拉取镜像  $ docker pull gitlab/gitlab-ce:latest  运行Gitlab容器   使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
-  写一个Shell文件启动配置  vim gitlab-start.sh sudo docker run --detach \  --hostname gitlab.example.com \  --publish 8844:443 --publish 7766:80 --publish 2222:22 \  --name gitlab \  --restart always \  --volume $HOME/gitlab/config:/etc/gitlab \  --volume $HOME/gitlab/logs:/var/log/gitlab \  --volume $HOME/gitlab/data:/var/opt/gitlab \  gitlab/gitlab-ce:latest  其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
- $ sh gitlab-start.</description>
+      <description>拉取镜像 $ docker pull gitlab/gitlab-ce:latest 运行Gitlab容器 使用docker命令运行容器，注意修改hostname为自己喜欢的名字，-v部分挂载目录要修改为自己的目录。 端口映射这里使用的都是安全端口，如果大家的环境没有端口限制或冲突可以使用与容器同端口，如：-p 443:443 -p 80:80 -p 22:22
+写一个Shell文件启动配置 vim gitlab-start.sh sudo docker run --detach \ --hostname gitlab.example.com \ --publish 8844:443 --publish 7766:80 --publish 2222:22 \ --name gitlab \ --restart always \ --volume $HOME/gitlab/config:/etc/gitlab \ --volume $HOME/gitlab/logs:/var/log/gitlab \ --volume $HOME/gitlab/data:/var/opt/gitlab \ gitlab/gitlab-ce:latest 其中 v 选项将 gitlab 的目录挂载为用户当地目录，以免容器在停止或被删除的时候丢失数据。
+$ sh gitlab-start.sh 进入容器设置初始化root用户 docker exec -it &amp;lt;container id&amp;gt; bash gitlab-rails console user = User.where(username: ‘root’).first user.password = ‘password’ user.</description>
     </item>
     
     <item>
@@ -35,7 +35,8 @@
       
       <guid>https://blog.innas.cn/posts/ci-cd/drone-ci-%E5%85%A5%E9%97%A8/</guid>
       <description>Drone CI 基本操作 1. Drone-Server Drone-server是整个CI的核心，drone.yml的解析以及与其它各个git平台的集成，还有UI的显示等功能. 其必须运行在docker环境下, 配置文件如下。
-services:  drone-server:  image: drone/drone:latest  ports:  - 3306:80  - 10043:443  volumes:  - /var/lib/drone:/var/lib/drone  restart: always  environment:  - DRONE_GITHUB_CLIENT_ID=  - DRONE_GITHUB_CLIENT_SECRET=  - DRONE_RPC_SECRET=a7ab0d75fe294718575953b164c12ddf  - DRONE_RPC_PROTO=http  - DRONE_SERVER_HOST=you host  - DRONE_SERVER_PROTO=http  - DRONE_SECRET=462e36f444bd7ba17d2372f2b391ba5f  - DRONE_LOGS_DEBUG=true  - DRONE_LOGS_TEXT=true  - DRONE_LOGS_PRETTY=true  - DRONE_LOGS_COLOR=true  - DRONE_LOGS_TRACE=true  - DRONE_RPC_DUMP_HTTP=true  - DRONE_RPC_DUMP_HTTP_BODY=true  - DRONE_UI_USERNAME=root  - DRONE_UI_PASSWORD=root  - DRONE_USER_CREATE=username:lyqingye,admin:true  - DRONE_OPEN=true 其中：</description>
+services: drone-server: image: drone/drone:latest ports: - 3306:80 - 10043:443 volumes: - /var/lib/drone:/var/lib/drone restart: always environment: - DRONE_GITHUB_CLIENT_ID= - DRONE_GITHUB_CLIENT_SECRET= - DRONE_RPC_SECRET=a7ab0d75fe294718575953b164c12ddf - DRONE_RPC_PROTO=http - DRONE_SERVER_HOST=you host - DRONE_SERVER_PROTO=http - DRONE_SECRET=462e36f444bd7ba17d2372f2b391ba5f - DRONE_LOGS_DEBUG=true - DRONE_LOGS_TEXT=true - DRONE_LOGS_PRETTY=true - DRONE_LOGS_COLOR=true - DRONE_LOGS_TRACE=true - DRONE_RPC_DUMP_HTTP=true - DRONE_RPC_DUMP_HTTP_BODY=true - DRONE_UI_USERNAME=root - DRONE_UI_PASSWORD=root - DRONE_USER_CREATE=username:lyqingye,admin:true - DRONE_OPEN=true 其中：
+DRONE_RPC_SECRET 为远程调用的秘钥，因为Drone可以是分布式的，其其它组件可以通过远程调用的方式与Server通信。 DRONE_SERVER_HOST 为你的主机地址，Drone UI的地址，可以看到在Docker配置中，我做了一个端口映射3306:80, Drone-Server 默认运行在 80端口，所以我的主机地址应该填xxx:3306 DRONE_GITHUB_CLIENT_ID 和 DRONE_GITHUB_CLIENT_SECRET 在 https://github.</description>
     </item>
     
   </channel>

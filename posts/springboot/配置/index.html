@@ -4,7 +4,7 @@
     <title>Spring Boot配置使用 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -14,15 +14,17 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Spring Boot配置使用"/>
 <meta name="twitter:description" content="spring boot 外部配置 1.使用配置bean的属性 bean的定义:
-@ConfigurationProperties(prefix=&#34;bean&#34;) @Component public class TestBean {  private String name;  private Integer age;  private List&lt;Integer&gt; list;  private Map&lt;String,Integer&gt; mapper;  // setter &amp; getter ... 必须要提供setter 和 getter } yml文件:
-bean:  age: 1  name: inject property  利用 @ConfigurationPropertyes 注解可以将yml中的数据对象注入到bean里面，其中prefix 为数据对象的名称  集合类型的属性配置 首先是list
-bean:  age: 1  name: inject property  list:  - 1  - 2  - 3  用 - 来作为集合中的每一个数据  最后是map"/>
+@ConfigurationProperties(prefix=&#34;bean&#34;) @Component public class TestBean { private String name; private Integer age; private List&lt;Integer&gt; list; private Map&lt;String,Integer&gt; mapper; // setter &amp; getter ... 必须要提供setter 和 getter } yml文件:
+bean: age: 1 name: inject property 利用 @ConfigurationPropertyes 注解可以将yml中的数据对象注入到bean里面，其中prefix 为数据对象的名称 集合类型的属性配置 首先是list
+bean: age: 1 name: inject property list: - 1 - 2 - 3 用 - 来作为集合中的每一个数据 最后是map
+bean: age: 1 name: inject property list: - 1 - 2 - 3 mapper: key1: 1 key2: 2 yaml本身就会从properties转换为map，所以它本身就是一个map，和定义其它数据对象一样，也就是用key-value的方式定义."/>
 
     <meta property="og:title" content="Spring Boot配置使用" />
 <meta property="og:description" content="spring boot 外部配置 1.使用配置bean的属性 bean的定义:
-@ConfigurationProperties(prefix=&#34;bean&#34;) @Component public class TestBean {  private String name;  private Integer age;  private List&lt;Integer&gt; list;  private Map&lt;String,Integer&gt; mapper;  // setter &amp; getter ... 必须要提供setter 和 getter } yml文件:
-bean:  age: 1  name: inject property  利用 @ConfigurationPropertyes 注解可以将yml中的数据对象注入到bean里面，其中prefix 为数据对象的名称  集合类型的属性配置 首先是list
-bean:  age: 1  name: inject property  list:  - 1  - 2  - 3  用 - 来作为集合中的每一个数据  最后是map" />
+@ConfigurationProperties(prefix=&#34;bean&#34;) @Component public class TestBean { private String name; private Integer age; private List&lt;Integer&gt; list; private Map&lt;String,Integer&gt; mapper; // setter &amp; getter ... 必须要提供setter 和 getter } yml文件:
+bean: age: 1 name: inject property 利用 @ConfigurationPropertyes 注解可以将yml中的数据对象注入到bean里面，其中prefix 为数据对象的名称 集合类型的属性配置 首先是list
+bean: age: 1 name: inject property list: - 1 - 2 - 3 用 - 来作为集合中的每一个数据 最后是map
+bean: age: 1 name: inject property list: - 1 - 2 - 3 mapper: key1: 1 key2: 2 yaml本身就会从properties转换为map，所以它本身就是一个map，和定义其它数据对象一样，也就是用key-value的方式定义." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/springboot/%E9%85%8D%E7%BD%AE/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:29:51+00:00" />

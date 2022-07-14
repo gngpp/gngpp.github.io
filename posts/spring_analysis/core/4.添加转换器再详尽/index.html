@@ -4,7 +4,7 @@
     <title>4.进一步分析&#39;添加转换器 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -14,13 +14,13 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="4.进一步分析&#39;添加转换器"/>
 <meta name="twitter:description" content="前言 本节将单个功能添加转换器拿出来再讨论
-public void addConverter(Converter&lt;?, ?&gt; converter) { 	// [1] 首先获取范形的类型 [NOTE] 这个工具方法其实也蛮常用的，有兴趣可以了解下 	ResolvableType[] typeInfo = getRequiredTypeInfo(converter.getClass(), Converter.class); 	if (typeInfo == null &amp;&amp; converter instanceof DecoratingProxy) { 	typeInfo = getRequiredTypeInfo(((DecoratingProxy) converter).getDecoratedClass(), Converter.class); 	} 	// 然后构造成 Adapter，继续跟 	addConverter(new ConverterAdapter(converter, typeInfo[0], typeInfo[1])); 	} 这里出现了一个 ConverterAdapter, 转换器适配器，来看下其功能是什么.
-/** * [DESC] Converter只负责对指定数据类型的转换，类型匹配的职责就用适配器来扩充 */ 	@SuppressWarnings(&#34;unchecked&#34;) 	private final class ConverterAdapter implements ConditionalGenericConverter { 	private final Converter&lt;Object, Object&gt; converter;  	private final ConvertiblePair typeInfo;  	private final ResolvableType targetType; 	@Override 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) { 	// [1] 先检查目标类型是否一致 	if (this."/>
+public void addConverter(Converter&lt;?, ?&gt; converter) { // [1] 首先获取范形的类型 [NOTE] 这个工具方法其实也蛮常用的，有兴趣可以了解下 ResolvableType[] typeInfo = getRequiredTypeInfo(converter.getClass(), Converter.class); if (typeInfo == null &amp;&amp; converter instanceof DecoratingProxy) { typeInfo = getRequiredTypeInfo(((DecoratingProxy) converter).getDecoratedClass(), Converter.class); } // 然后构造成 Adapter，继续跟 addConverter(new ConverterAdapter(converter, typeInfo[0], typeInfo[1])); } 这里出现了一个 ConverterAdapter, 转换器适配器，来看下其功能是什么.
+/** * [DESC] Converter只负责对指定数据类型的转换，类型匹配的职责就用适配器来扩充 */ @SuppressWarnings(&#34;unchecked&#34;) private final class ConverterAdapter implements ConditionalGenericConverter { private final Converter&lt;Object, Object&gt; converter; private final ConvertiblePair typeInfo; private final ResolvableType targetType; @Override public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) { // [1] 先检查目标类型是否一致 if (this."/>
 
     <meta property="og:title" content="4.进一步分析&#39;添加转换器" />
 <meta property="og:description" content="前言 本节将单个功能添加转换器拿出来再讨论
-public void addConverter(Converter&lt;?, ?&gt; converter) { 	// [1] 首先获取范形的类型 [NOTE] 这个工具方法其实也蛮常用的，有兴趣可以了解下 	ResolvableType[] typeInfo = getRequiredTypeInfo(converter.getClass(), Converter.class); 	if (typeInfo == null &amp;&amp; converter instanceof DecoratingProxy) { 	typeInfo = getRequiredTypeInfo(((DecoratingProxy) converter).getDecoratedClass(), Converter.class); 	} 	// 然后构造成 Adapter，继续跟 	addConverter(new ConverterAdapter(converter, typeInfo[0], typeInfo[1])); 	} 这里出现了一个 ConverterAdapter, 转换器适配器，来看下其功能是什么.
-/** * [DESC] Converter只负责对指定数据类型的转换，类型匹配的职责就用适配器来扩充 */ 	@SuppressWarnings(&#34;unchecked&#34;) 	private final class ConverterAdapter implements ConditionalGenericConverter { 	private final Converter&lt;Object, Object&gt; converter;  	private final ConvertiblePair typeInfo;  	private final ResolvableType targetType; 	@Override 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) { 	// [1] 先检查目标类型是否一致 	if (this." />
+public void addConverter(Converter&lt;?, ?&gt; converter) { // [1] 首先获取范形的类型 [NOTE] 这个工具方法其实也蛮常用的，有兴趣可以了解下 ResolvableType[] typeInfo = getRequiredTypeInfo(converter.getClass(), Converter.class); if (typeInfo == null &amp;&amp; converter instanceof DecoratingProxy) { typeInfo = getRequiredTypeInfo(((DecoratingProxy) converter).getDecoratedClass(), Converter.class); } // 然后构造成 Adapter，继续跟 addConverter(new ConverterAdapter(converter, typeInfo[0], typeInfo[1])); } 这里出现了一个 ConverterAdapter, 转换器适配器，来看下其功能是什么.
+/** * [DESC] Converter只负责对指定数据类型的转换，类型匹配的职责就用适配器来扩充 */ @SuppressWarnings(&#34;unchecked&#34;) private final class ConverterAdapter implements ConditionalGenericConverter { private final Converter&lt;Object, Object&gt; converter; private final ConvertiblePair typeInfo; private final ResolvableType targetType; @Override public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) { // [1] 先检查目标类型是否一致 if (this." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />

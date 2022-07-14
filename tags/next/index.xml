@@ -13,7 +13,7 @@
       <pubDate>Mon, 02 Aug 2021 14:53:56 +0000</pubDate>
       
       <guid>https://blog.innas.cn/posts/hexo/hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</guid>
-      <description> 原因是hexo在5.0之后把swig给删除了需要自己手动安装  npm i hexo-renderer-swig </description>
+      <description> 原因是hexo在5.0之后把swig给删除了需要自己手动安装 npm i hexo-renderer-swig </description>
     </item>
     
   </channel>

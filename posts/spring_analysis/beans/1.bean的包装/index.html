@@ -4,7 +4,7 @@
     <title>1.Bean的包装 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.99.1" />
+    <meta name="generator" content="Hugo 0.101.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -14,13 +14,17 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="1.Bean的包装"/>
 <meta name="twitter:description" content="1.前言 为什么先从对bean的包装开始阅读源码呢，因为beans包的核心就是BeanFactory 🐶，其作用就是对bean进行管理，那么对bean管理的前提就是对bean进行解析，然后支持属性的set 或 get 操作。那么我们列举一下BeanFactory的主要职责，即使没阅读过源码，也应该知道个大概过程.
- 解析xml或者其它配置文件得到 BeanDefinition 实例化 Instance AutoWired自动装配 Bean的依赖  所以，我们先了解如何去得到一个Bean的 “定义” (解析xml那部分先不讲)
-2. BeanWrapper接口 这个类的主要作用是解析`Class` 然后获取属性，进一步封装，然后提供修改属性的接口 public interface BeanWrapper extends ConfigurablePropertyAccessor {  // 设置集合属性自增长的长度 	void setAutoGrowCollectionLimit(int autoGrowCollectionLimit); 	 // 获取当前集合属性自增长的长度 	int getAutoGrowCollectionLimit(); 		// 获取包装的Bean的Instance 	Object getWrappedInstance(); 		// 获取Bean的Class 	Class&lt;?&gt; getWrappedClass(); 		// 获取所有属性描述符 	PropertyDescriptor[] getPropertyDescriptors();   // 获取属性描述符 	PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException;  } 为什么上面会涉及到集合，因为Bean 支持nested (嵌套) 属性读写，也就是pojo"/>
+解析xml或者其它配置文件得到 BeanDefinition 实例化 Instance AutoWired自动装配 Bean的依赖 所以，我们先了解如何去得到一个Bean的 “定义” (解析xml那部分先不讲)
+2. BeanWrapper接口 这个类的主要作用是解析`Class` 然后获取属性，进一步封装，然后提供修改属性的接口 public interface BeanWrapper extends ConfigurablePropertyAccessor { // 设置集合属性自增长的长度 void setAutoGrowCollectionLimit(int autoGrowCollectionLimit); // 获取当前集合属性自增长的长度 int getAutoGrowCollectionLimit(); // 获取包装的Bean的Instance Object getWrappedInstance(); // 获取Bean的Class Class&lt;?&gt; getWrappedClass(); // 获取所有属性描述符 PropertyDescriptor[] getPropertyDescriptors(); // 获取属性描述符 PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException; } 为什么上面会涉及到集合，因为Bean 支持nested (嵌套) 属性读写，也就是pojo
+bean.setValue(&#34;bean.child.attr&#34;, 1) 3. BeanWrapperImpl实现 我们从其测试代码中可以看到这样的用法
+GetterBean target = new GetterBean(); BeanWrapper accessor = createAccessor(target); accessor."/>
 
     <meta property="og:title" content="1.Bean的包装" />
 <meta property="og:description" content="1.前言 为什么先从对bean的包装开始阅读源码呢，因为beans包的核心就是BeanFactory 🐶，其作用就是对bean进行管理，那么对bean管理的前提就是对bean进行解析，然后支持属性的set 或 get 操作。那么我们列举一下BeanFactory的主要职责，即使没阅读过源码，也应该知道个大概过程.
- 解析xml或者其它配置文件得到 BeanDefinition 实例化 Instance AutoWired自动装配 Bean的依赖  所以，我们先了解如何去得到一个Bean的 “定义” (解析xml那部分先不讲)
-2. BeanWrapper接口 这个类的主要作用是解析`Class` 然后获取属性，进一步封装，然后提供修改属性的接口 public interface BeanWrapper extends ConfigurablePropertyAccessor {  // 设置集合属性自增长的长度 	void setAutoGrowCollectionLimit(int autoGrowCollectionLimit); 	 // 获取当前集合属性自增长的长度 	int getAutoGrowCollectionLimit(); 		// 获取包装的Bean的Instance 	Object getWrappedInstance(); 		// 获取Bean的Class 	Class&lt;?&gt; getWrappedClass(); 		// 获取所有属性描述符 	PropertyDescriptor[] getPropertyDescriptors();   // 获取属性描述符 	PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException;  } 为什么上面会涉及到集合，因为Bean 支持nested (嵌套) 属性读写，也就是pojo" />
+解析xml或者其它配置文件得到 BeanDefinition 实例化 Instance AutoWired自动装配 Bean的依赖 所以，我们先了解如何去得到一个Bean的 “定义” (解析xml那部分先不讲)
+2. BeanWrapper接口 这个类的主要作用是解析`Class` 然后获取属性，进一步封装，然后提供修改属性的接口 public interface BeanWrapper extends ConfigurablePropertyAccessor { // 设置集合属性自增长的长度 void setAutoGrowCollectionLimit(int autoGrowCollectionLimit); // 获取当前集合属性自增长的长度 int getAutoGrowCollectionLimit(); // 获取包装的Bean的Instance Object getWrappedInstance(); // 获取Bean的Class Class&lt;?&gt; getWrappedClass(); // 获取所有属性描述符 PropertyDescriptor[] getPropertyDescriptors(); // 获取属性描述符 PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException; } 为什么上面会涉及到集合，因为Bean 支持nested (嵌套) 属性读写，也就是pojo
+bean.setValue(&#34;bean.child.attr&#34;, 1) 3. BeanWrapperImpl实现 我们从其测试代码中可以看到这样的用法
+GetterBean target = new GetterBean(); BeanWrapper accessor = createAccessor(target); accessor." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.innas.cn/posts/spring_analysis/beans/1.bean%E7%9A%84%E5%8C%85%E8%A3%85/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-02T11:39:34+00:00" />

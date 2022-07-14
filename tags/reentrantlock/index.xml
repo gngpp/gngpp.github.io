@@ -15,19 +15,28 @@
       <guid>https://blog.innas.cn/posts/jdk/reentrantlock/</guid>
       <description>前言 ReentrantLock作为 AQS的实现类之一，其是基于 CAS实现的锁，此锁为独占锁，并且用一个阻塞队列来阻塞前来拿锁的线程。队列为CLH 队列
 其使用两种策略，一种是非公平，一种是公平，默认是 非公平锁。在这里先讨论非公平锁
-  先来看一下 用于阻塞线程的CLH 队列  看一下该节点的定义：
-static final class Node {  volatile int waitStatus;  volatile Node prev;  volatile Node next;  volatile Thread thread;  Node nextWaiter;  }   waitStatus
- 等待状态
-  CANCELLED
+先来看一下 用于阻塞线程的CLH 队列 看一下该节点的定义：
+static final class Node { volatile int waitStatus; volatile Node prev; volatile Node next; volatile Thread thread; Node nextWaiter; } waitStatus
+等待状态
+CANCELLED
 节点由于超时或者被中断而被取消.
-  SIGNAL
+SIGNAL
 节点正在被阻塞并且等待信号的到来
-  CONDITION
+CONDITION
 用于条件队列中
-  PROPAGATE
+PROPAGATE
 用于共享锁
-     prev 指向上一个节点
-  next 指向下一个节点</description>
+prev 指向上一个节点
+next 指向下一个节点
+thread 表示请求锁的线程
+nextWaiter
+​	锁的占用模式
+SHARED 代表共享模式 EXCLUSIVE 代表独占模式 AbstractQueuedSynchronizer实现锁的策略
+其使用了一个state字段用来表示资源
+private volatile int state; 并且使用一个 thread字段来表示当前已经占用该资源的线程
+volatile Thread thread; 如果为独占锁，我们只需要用这两个字段来表示资源和占用资源的线程，没有得到资源的线程，这个时候我们就可以用CLH队列去记录它们。
+获取锁 lock
+final void lock() { // 利用 CAS判断状态是否为0，若为0则说明资源还没被占用则将其设置为1表示占用资源 // 则表示拿到锁 if (compareAndSetState(0, 1)) // 拿到锁后利用CAS设置资源占有者，也就是当前线程 setExclusiveOwnerThread(Thread.</description>
     </item>
     
   </channel>
