@@ -6,7 +6,16 @@
     <description>Recent content in Posts on gngpp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 Apr 2022 11:39:34 +0000</lastBuildDate><atom:link href="https://blog.innas.cn/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Jul 2022 11:19:33 +0800</lastBuildDate><atom:link href="https://blog.innas.cn/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE、Linux、rtl8821CU芯片网卡AP模式满速配置</title>
+      <link>https://blog.innas.cn/posts/pve/pvelinuxrtl8821cu%E8%8A%AF%E7%89%87%E7%BD%91%E5%8D%A1ap%E6%A8%A1%E5%BC%8F%E6%BB%A1%E9%80%9F%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Thu, 14 Jul 2022 11:19:33 +0800</pubDate>
+      
+      <guid>https://blog.innas.cn/posts/pve/pvelinuxrtl8821cu%E8%8A%AF%E7%89%87%E7%BD%91%E5%8D%A1ap%E6%A8%A1%E5%BC%8F%E6%BB%A1%E9%80%9F%E9%85%8D%E7%BD%AE/</guid>
+      <description>hostapd touch /etc/hostapd/hostapd.conf touch /etc/modprobe.d/rtl8821cu.conf /etc/hostapd/hostapd.conf # pve bridge bridge=vmbr0 # AP netdevice name (without &amp;#39;ap&amp;#39; postfix, i.e., wlan0 uses wlan0ap for # management frames); ath0 for madwifi interface=wlxe0e1a91c5537 driver=nl80211 ssid=iKuai hw_mode=a ieee80211n=1 ieee80211h=1 ieee80211d=1 country_code=US channel=36 vht_oper_centr_freq_seg0_idx=42 vht_oper_chwidth=2 ht_capab=[HT40+] wpa=2 wpa_passphrase=fengge123 wpa_key_mgmt=WPA-PSK wpa_pairwise=CCMP /etc/modprobe.d/rtl8821cu.conf options rtl8821cu rtw_vht_enable=2 </description>
+    </item>
+    
     <item>
       <title>macOS关闭mds_stores进程</title>
       <link>https://blog.innas.cn/posts/mds_stores/</link>
