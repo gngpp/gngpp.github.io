@@ -4,7 +4,7 @@
     <title>配置Nginx反向代理服务器 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="generator" content="Hugo 0.105.0">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -89,21 +89,21 @@ http { # 反向代理服务器 server{ # 配置代理服务器 listen	80; server
     <div class="post-content">
       <h2 id="配置nginx反向代理服务器">配置nginx反向代理服务器</h2>
 <h3 id="直接在-etcnxingnginxconf-中配置">直接在 <code>/etc/nxing/nginx.conf</code> 中配置</h3>
-<pre tabindex="0"><code class="language-properties" data-lang="properties">http {
-  # 反向代理服务器
-	server{
-	  # 配置代理服务器
-		listen	80;
-		server_name http://127.0.0.1;
-		access_log	logs/server1.log main;
-		
-		# 目标真实服务器
-		localtion / {
-			proxy_pass	http://127.0.0.1:8080;
-		}
-	}
-}
-</code></pre><p>从上面的配置，我们就可以完成将访问 <code>http://127.0.0.1：80</code>的请求转发给 <code>http://127.0.0.1:8080</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">http</span> <span style="color:#e6db74">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 反向代理服务器</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">	server{</span>
+</span></span><span style="display:flex;"><span>	  <span style="color:#75715e"># 配置代理服务器</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">listen</span>	<span style="color:#e6db74">80;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">server_name</span> <span style="color:#e6db74">http://127.0.0.1;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">access_log</span>	<span style="color:#e6db74">logs/server1.log main;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">		</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e"># 目标真实服务器</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">localtion</span> <span style="color:#e6db74">/ {</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">proxy_pass</span>	<span style="color:#e6db74">http://127.0.0.1:8080;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">		}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">	}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span>
+</span></span></code></pre></div><p>从上面的配置，我们就可以完成将访问 <code>http://127.0.0.1：80</code>的请求转发给 <code>http://127.0.0.1:8080</code></p>
 <p><strong>我们也可以配置多台真实服务器</strong>，也就是所谓的集群</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>http <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 反向代理服务器</span>

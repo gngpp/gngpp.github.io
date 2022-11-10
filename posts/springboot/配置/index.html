@@ -4,7 +4,7 @@
     <title>Spring Boot配置使用 // gngpp</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="generator" content="Hugo 0.105.0">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="gngpp" />
     <meta name="description" content="" />
@@ -152,10 +152,10 @@ bean: age: 1 name: inject property list: - 1 - 2 - 3 mapper: key1: 1 key2: 2 yam
 </span></span></code></pre></div><p>用这个属性就可以随意切换配置文件了</p>
 <h3 id="2使用properties配置">2.使用properties配置</h3>
 <p>新建一个properties文件</p>
-<pre tabindex="0"><code class="language-properties" data-lang="properties">testbean.name=fafa
-testbean.age=12223
-server.port=8081
-</code></pre><p>然后在bean上面利用注解</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">testbean.name</span><span style="color:#f92672">=</span><span style="color:#e6db74">fafa</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">testbean.age</span><span style="color:#f92672">=</span><span style="color:#e6db74">12223</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">server.port</span><span style="color:#f92672">=</span><span style="color:#e6db74">8081</span>
+</span></span></code></pre></div><p>然后在bean上面利用注解</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@ConfigurationProperties</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;testbean&#34;</span><span style="color:#f92672">)</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@PropertySource</span><span style="color:#f92672">(</span>value<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;classpath:bean.properties&#34;</span><span style="color:#f92672">)</span>
