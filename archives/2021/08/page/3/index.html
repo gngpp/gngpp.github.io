@@ -1,0 +1,2909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="gngpp">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="gngpp">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Blog">
+<meta property="og:url" content="https://gngpp.github.io/archives/2021/08/page/3/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="gngpp">
+<meta property="article:tag" content="Rust,Golang,Java">
+<meta name="twitter:card" content="summary">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/avatar/avatar.png">
+    
+    <title>gngpp&#39;s Blog</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+        <script>
+            var hits = JSON.parse('{"per_page":10}')
+            var labels = JSON.parse('{"input_placeholder":"Search for Posts","hits_empty":"We did not find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}')
+
+            var algolia = {
+                applicationID: 'UL8X7BP2JL',
+                apiKey: '43c4076d4d251af27f270b29ee69fa86',
+                indexName: 'hexo',
+                hits: hits,
+                labels: labels
+            }
+        </script>
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'G-YRQJ7KZG6K', 'auto');
+            ga('send', 'pageview');
+        </script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>gngpp's Blog</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+">
+    
+    <!-- 主页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main index-page">
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/beans/6.%E5%88%9B%E5%BB%BABeanInstance-%E6%A6%82%E8%A7%88/">
+                
+                <span class="abstract-title-text">6.创建BeanInstance-概览</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="前言">前言</h3>
+<p><code>spring</code> 对 <code>bean</code> 的操作可以分为以下三个步骤：</p>
+<ul>
+<li>创建 Instance</li>
+<li>填充 Instance</li>
+<li>初始化 Bean</li>
+</ul>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/beans/6.%E5%88%9B%E5%BB%BABeanInstance-%E6%A6%82%E8%A7%88/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Bean">Spring-Bean</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/beans/8.%E5%88%9B%E5%BB%BABeanInstance-%E6%A0%B9%E6%8D%AE%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/">
+                
+                <span class="abstract-title-text">8.创建BeanInstance-根据无参构造函数</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="前言">前言</h3>
+<p>利用无参数构造函数创建<code>Bean</code> 的<code>Instance</code> ，这个方式比较简单。来简单看一下, 其实在上一章节已经接触过了。。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> BeanWrapper <span class="title function_">instantiateBean</span><span class="params">(<span class="keyword">final</span> String beanName, <span class="keyword">final</span> RootBeanDefinition mbd)</span> &#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Object beanInstance;</span><br><span class="line">			<span class="keyword">final</span> <span class="type">BeanFactory</span> <span class="variable">parent</span> <span class="operator">=</span> <span class="built_in">this</span>;</span><br><span class="line">			<span class="keyword">if</span> (System.getSecurityManager() != <span class="literal">null</span>) &#123;</span><br><span class="line">				beanInstance = AccessController.doPrivileged((PrivilegedAction&lt;Object&gt;) () -&gt;</span><br><span class="line">						getInstantiationStrategy().instantiate(mbd, beanName, parent),</span><br><span class="line">						getAccessControlContext());</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, parent);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="type">BeanWrapper</span> <span class="variable">bw</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanWrapperImpl</span>(beanInstance);</span><br><span class="line">			initBeanWrapper(bw);</span><br><span class="line">			<span class="keyword">return</span> bw;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BeanCreationException</span>(</span><br><span class="line">					mbd.getResourceDescription(), beanName, <span class="string">&quot;Instantiation of bean failed&quot;</span>, ex);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/beans/8.%E5%88%9B%E5%BB%BABeanInstance-%E6%A0%B9%E6%8D%AE%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Bean">Spring-Bean</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/core/1.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1/">
+                
+                <span class="abstract-title-text">1.Spring类型转换器服务</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="前言">前言</h3>
+<p><code>sping</code>对整个<code>类型转换组件</code>抽象成为<code>service</code> , 毕竟类型转换这些没什么神秘之处，我们只需要了解它的设计模式。老规矩，从<code>test</code>开始 <code>package org.springframework.core.convert.converter#DefaultConversionServiceTests.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DefaultConversionServiceTests</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="type">DefaultConversionService</span> <span class="variable">conversionService</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultConversionService</span>();</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">stringToCharacter</span><span class="params">()</span> &#123;</span><br><span class="line">		assertThat(conversionService.convert(<span class="string">&quot;1&quot;</span>, Character.class)).isEqualTo(Character.valueOf(<span class="string">&#x27;1&#x27;</span>));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/core/1.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Core">Spring-Core</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/">
+                
+                <span class="abstract-title-text">2.Spring转换器的管理</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="前言">前言</h3>
+<p>因为分开每一个类理解是很难理解其设计，所以需要总结，分析各个类的义务，组合起来就是整个类型转换服务的功能. 先看一张结构图。</p>
+<img src="/2021/08/02/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/image-20191017150446544.png" class>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Core">Spring-Core</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/core/3.sprint%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/">
+                
+                <span class="abstract-title-text">3.Spring提供的转换器</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="前言">前言</h3>
+<p><code>GenericConversionService</code> 的功能提供转换数据的服务, <code>DefaultConversionService</code> 是继承自前者的，它的责任就是注册一些基本的<code>Converter</code>,  let me see～</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">addDefaultConverters</span><span class="params">(ConverterRegistry converterRegistry)</span> &#123;</span><br><span class="line">   addScalarConverters(converterRegistry);</span><br><span class="line">   addCollectionConverters(converterRegistry);</span><br><span class="line">   <span class="comment">// ByteBuff -&gt; byte[]</span></span><br><span class="line">   <span class="comment">// byte[] -&gt; ByteBuff</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ByteBufferConverter</span>((ConversionService) converterRegistry));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; TimeZone</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToTimeZoneConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// ZoneId -&gt; TimeZone</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ZoneIdToTimeZoneConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// DateTime -&gt; Calendar</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ZonedDateTimeToCalendarConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Object -&gt; Object</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ObjectToObjectConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Id -&gt; Entity</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">IdToEntityConverter</span>((ConversionService) converterRegistry));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// FallBackObject -&gt; String</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">FallbackObjectToStringConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Object -&gt; Optional</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ObjectToOptionalConverter</span>((ConversionService) converterRegistry));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Add common collection converters.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> converterRegistry the registry of converters to add to</span></span><br><span class="line"><span class="comment"> * (must also be castable to ConversionService, e.g. being a &#123;<span class="doctag">@link</span> ConfigurableConversionService&#125;)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> ClassCastException if the given ConverterRegistry could not be cast to a ConversionService</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 4.2.3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">addCollectionConverters</span><span class="params">(ConverterRegistry converterRegistry)</span> &#123;</span><br><span class="line">   <span class="type">ConversionService</span> <span class="variable">conversionService</span> <span class="operator">=</span> (ConversionService) converterRegistry;</span><br><span class="line">   <span class="comment">// Array -&gt; Collection</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ArrayToCollectionConverter</span>(conversionService));</span><br><span class="line">   <span class="comment">// Collection -&gt; Array</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">CollectionToArrayConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Array -&gt; Array</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ArrayToArrayConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Collection -&gt; Collection</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">CollectionToCollectionConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Map -&gt; Map</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">MapToMapConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Array -&gt; String</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ArrayToStringConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Array</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToArrayConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Array -&gt; Object</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ArrayToObjectConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Object -&gt; Array</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ObjectToArrayConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Collection -&gt; String</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">CollectionToStringConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Collection</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToCollectionConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Collection -&gt; Object</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">CollectionToObjectConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Object -&gt; Collection</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">ObjectToCollectionConverter</span>(conversionService));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Stream -&gt; Collection</span></span><br><span class="line">   <span class="comment">// Collection -&gt; Stream</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StreamConverter</span>(conversionService));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">addScalarConverters</span><span class="params">(ConverterRegistry converterRegistry)</span> &#123;</span><br><span class="line">   <span class="comment">// Number -&gt; Number</span></span><br><span class="line">   converterRegistry.addConverterFactory(<span class="keyword">new</span> <span class="title class_">NumberToNumberConverterFactory</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Number</span></span><br><span class="line">   converterRegistry.addConverterFactory(<span class="keyword">new</span> <span class="title class_">StringToNumberConverterFactory</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Number -&gt; String</span></span><br><span class="line">   converterRegistry.addConverter(Number.class, String.class, <span class="keyword">new</span> <span class="title class_">ObjectToStringConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Character</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToCharacterConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Character -&gt; String</span></span><br><span class="line">   converterRegistry.addConverter(Character.class, String.class, <span class="keyword">new</span> <span class="title class_">ObjectToStringConverter</span>());</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Number -&gt; Character</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">NumberToCharacterConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Character -&gt; Number</span></span><br><span class="line">   converterRegistry.addConverterFactory(<span class="keyword">new</span> <span class="title class_">CharacterToNumberFactory</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Boolean</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToBooleanConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Boolean -&gt; String</span></span><br><span class="line">   converterRegistry.addConverter(Boolean.class, String.class, <span class="keyword">new</span> <span class="title class_">ObjectToStringConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Enum</span></span><br><span class="line">   converterRegistry.addConverterFactory(<span class="keyword">new</span> <span class="title class_">StringToEnumConverterFactory</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Enum -&gt; String</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">EnumToStringConverter</span>((ConversionService) converterRegistry));</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Integer -&gt; Enum</span></span><br><span class="line">   converterRegistry.addConverterFactory(<span class="keyword">new</span> <span class="title class_">IntegerToEnumConverterFactory</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Enum -&gt; Integer</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">EnumToIntegerConverter</span>((ConversionService) converterRegistry));</span><br><span class="line"></span><br><span class="line">   <span class="comment">// String -&gt; Local</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToLocaleConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Local -&gt; String </span></span><br><span class="line">   converterRegistry.addConverter(Locale.class, String.class, <span class="keyword">new</span> <span class="title class_">ObjectToStringConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Charset</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToCharsetConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// CharSet -&gt; String</span></span><br><span class="line">   converterRegistry.addConverter(Charset.class, String.class, <span class="keyword">new</span> <span class="title class_">ObjectToStringConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Currency</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToCurrencyConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Currency -&gt; String </span></span><br><span class="line">   converterRegistry.addConverter(Currency.class, String.class, <span class="keyword">new</span> <span class="title class_">ObjectToStringConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; Properties</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToPropertiesConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Properties -&gt; String </span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">PropertiesToStringConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// String -&gt; UUID</span></span><br><span class="line">   converterRegistry.addConverter(<span class="keyword">new</span> <span class="title class_">StringToUUIDConverter</span>());</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// UUID -&gt; String </span></span><br><span class="line">   converterRegistry.addConverter(UUID.class, String.class, <span class="keyword">new</span> <span class="title class_">ObjectToStringConverter</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/core/3.sprint%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Core">Spring-Core</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/">
+                
+                <span class="abstract-title-text">4.进一步分析&#39;添加转换器</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="前言">前言</h3>
+<p>本节将单个功能<code>添加转换器</code>拿出来再讨论</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addConverter</span><span class="params">(Converter&lt;?, ?&gt; converter)</span> &#123;</span><br><span class="line">		<span class="comment">// [1] 首先获取范形的类型 [NOTE] 这个工具方法其实也蛮常用的，有兴趣可以了解下</span></span><br><span class="line">		ResolvableType[] typeInfo = getRequiredTypeInfo(converter.getClass(), Converter.class);</span><br><span class="line">		<span class="keyword">if</span> (typeInfo == <span class="literal">null</span> &amp;&amp; converter <span class="keyword">instanceof</span> DecoratingProxy) &#123;</span><br><span class="line">			typeInfo = getRequiredTypeInfo(((DecoratingProxy) converter).getDecoratedClass(), Converter.class);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 然后构造成 Adapter，继续跟</span></span><br><span class="line">		addConverter(<span class="keyword">new</span> <span class="title class_">ConverterAdapter</span>(converter, typeInfo[<span class="number">0</span>], typeInfo[<span class="number">1</span>]));</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Core">Spring-Core</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/">
+                
+                <span class="abstract-title-text">5.Spring自定义转换器</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="前言">前言</h3>
+<p>若要实现自己的类型转换器，则需要注意一下几点.</p>
+<ul>
+<li>推荐继承 <code>ConditionalGenericConverter</code></li>
+<li>也可以继承 <code>GenericConverter</code></li>
+<li>如果转换发生异常，最好抛出 <code>ConversionFailedException</code> 异常</li>
+<li>最好提供<code>ConvertiblePair</code> 类型信息，这样就会被缓存，而不会被加入到全局转换器，到时候再一一遍历.</li>
+</ul>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Core">Spring-Core</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/interview/%E6%BA%90%E7%A0%81%E7%BA%A7%E7%90%86%E8%A7%A3%20BeanFactory%20%E5%92%8C%20FactoryBean%E7%9A%84%E5%8C%BA%E5%88%AB/">
+                
+                <span class="abstract-title-text">源码级理解 BeanFactory 和 FactoryBean的区别</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="1-BeanFactory">1. BeanFactory</h3>
+<p><code>BeanFactory</code> 是一个接口，其定义了一个 <code>容器</code> 所具备的接口</p>
+<ul>
+<li>getBean</li>
+<li>containsBean</li>
+<li>isSingleton</li>
+<li>isPrototype</li>
+<li>isTypeMatch</li>
+<li>getType</li>
+</ul>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/interview/%E6%BA%90%E7%A0%81%E7%BA%A7%E7%90%86%E8%A7%A3%20BeanFactory%20%E5%92%8C%20FactoryBean%E7%9A%84%E5%8C%BA%E5%88%AB/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring">Spring</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean%20%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+                
+                <span class="abstract-title-text">1.factory-method 和 factory-bean的实现原理</span>
+            </a>
+            <div class="abstract-content">
+                <p>##factory-method 和 factory-bean的实现</p>
+<p>在讨论实现原理之前，得先清楚怎么用，这两个东西.</p>
+<p>假设目前有两个类 <code>ServiceFactory</code> 和 <code>Service</code> 我们就可以指定 <code>factory-method</code> 和 <code>factory-bean</code> 给 <code>Service</code></p>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean%20%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Bean">Spring-Bean</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2021/08/02/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3@Qualifier%E5%92%8C@Value%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+                
+                <span class="abstract-title-text">2.注解@Qualifier和@Value的实现</span>
+            </a>
+            <div class="abstract-content">
+                <h3 id="前言">前言</h3>
+<p><code>@Qualifier</code>用于注解在属性、方法、参数，指定用于修复依赖的 <code>bean</code></p>
+<p><code>QualifierAnnotationAutowireCandidateResolver</code>用于支持 <code>@Qualifier</code>和 <code>@Value</code>注解</p>
+            </div>
+            <!-- read more -->
+            
+                <div class="abstract-read-more-button">
+                    <a href="/2021/08/02/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3@Qualifier%E5%92%8C@Value%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+                        <span style="margin-right: 0.2rem;">阅读全文</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/12/05">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/08/02</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Spring-Bean">Spring-Bean</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+    <!-- paginator  -->
+    
+        <nav class="page-nav">
+            <a class="extend prev" rel="prev" href="/archives/2021/08/page/2/">&lt; PREV</a><a class="page-number" href="/archives/2021/08/">1</a><a class="page-number" href="/archives/2021/08/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/2021/08/page/4/">4</a><a class="page-number" href="/archives/2021/08/page/5/">5</a><a class="extend next" rel="next" href="/archives/2021/08/page/4/">NEXT &gt;</a>
+        </nav>
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:verticle@foxmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/gngpp" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 74
+        </div>
+        <!-- search  -->
+        
+            <div class="site-search site-search-loading popup-trigger">
+                <span class="iconfont-archer search-icon">&#xe627;</span>
+            </div>
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span>
+            <a class="archive-post-title" href="/2022/11/26/proxmox-bug/">Arm64-Proxmox-BUG</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span>
+            <a class="archive-post-title" href="/2022/11/18/FriendlyWrt-R6S/">FriendlyWrt-R6S</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/12</span>
+            <a class="archive-post-title" href="/2022/11/12/OpenWrt-AX201/">Drive Intel AX201 in OpenWrt</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/10</span>
+            <a class="archive-post-title" href="/2022/11/10/OrangePi-Zero2/">OrangePi Zero2</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span>
+            <a class="archive-post-title" href="/2022/07/13/rtl8821cu/">Linux、rtl8821CU芯片网卡AP模式满速配置</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/25</span>
+            <a class="archive-post-title" href="/2022/04/25/mds_stores/">macOS关闭mds_stores进程</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/30</span>
+            <a class="archive-post-title" href="/2022/03/29/config/Linux%E8%AE%BE%E7%BD%AEOpenWrt%20%E7%BD%91%E6%98%93%E4%BA%91%E8%A7%A3%E9%94%81/">Linux发行版设置OpenWrt网易云音乐解锁参数</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/15</span>
+            <a class="archive-post-title" href="/2022/02/14/proxmox/PVE%E4%BD%BF%E7%94%A8WIFI%E7%BD%91%E5%8D%A1%E8%81%94%E7%BD%91/">Proxmox VE使用Wi-Fi网卡联网</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/09</span>
+            <a class="archive-post-title" href="/2022/02/08/docker/Docker%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA/">Docker创建网络错误提示</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/03</span>
+            <a class="archive-post-title" href="/2022/02/02/proxmox/PVE%E3%80%81Docker%E7%BD%91%E5%BF%83%E4%BA%91%E5%A4%9A%E5%BC%80%E6%96%B9%E6%A1%88/">Proxmox VE、Docker macvlan网心云多开方案</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/26</span>
+            <a class="archive-post-title" href="/2022/01/26/proxmox/%E7%A0%B4%E8%A7%A3%E7%83%BD%E7%81%ABHG2543C1%E5%85%89%E7%8C%AB/">破解烽火HG2543C1光猫</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span>
+            <a class="archive-post-title" href="/2021/11/08/docker/docker-compose%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">docker-compose基本使用</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span>
+            <a class="archive-post-title" href="/2021/11/05/CI-CD/Gradle%E7%BC%93%E5%AD%98%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">Gradle Dependencies Cache CI/CD场景</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span>
+            <a class="archive-post-title" href="/2021/10/27/%E8%AE%B0%E5%BD%95%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/%E9%97%AE%E9%A2%98/">踩坑</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span>
+            <a class="archive-post-title" href="/2021/09/14/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Debian%E5%AE%89%E8%A3%85code-server/">Debian安装code-server</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span>
+            <a class="archive-post-title" href="/2021/08/16/%E8%AE%B0%E5%BD%95%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BADocker%E9%95%9C%E5%83%8F%E9%81%87%E5%88%B0%E9%BB%98%E8%AE%A4ANSI-X3-4-1968%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/">项目打包Docker镜像遇到默认ANSI-X3-4-1968编码的坑</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/05</span>
+            <a class="archive-post-title" href="/2021/08/04/config/Gradle%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85Jar%E6%8F%92%E4%BB%B6%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">Gradle项目打包Jar插件简单使用</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/03</span>
+            <a class="archive-post-title" href="/2021/08/02/hexo/%E8%A7%A3%E5%86%B3Hexo%E5%8D%9A%E5%AE%A2%E6%96%B0%E7%89%88%E6%9C%ACNext%E4%B8%BB%E9%A2%98%E4%B8%8D%E6%94%AF%E6%8C%81auto-excerpt%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/">解决Hexo博客新版本Next主题不支持auto_excerpt配置问题</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/hexo/Hexo%E4%B8%BB%E9%A2%98next%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">Hexo主题nexT显示错误解决</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/hexo/Linux%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Chexo/">Linux后台运行hexo</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/CRUD%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">CRUD一些常用工具类</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/Stream%E7%94%A8%E6%B3%95/">Stream用法</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring%20security%20%E7%BB%84%E4%BB%B6%E8%A7%A3%E6%9E%90/">Spring Security 组件解析</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/%E9%A1%B9%E7%9B%AE%E6%B3%A8%E6%84%8F%E7%82%B9/">DB程序员</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/elasticsearch/1.%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">Elasticsearch 安装配置</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/elasticsearch/%E5%88%A9%E7%94%A8kibana%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E6%93%8D%E4%BD%9C/">Elasticsearch利用kibana进行可视化操作</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/jdk/ReentrantLock/">ReentrantLock</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/nginx/nginx%E5%9C%A8docker%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">Nginx在Docker中自动反向代理</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/nginx/nginx%E5%AE%89%E8%A3%85/">Nginx的安装</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/nginx/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/">Nginx的使用</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/nginx/nginx%E9%85%8D%E7%BD%AE/">配置Nginx反向代理服务器</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/springboot/%E4%BD%BF%E7%94%A8Swagger2/">Spring Boot使用Swagger2</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/springboot/%E6%95%B0%E6%8D%AE%E6%BA%90/">Spring Boot数据源</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/springboot/%E6%97%A5%E5%BF%97/">Spring Boot 日志配置</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/springboot/%E9%85%8D%E7%BD%AE/">Spring Boot配置使用</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/1.bean%E7%9A%84%E5%8C%85%E8%A3%85/">1.Bean的包装</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/2.%E5%B5%8C%E5%A5%97%E5%B1%9E%E6%80%A7%E8%A7%A3%E6%9E%90/">2.嵌套属性解析</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/3.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E8%AF%BB%E5%8F%96/">3.对Bean属性进行读取</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/4.%E5%AF%B9bean%E5%B1%9E%E6%80%A7%E8%BF%9B%E8%A1%8C%E5%86%99%E5%85%A5/">4.对Bean属性进行写入</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/5.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">5.Bean类型转换</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/6.%E5%88%9B%E5%BB%BABeanInstance-%E6%A6%82%E8%A7%88/">6.创建BeanInstance-概览</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/8.%E5%88%9B%E5%BB%BABeanInstance-%E6%A0%B9%E6%8D%AE%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/">8.创建BeanInstance-根据无参构造函数</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/core/1.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1/">1.Spring类型转换器服务</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/core/2.%E8%BD%AC%E6%8D%A2%E5%99%A8%E7%9A%84%E7%AE%A1%E7%90%86/">2.Spring转换器的管理</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/core/3.sprint%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/">3.Spring提供的转换器</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/core/4.%E6%B7%BB%E5%8A%A0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%86%8D%E8%AF%A6%E5%B0%BD/">4.进一步分析'添加转换器</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/core/5.%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%99%A8/">5.Spring自定义转换器</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/interview/%E6%BA%90%E7%A0%81%E7%BA%A7%E7%90%86%E8%A7%A3%20BeanFactory%20%E5%92%8C%20FactoryBean%E7%9A%84%E5%8C%BA%E5%88%AB/">源码级理解 BeanFactory 和 FactoryBean的区别</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/template/mybatis/controller/">MyBatis-Plus Controller模版</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/template/mybatis/dao/">MyBatis-Plus DAO模版</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/template/mybatis/entity/">MyBatis-Plus Entity模版</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/template/mybatis/mapper/">MyBatis-Plus Mapper模版</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/template/mybatis/service/">MyBatis-Plus Service模版</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/template/mybatis/serviceImpl/">MyBatis-Plus ServiceImpl模版</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/functionality/1.factory-method%E5%92%8Cfactory-bean%20%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">1.factory-method 和 factory-bean的实现原理</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/functionality/2.%E6%B3%A8%E8%A7%A3@Qualifier%E5%92%8C@Value%E7%9A%84%E5%AE%9E%E7%8E%B0/">2.注解@Qualifier和@Value的实现</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/functionality/3.@Autowired%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86/">3.@Autowired注解实现的原理</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/7.%E5%88%9B%E5%BB%BABeanInstance-%E6%A0%B9%E6%8D%AE%E5%B8%A6%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/">7.创建BeanInstance-根据带参构造函数</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span>
+            <a class="archive-post-title" href="/2021/08/02/spring_analysis/beans/9.%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8DInstance/">9.自动装配Instance</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/01</span>
+            <a class="archive-post-title" href="/2021/08/01/docker/Docker%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">Docker快速入门</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/01</span>
+            <a class="archive-post-title" href="/2021/08/01/spring_analysis/utils/1.ClassUtils/">ClassUtils</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/31</span>
+            <a class="archive-post-title" href="/2021/07/31/CI-CD/Docker%E6%90%AD%E5%BB%BAGitlab-docker%E6%90%AD%E5%BB%BAgitlab/">Docker搭建Gitlab</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/04</span>
+            <a class="archive-post-title" href="/2021/06/03/docker/Docker%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AESpring%20cloud%20%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8/">Docker 安装配置Spring cloud 微服务开箱即用</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span>
+            <a class="archive-post-title" href="/2021/04/05/docker/docker%20%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90-docker%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/">Docker 国内镜像源</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/27</span>
+            <a class="archive-post-title" href="/2021/03/26/config/OpenJ9%20%E4%BC%98%E5%8C%96%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8AIDEA%20%E4%BD%BF%E7%94%A8OpenJ9%E4%BD%9C%E4%B8%BARuntime/">OpenJ9 优化参数以及IDEA 使用OpenJ9作为Runtime</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/26</span>
+            <a class="archive-post-title" href="/2021/03/26/docker/Docker%E9%85%8D%E7%BD%AEPostgres%20MySQL%20Redis(%E9%9A%8F%E5%AE%B9%E5%99%A8%E9%87%8D%E5%90%AF)/">Docker配置Postgres MySQL Redis(随容器重启)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/26</span>
+            <a class="archive-post-title" href="/2021/03/25/%E8%AE%B0%E5%BD%95%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/Spring%20Gateway%E4%B8%8E%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%B7%A8%E5%9F%9F%E7%9A%84%E5%9D%91/">Spring Gateway与服务间跨域的坑</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/18</span>
+            <a class="archive-post-title" href="/2021/03/18/config/MySQL%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/">MySQL修改密码</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/18</span>
+            <a class="archive-post-title" href="/2021/03/18/config/MySQL%E7%AD%96%E7%95%A5%E5%A4%87%E4%BB%BD/">MySQL策略备份SQL文件（逻辑备份）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/13</span>
+            <a class="archive-post-title" href="/2021/03/12/docker/Nacos%E5%AE%89%E8%A3%85-nacos%E5%AE%89%E8%A3%85/">Nacos安装</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/03</span>
+            <a class="archive-post-title" href="/2020/05/02/CI-CD/Drone-ci%20%E5%85%A5%E9%97%A8/">Drone-ci 入门</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/03</span>
+            <a class="archive-post-title" href="/2020/05/02/vim/Idea-vim%20%E5%BF%AB%E6%8D%B7%E9%94%AE/">Idea-vim 快捷键</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/26</span>
+            <a class="archive-post-title" href="/2020/03/26/config/Gradle%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F/">Gradle阿里云镜像</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/26</span>
+            <a class="archive-post-title" href="/2020/03/26/config/Maven%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F/">Maven阿里云镜像</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="CRUD">
+                <span class="iconfont-archer">&#xe606;</span>
+                CRUD
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="OpenWrt">
+                <span class="iconfont-archer">&#xe606;</span>
+                OpenWrt
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="R6S">
+                <span class="iconfont-archer">&#xe606;</span>
+                R6S
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="AX201">
+                <span class="iconfont-archer">&#xe606;</span>
+                AX201
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Intel">
+                <span class="iconfont-archer">&#xe606;</span>
+                Intel
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Docker">
+                <span class="iconfont-archer">&#xe606;</span>
+                Docker
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="OrangePi Zero2">
+                <span class="iconfont-archer">&#xe606;</span>
+                OrangePi Zero2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Stream">
+                <span class="iconfont-archer">&#xe606;</span>
+                Stream
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="macOS">
+                <span class="iconfont-archer">&#xe606;</span>
+                macOS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Proxmox">
+                <span class="iconfont-archer">&#xe606;</span>
+                Proxmox
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rtl8821CU">
+                <span class="iconfont-archer">&#xe606;</span>
+                rtl8821CU
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Spring Security">
+                <span class="iconfont-archer">&#xe606;</span>
+                Spring Security
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DB">
+                <span class="iconfont-archer">&#xe606;</span>
+                DB
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Drone-ci">
+                <span class="iconfont-archer">&#xe606;</span>
+                Drone-ci
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Gradle">
+                <span class="iconfont-archer">&#xe606;</span>
+                Gradle
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="linux">
+                <span class="iconfont-archer">&#xe606;</span>
+                linux
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MySQL">
+                <span class="iconfont-archer">&#xe606;</span>
+                MySQL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="docker、network">
+                <span class="iconfont-archer">&#xe606;</span>
+                docker、network
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="docker-compose">
+                <span class="iconfont-archer">&#xe606;</span>
+                docker-compose
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Elasticsearch">
+                <span class="iconfont-archer">&#xe606;</span>
+                Elasticsearch
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="nexT">
+                <span class="iconfont-archer">&#xe606;</span>
+                nexT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Linux">
+                <span class="iconfont-archer">&#xe606;</span>
+                Linux
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Hexo">
+                <span class="iconfont-archer">&#xe606;</span>
+                Hexo
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ReentrantLock">
+                <span class="iconfont-archer">&#xe606;</span>
+                ReentrantLock
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Nginx">
+                <span class="iconfont-archer">&#xe606;</span>
+                Nginx
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="网心云、docker">
+                <span class="iconfont-archer">&#xe606;</span>
+                网心云、docker
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Wi-Fi">
+                <span class="iconfont-archer">&#xe606;</span>
+                Wi-Fi
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="烽火HG2543C1光猫">
+                <span class="iconfont-archer">&#xe606;</span>
+                烽火HG2543C1光猫
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Spring Boot">
+                <span class="iconfont-archer">&#xe606;</span>
+                Spring Boot
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Vim">
+                <span class="iconfont-archer">&#xe606;</span>
+                Vim
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="配置">
+                <span class="iconfont-archer">&#xe606;</span>
+                配置
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Spring Gateway">
+                <span class="iconfont-archer">&#xe606;</span>
+                Spring Gateway
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Docker Build">
+                <span class="iconfont-archer">&#xe606;</span>
+                Docker Build
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Spring-Bean">
+                <span class="iconfont-archer">&#xe606;</span>
+                Spring-Bean
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Spring-Core">
+                <span class="iconfont-archer">&#xe606;</span>
+                Spring-Core
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Spring">
+                <span class="iconfont-archer">&#xe606;</span>
+                Spring
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="EasyCode">
+                <span class="iconfont-archer">&#xe606;</span>
+                EasyCode
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="skill">
+            <span class="iconfont-archer">&#xe60a;</span>
+            skill
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="CRUD">
+            <span class="iconfont-archer">&#xe60a;</span>
+            CRUD
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="macOS">
+            <span class="iconfont-archer">&#xe60a;</span>
+            macOS
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="PVE">
+            <span class="iconfont-archer">&#xe60a;</span>
+            PVE
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Spring Security">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Spring Security
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="CI/CD">
+            <span class="iconfont-archer">&#xe60a;</span>
+            CI/CD
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="配置">
+            <span class="iconfont-archer">&#xe60a;</span>
+            配置
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Docker">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Docker
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Elasticsearch">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Elasticsearch
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Hexo">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Hexo
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="ReentrantLock">
+            <span class="iconfont-archer">&#xe60a;</span>
+            ReentrantLock
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Nginx">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Nginx
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Proxmox VE">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Proxmox VE
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Spring Boot">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Spring Boot
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Vim">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Vim
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="开发的坑">
+            <span class="iconfont-archer">&#xe60a;</span>
+            开发的坑
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Spring-Bean">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Spring-Bean
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Spring-Core">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Spring-Core
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Spring-Interview">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Spring-Interview
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Template">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Template
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Spring-functionality">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Spring-functionality
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://gngpp.github.io",
+        root: siteMetaRoot,
+        author: "gngpp"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+            <div class="site-search site-search-loading">
+    <div class="algolia-popup popup">
+        <div class="algolia-search">
+            <div class="algolia-search-input-icon">
+                <i class="fa fa-search"></i>
+            </div>
+            <div class="algolia-search-input" id="algolia-search-input"></div>
+            <div class="popup-btn-close">
+                <i class="iconfont-archer">&#xe609;</i>
+            </div>
+        </div>
+
+        <div class="algolia-results">
+            <div id="algolia-stats" class="algolia-stats"></div>
+            <div id="algolia-hits"></div>
+            <div id="algolia-pagination" class="algolia-pagination"></div>
+        </div>
+    </div>
+</div>
+
+            <script src="/scripts/search.js?v=20211217" defer></script>
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>
